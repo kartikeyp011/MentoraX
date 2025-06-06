@@ -23,7 +23,7 @@ def configure_genai(api_key):
 
 def extract_keywords(description):
     # Initialize the model
-    model = configure_genai('YOUR_GOOGLE_API_KEY')  # Replace with your API key
+    model = configure_genai('GOOGLE_API_KEY')  # Replace with your API key
 
     chat_session = model.start_chat(
         history=[]

@@ -6,7 +6,7 @@ def get_job_descriptions(role, location="India", num_jobs=100):
         "q": role,  # Role like Data Scientist, Web Developer, etc.
         "location": location,
         "num": num_jobs,
-        "api_key": "***REMOVED***"  # Replace with your SerpApi key
+        "api_key": "67cf9c6654529308608d264babd029c7782916c539783adb4373bae3a3a1f95d"  # Replace with your SerpApi key
     }
 
     search = GoogleSearch(params)

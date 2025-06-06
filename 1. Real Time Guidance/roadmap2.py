@@ -9,7 +9,7 @@ def create_roadmap(keywords_list):
     all_keywords = [keyword for keywords in keywords_list for keyword in keywords]
 
     # Initialize the Gemini model
-    genai.configure(api_key='***REMOVED***')
+    genai.configure(api_key=GOOGLE_API_KEY)
     generation_config = {
         "temperature": 1,
         "top_p": 0.95,
