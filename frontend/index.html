@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentorax 2.0 - AI Career Guidance Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Custom scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .slide-in-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .slide-in-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .zoom-in {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .zoom-in.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        /* Navbar shadow on scroll */
+        .navbar-scrolled {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        /* Glowing button effect */
+        .glow-on-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .glow-on-hover:hover {
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
+        }
+        
+        /* FAQ accordion animation */
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+        
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+        
+        /* Step timeline */
+        .step-timeline::before {
+            content: '';
+            position: absolute;
+            height: 100%;
+            width: 2px;
+            background: #2563EB;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        @media (max-width: 768px) {
+            .step-timeline::before {
+                left: 30px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full bg-white z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-robot text-white text-xl"></i>
+                </div>
+                <span class="text-xl font-bold text-blue-600">Mentorax</span>
+                <span class="text-xs bg-amber-500 text-white px-2 py-1 rounded-full">2.0</span>
+            </div>
+            
+            <div class="hidden md:flex space-x-8">
+                <a href="#features" class="text-slate-600 hover:text-blue-600 transition-colors">Features</a>
+                <a href="#how-it-works" class="text-slate-600 hover:text-blue-600 transition-colors">How It Works</a>
+                <a href="#audience" class="text-slate-600 hover:text-blue-600 transition-colors">For You</a>
+                <a href="#faq" class="text-slate-600 hover:text-blue-600 transition-colors">FAQ</a>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <button class="text-slate-600 hover:text-blue-600 transition-colors">Login</button>
+                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">Get Started</button>
+                <button id="mobile-menu-btn" class="md:hidden text-slate-600">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden bg-white px-4 py-2 hidden">
+            <a href="#features" class="block py-2 text-slate-600 hover:text-blue-600">Features</a>
+            <a href="#how-it-works" class="block py-2 text-slate-600 hover:text-blue-600">How It Works</a>
+            <a href="#audience" class="block py-2 text-slate-600 hover:text-blue-600">For You</a>
+            <a href="#faq" class="block py-2 text-slate-600 hover:text-blue-600">FAQ</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-24 pb-16 md:pt-32 md:pb-24 bg-gradient-to-br from-blue-50 to-slate-100">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0 fade-in">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-800 mb-4">
+                        Your AI-Powered <span class="text-blue-600">Career</span> Companion
+                    </h1>
+                    <p class="text-lg md:text-xl text-slate-600 mb-8">
+                        Mentorax 2.0 uses advanced AI to provide personalized career guidance, connect you with mentors, and help you achieve your professional goals.
+                    </p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <button class="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors glow-on-hover">
+                            Start Free Trial
+                        </button>
+                        <button class="border border-blue-600 text-blue-600 px-6 py-3 rounded-lg font-medium hover:bg-blue-50 transition-colors">
+                            <i class="fas fa-play-circle mr-2"></i> Watch Demo
+                        </button>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center zoom-in">
+                    <div class="relative w-full max-w-md">
+                        <div class="bg-white rounded-2xl shadow-xl p-6 transform rotate-3">
+                            <div class="bg-gradient-to-r from-blue-500 to-amber-500 h-48 rounded-lg mb-4 flex items-center justify-center">
+                                <i class="fas fa-brain text-white text-6xl"></i>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="h-4 bg-slate-200 rounded w-3/4"></div>
+                                <div class="h-4 bg-slate-200 rounded w-1/2"></div>
+                                <div class="h-4 bg-slate-200 rounded w-5/6"></div>
+                            </div>
+                        </div>
+                        <div class="absolute -bottom-6 -right-6 bg-amber-500 rounded-2xl shadow-xl p-6 w-3/4 transform -rotate-3">
+                            <div class="flex items-center space-x-3 mb-3">
+                                <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                                    <i class="fas fa-user-graduate text-amber-500"></i>
+                                </div>
+                                <div>
+                                    <div class="h-3 bg-white rounded w-24 mb-1"></div>
+                                    <div class="h-2 bg-white rounded w-16"></div>
+                                </div>
+                            </div>
+                            <div class="h-3 bg-white rounded w-full mb-2"></div>
+                            <div class="h-3 bg-white rounded w-5/6"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem & Solution Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0 slide-in-left">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-6">
+                        The Career Guidance <span class="text-blue-600">Problem</span>
+                    </h2>
+                    <p class="text-slate-600 mb-6">
+                        Traditional career guidance is often generic, inaccessible, and fails to account for individual strengths, market trends, and personal aspirations.
+                    </p>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start">
+                            <i class="fas fa-times-circle text-red-500 mt-1 mr-3"></i>
+                            <span class="text-slate-600">One-size-fits-all advice that doesn't match your unique profile</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-times-circle text-red-500 mt-1 mr-3"></i>
+                            <span class="text-slate-600">Limited access to experienced mentors in your field</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-times-circle text-red-500 mt-1 mr-3"></i>
+                            <span class="text-slate-600">Outdated information that doesn't reflect current job markets</span>
+                        </li>
+                    </ul>
+                    <h3 class="text-2xl font-bold text-slate-800 mb-4">
+                        Our <span class="text-amber-500">AI-Powered Solution</span>
+                    </h3>
+                    <p class="text-slate-600">
+                        Mentorax 2.0 combines artificial intelligence with human expertise to deliver personalized, data-driven career guidance that evolves with you.
+                    </p>
+                </div>
+                <div class="md:w-1/2 flex justify-center slide-in-right">
+                    <div class="relative w-full max-w-md">
+                        <div class="bg-gradient-to-br from-blue-600 to-amber-500 rounded-2xl p-1">
+                            <div class="bg-white rounded-xl p-8">
+                                <div class="flex justify-center mb-6">
+                                    <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-robot text-blue-600 text-3xl"></i>
+                                    </div>
+                                </div>
+                                <h4 class="text-xl font-bold text-center text-slate-800 mb-4">AI Career Analysis</h4>
+                                <div class="space-y-4">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                                            <i class="fas fa-check text-green-600"></i>
+                                        </div>
+                                        <span class="text-slate-600">Personalized career path recommendations</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                                            <i class="fas fa-check text-green-600"></i>
+                                        </div>
+                                        <span class="text-slate-600">Skill gap analysis and learning plans</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                                            <i class="fas fa-check text-green-600"></i>
+                                        </div>
+                                        <span class="text-slate-600">Matching with relevant industry mentors</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features Section -->
+    <section id="features" class="py-16 bg-slate-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
+                    Powerful <span class="text-blue-600">Features</span>
+                </h2>
+                <p class="text-xl text-slate-600 max-w-2xl mx-auto">
+                    Discover how Mentorax 2.0 uses cutting-edge AI to transform your career journey
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300 zoom-in">
+                    <div class="w-14 h-14 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-user-check text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Personalized Career Paths</h3>
+                    <p class="text-slate-600">
+                        AI algorithms analyze your skills, interests, and goals to recommend customized career trajectories.
+                    </p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300 zoom-in">
+                    <div class="w-14 h-14 bg-amber-100 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-chart-line text-amber-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Skill Gap Analysis</h3>
+                    <p class="text-slate-600">
+                        Identify missing competencies and receive tailored learning recommendations to bridge the gaps.
+                    </p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300 zoom-in">
+                    <div class="w-14 h-14 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-handshake text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Smart Mentor Matching</h3>
+                    <p class="text-slate-600">
+                        Connect with ideal mentors based on compatibility scores and shared professional interests.
+                    </p>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300 zoom-in">
+                    <div class="w-14 h-14 bg-amber-100 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-briefcase text-amber-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Job Market Insights</h3>
+                    <p class="text-slate-600">
+                        Real-time data on industry trends, salary benchmarks, and in-demand skills.
+                    </p>
+                </div>
+                
+                <!-- Feature 5 -->
+                <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300 zoom-in">
+                    <div class="w-14 h-14 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-file-alt text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Resume Optimization</h3>
+                    <p class="text-slate-600">
+                        AI-powered tools to enhance your resume with keywords and formatting that appeal to recruiters.
+                    </p>
+                </div>
+                
+                <!-- Feature 6 -->
+                <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300 zoom-in">
+                    <div class="w-14 h-14 bg-amber-100 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-video text-amber-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Mock Interview Simulator</h3>
+                    <p class="text-slate-600">
+                        Practice interviews with AI that provides feedback on your responses and communication style.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
+                    How <span class="text-blue-600">Mentorax</span> Works
+                </h2>
+                <p class="text-xl text-slate-600 max-w-2xl mx-auto">
+                    Get started with our simple 4-step process to unlock your career potential
+                </p>
+            </div>
+            
+            <div class="relative step-timeline">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <!-- Step 1 -->
+                    <div class="flex flex-col md:flex-row items-center slide-in-left">
+                        <div class="flex-shrink-0 w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl mb-4 md:mb-0 md:mr-6 z-10">
+                            1
+                        </div>
+                        <div class="bg-slate-50 rounded-xl p-6 text-center md:text-left">
+                            <h3 class="text-xl font-bold text-slate-800 mb-2">Create Your Profile</h3>
+                            <p class="text-slate-600">
+                                Share your skills, interests, career goals, and background to help our AI understand your unique profile.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 2 -->
+                    <div class="flex flex-col md:flex-row items-center slide-in-right">
+                        <div class="flex-shrink-0 w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl mb-4 md:mb-0 md:mr-6 z-10 order-2 md:order-1">
+                            2
+                        </div>
+                        <div class="bg-slate-50 rounded-xl p-6 text-center md:text-left order-1 md:order-2">
+                            <h3 class="text-xl font-bold text-slate-800 mb-2">Get AI Analysis</h3>
+                            <p class="text-slate-600">
+                                Our AI analyzes your profile against market data to identify ideal career paths and skill gaps.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 3 -->
+                    <div class="flex flex-col md:flex-row items-center slide-in-left">
+                        <div class="flex-shrink-0 w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl mb-4 md:mb-0 md:mr-6 z-10">
+                            3
+                        </div>
+                        <div class="bg-slate-50 rounded-xl p-6 text-center md:text-left">
+                            <h3 class="text-xl font-bold text-slate-800 mb-2">Connect with Mentors</h3>
+                            <p class="text-slate-600">
+                                Get matched with vetted mentors in your target industries for personalized guidance.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 4 -->
+                    <div class="flex flex-col md:flex-row items-center slide-in-right">
+                        <div class="flex-shrink-0 w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl mb-4 md:mb-0 md:mr-6 z-10 order-2 md:order-1">
+                            4
+                        </div>
+                        <div class="bg-slate-50 rounded-xl p-6 text-center md:text-left order-1 md:order-2">
+                            <h3 class="text-xl font-bold text-slate-800 mb-2">Track Your Progress</h3>
+                            <p class="text-slate-600">
+                                Monitor your career development with our progress dashboard and adjust your plan as needed.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Audience Section -->
+    <section id="audience" class="py-16 bg-slate-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
+                    Who Can Benefit from <span class="text-blue-600">Mentorax</span>
+                </h2>
+                <p class="text-xl text-slate-600 max-w-2xl mx-auto">
+                    Our platform is designed for everyone looking to advance their career journey
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Student Card -->
+                <div class="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-2 zoom-in">
+                    <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-user-graduate text-blue-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Students</h3>
+                    <p class="text-slate-600 mb-4">
+                        Discover career paths, build skills, and connect with mentors in your field of interest.
+                    </p>
+                    <div class="text-blue-600 font-medium">Learn More →</div>
+                </div>
+                
+                <!-- Mentor Card -->
+                <div class="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-2 zoom-in">
+                    <div class="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-chalkboard-teacher text-amber-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Mentors</h3>
+                    <p class="text-slate-600 mb-4">
+                        Share your expertise, give back to the community, and expand your professional network.
+                    </p>
+                    <div class="text-blue-600 font-medium">Learn More →</div>
+                </div>
+                
+                <!-- Placement Cell Card -->
+                <div class="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-2 zoom-in">
+                    <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-university text-blue-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Placement Cells</h3>
+                    <p class="text-slate-600 mb-4">
+                        Enhance your career services with AI-powered tools and expanded mentor networks.
+                    </p>
+                    <div class="text-blue-600 font-medium">Learn More →</div>
+                </div>
+                
+                <!-- Alumni Card -->
+                <div class="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-2 zoom-in">
+                    <div class="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-users text-amber-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Alumni</h3>
+                    <p class="text-slate-600 mb-4">
+                        Stay connected with your alma mater, mentor students, and advance your own career.
+                    </p>
+                    <div class="text-blue-600 font-medium">Learn More →</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo / Preview Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0 slide-in-left">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-6">
+                        See Mentorax <span class="text-blue-600">in Action</span>
+                    </h2>
+                    <p class="text-slate-600 mb-6">
+                        Experience our platform through an interactive demo that showcases how Mentorax can transform your career journey.
+                    </p>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                            <span class="text-slate-600">Interactive career path explorer</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                            <span class="text-slate-600">Live skill assessment dashboard</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                            <span class="text-slate-600">Mentor matching simulation</span>
+                        </li>
+                    </ul>
+                    <button class="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-play-circle mr-2"></i> Launch Interactive Demo
+                    </button>
+                </div>
+                <div class="md:w-1/2 flex justify-center slide-in-right">
+                    <div class="relative w-full max-w-lg">
+                        <div class="bg-gradient-to-br from-blue-600 to-amber-500 rounded-2xl p-1 transform hover:scale-105 transition-transform duration-300">
+                            <div class="bg-white rounded-xl p-2">
+                                <div class="bg-slate-800 rounded-lg p-4 flex items-center">
+                                    <div class="flex space-x-2">
+                                        <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                        <div class="w-3 h-3 bg-amber-500 rounded-full"></div>
+                                        <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                                    </div>
+                                    <div class="flex-1 text-center text-slate-300 text-sm">
+                                        app.mentorax.com/demo
+                                    </div>
+                                </div>
+                                <div class="p-4">
+                                    <div class="bg-gradient-to-r from-blue-500 to-amber-500 h-48 rounded-lg mb-4 flex items-center justify-center">
+                                        <i class="fas fa-laptop-code text-white text-6xl"></i>
+                                    </div>
+                                    <div class="grid grid-cols-3 gap-4 mb-4">
+                                        <div class="h-3 bg-slate-200 rounded"></div>
+                                        <div class="h-3 bg-slate-200 rounded"></div>
+                                        <div class="h-3 bg-slate-200 rounded"></div>
+                                    </div>
+                                    <div class="space-y-3">
+                                        <div class="h-4 bg-slate-200 rounded w-full"></div>
+                                        <div class="h-4 bg-slate-200 rounded w-5/6"></div>
+                                        <div class="h-4 bg-slate-200 rounded w-4/6"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call To Action Section -->
+    <section class="py-16 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <div class="max-w-3xl mx-auto fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6">
+                    Ready to Transform Your Career Journey?
+                </h2>
+                <p class="text-xl mb-8 text-blue-100">
+                    Join thousands of users who have accelerated their career growth with Mentorax 2.0
+                </p>
+                <button class="bg-amber-500 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-amber-600 transition-colors glow-on-hover">
+                    Start Your Free Trial Now
+                </button>
+                <p class="mt-4 text-blue-200">No credit card required • 14-day free trial</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-16 bg-slate-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
+                    Frequently Asked <span class="text-blue-600">Questions</span>
+                </h2>
+                <p class="text-xl text-slate-600 max-w-2xl mx-auto">
+                    Find answers to common questions about Mentorax 2.0
+                </p>
+            </div>
+            
+            <div class="max-w-3xl mx-auto">
+                <!-- FAQ 1 -->
+                <div class="bg-white rounded-xl shadow-md mb-4 faq-item">
+                    <button class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
+                        <span class="text-lg font-medium text-slate-800">How does the AI career guidance work?</span>
+                        <i class="fas fa-chevron-down text-slate-500 faq-icon transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-answer px-6 pb-6">
+                        <p class="text-slate-600">
+                            Our AI analyzes your skills, interests, experience, and goals using advanced algorithms. It then compares your profile with current market trends, job requirements, and successful career paths to provide personalized recommendations for your career development.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- FAQ 2 -->
+                <div class="bg-white rounded-xl shadow-md mb-4 faq-item">
+                    <button class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
+                        <span class="text-lg font-medium text-slate-800">How are mentors selected and matched?</span>
+                        <i class="fas fa-chevron-down text-slate-500 faq-icon transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-answer px-6 pb-6">
+                        <p class="text-slate-600">
+                            Mentors are vetted professionals with proven expertise in their fields. Our matching algorithm considers factors like industry experience, specialization, communication style, and shared interests to create optimal mentor-mentee pairs that facilitate meaningful connections.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- FAQ 3 -->
+                <div class="bg-white rounded-xl shadow-md mb-4 faq-item">
+                    <button class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
+                        <span class="text-lg font-medium text-slate-800">Is my data secure and private?</span>
+                        <i class="fas fa-chevron-down text-slate-500 faq-icon transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-answer px-6 pb-6">
+                        <p class="text-slate-600">
+                            Absolutely. We employ enterprise-grade security measures including encryption, secure data storage, and strict privacy controls. Your personal information is never shared without your explicit consent, and you have full control over what data is visible to mentors and other users.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- FAQ 4 -->
+                <div class="bg-white rounded-xl shadow-md mb-4 faq-item">
+                    <button class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
+                        <span class="text-lg font-medium text-slate-800">What makes Mentorax 2.0 different from other career platforms?</span>
+                        <i class="fas fa-chevron-down text-slate-500 faq-icon transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-answer px-6 pb-6">
+                        <p class="text-slate-600">
+                            Mentorax 2.0 combines the power of AI with human mentorship in a way no other platform does. While other services might offer either automated recommendations or mentor connections, we integrate both to create a holistic career development ecosystem that adapts to your evolving needs.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="md:col-span-2">
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-robot text-white text-xl"></i>
+                        </div>
+                        <span class="text-xl font-bold">Mentorax</span>
+                        <span class="text-xs bg-amber-500 text-white px-2 py-1 rounded-full">2.0</span>
+                    </div>
+                    <p class="text-slate-300 mb-6 max-w-md">
+                        Mentorax 2.0 is an AI-powered career guidance platform that helps individuals discover their ideal career paths, develop necessary skills, and connect with experienced mentors.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Company</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-slate-300 hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#" class="text-slate-300 hover:text-white transition-colors">Careers</a></li>
+                        <li><a href="#" class="text-slate-300 hover:text-white transition-colors">Blog</a></li>
+                        <li><a href="#" class="text-slate-300 hover:text-white transition-colors">Press</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Support</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-slate-300 hover:text-white transition-colors">Contact Us</a></li>
+                        <li><a href="#" class="text-slate-300 hover:text-white transition-colors">Help Center</a></li>
+                        <li><a href="#" class="text-slate-300 hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="text-slate-300 hover:text-white transition-colors">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-slate-700 mt-12 pt-8 text-center text-slate-400">
+                <p>© 2023 Mentorax 2.0. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Intersection Observer for scroll animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe all elements with animation classes
+            document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right, .zoom-in').forEach(el => {
+                observer.observe(el);
+            });
+            
+            // Navbar scroll effect
+            window.addEventListener('scroll', function() {
+                const navbar = document.getElementById('navbar');
+                if (window.scrollY > 10) {
+                    navbar.classList.add('navbar-scrolled');
+                } else {
+                    navbar.classList.remove('navbar-scrolled');
+                }
+            });
+            
+            // Mobile menu toggle
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // FAQ accordion
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const button = item.querySelector('button');
+                
+                button.addEventListener('click', function() {
+                    // Close all other items
+                    faqItems.forEach(otherItem => {
+                        if (otherItem !== item) {
+                            otherItem.classList.remove('active');
+                        }
+                    });
+                    
+                    // Toggle current item
+                    item.classList.toggle('active');
+                });
+            });
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        // Close mobile menu if open
+                        mobileMenu.classList.add('hidden');
+                        
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
