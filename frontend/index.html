@@ -3,21 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mentorax 2.0 - AI Career Guidance Platform</title>
+    <title>MentoraX - AI Career Guidance Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #2563EB;
+            --secondary: #1E293B;
+            --accent: #F59E0B;
+            --background: #F8FAFC;
+            --neutral: #64748B;
+        }
         
         body {
             font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            background-color: var(--background);
+            transition: background-color 0.5s ease, color 0.5s ease;
         }
         
-        /* Custom scroll animations */
+        body.dark-mode {
+            --primary: #3B82F6;
+            --secondary: #F1F5F9;
+            --accent: #F59E0B;
+            --background: #0F172A;
+            --neutral: #94A3B8;
+            background-color: var(--background);
+            color: var(--secondary);
+        }
+        
+        .container-custom {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+        
+        @media (min-width: 768px) {
+            .container-custom {
+                padding-left: 2rem;
+                padding-right: 2rem;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .container-custom {
+                padding-left: 3rem;
+                padding-right: 3rem;
+            }
+        }
+        
         .fade-in {
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
         
         .fade-in.visible {
@@ -27,8 +74,8 @@
         
         .slide-in-left {
             opacity: 0;
-            transform: translateX(-50px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            transform: translateX(-80px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
         
         .slide-in-left.visible {
@@ -38,8 +85,8 @@
         
         .slide-in-right {
             opacity: 0;
-            transform: translateX(50px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            transform: translateX(80px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
         
         .slide-in-right.visible {
@@ -49,8 +96,8 @@
         
         .zoom-in {
             opacity: 0;
-            transform: scale(0.9);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            transform: scale(0.85);
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
         
         .zoom-in.visible {
@@ -58,25 +105,77 @@
             transform: scale(1);
         }
         
-        /* Navbar shadow on scroll */
-        .navbar-scrolled {
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        .stagger-item {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
         
-        /* Glowing button effect */
+        .stagger-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .navbar-scrolled {
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .dark-mode .navbar-scrolled {
+            background-color: rgba(15, 23, 42, 0.9);
+        }
+        
         .glow-on-hover {
+            position: relative;
             transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .glow-on-hover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.5s;
+        }
+        
+        .glow-on-hover:hover::before {
+            left: 100%;
         }
         
         .glow-on-hover:hover {
-            box-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
+            box-shadow: 0 5px 20px rgba(37, 99, 235, 0.4);
+            transform: translateY(-2px);
         }
         
-        /* FAQ accordion animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 4s ease-in-out infinite;
+        }
+        
         .faq-answer {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease;
+            transition: max-height 0.5s ease;
         }
         
         .faq-item.active .faq-answer {
@@ -87,13 +186,12 @@
             transform: rotate(180deg);
         }
         
-        /* Step timeline */
         .step-timeline::before {
             content: '';
             position: absolute;
             height: 100%;
-            width: 2px;
-            background: #2563EB;
+            width: 3px;
+            background: linear-gradient(to bottom, #2563EB, #F59E0B);
             left: 50%;
             transform: translateX(-50%);
         }
@@ -103,159 +201,769 @@
                 left: 30px;
             }
         }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #2563EB, #F59E0B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .feature-card {
+            transition: all 0.4s ease;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        
+        .dark-mode .feature-card {
+            border-color: rgba(30, 41, 59, 0.5);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
+            border-color: rgba(37, 99, 235, 0.2);
+        }
+        
+        .audience-card {
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .audience-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #2563EB, #F59E0B);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+        
+        .audience-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .audience-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .bg-shape-1 {
+            position: absolute;
+            top: 10%;
+            right: 5%;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(245, 158, 11, 0.1));
+            filter: blur(60px);
+            z-index: 0;
+        }
+        
+        .bg-shape-2 {
+            position: absolute;
+            bottom: 10%;
+            left: 5%;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(37, 99, 235, 0.1));
+            filter: blur(60px);
+            z-index: 0;
+        }
+        
+        @keyframes particle-float {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(10px, -10px); }
+            50% { transform: translate(5px, 5px); }
+            75% { transform: translate(-10px, 10px); }
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(37, 99, 235, 0.1);
+            animation: particle-float 15s infinite linear;
+        }
+        
+        .demo-mockup {
+            transition: all 0.5s ease;
+            transform-style: preserve-3d;
+        }
+        
+        .demo-mockup:hover {
+            transform: perspective(1000px) rotateY(10deg) rotateX(5deg) translateY(-10px);
+            box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .dark-mode .glass {
+            background: rgba(15, 23, 42, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .magnetic-btn {
+            transition: transform 0.3s ease;
+        }
+        
+        .magnetic-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .liquid-btn {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .liquid-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+        
+        .liquid-btn:hover::before {
+            transform: translateX(100%);
+        }
+        
+        .page-transition {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: pageFadeIn 0.8s ease forwards;
+        }
+        
+        @keyframes pageFadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        #custom-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(37, 99, 235, 0.5);
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: transform 0.2s ease;
+        }
+        
+        .cursor-follower {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid rgba(37, 99, 235, 0.3);
+            pointer-events: none;
+            z-index: 9998;
+            transition: all 0.3s ease;
+        }
+        
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(to right, #2563EB, #F59E0B);
+            z-index: 10000;
+            transition: width 0.3s ease;
+        }
+        
+        #reading-progress {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 200px;
+            background: rgba(37, 99, 235, 0.2);
+            border-radius: 10px;
+            z-index: 10000;
+        }
+        
+        #reading-progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            background: linear-gradient(to bottom, #2563EB, #F59E0B);
+            border-radius: 10px;
+            transition: height 0.3s ease;
+        }
+        
+        .dark-mode-toggle {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            background: #CBD5E1;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .dark-mode .dark-mode-toggle {
+            background: #475569;
+        }
+        
+        .dark-mode-toggle::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+        
+        .dark-mode .dark-mode-toggle::after {
+            transform: translateX(30px);
+        }
+        
+        .morphing-shape {
+            animation: morph 8s ease-in-out infinite;
+            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+        }
+        
+        @keyframes morph {
+            0% {
+                border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+            }
+            50% {
+                border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+            }
+            100% {
+                border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+            }
+        }
+        
+        .swipe-container {
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        .swipe-container::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .swipe-card {
+            scroll-snap-align: start;
+            flex: 0 0 auto;
+        }
+        
+        .pull-to-refresh {
+            position: fixed;
+            top: -60px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: top 0.3s ease;
+            z-index: 10001;
+        }
+        
+        .pull-to-refresh.active {
+            top: 10px;
+        }
+        
+        .refresh-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(37, 99, 235, 0.3);
+            border-top: 3px solid #2563EB;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .kinetic-text {
+            background: linear-gradient(90deg, #2563EB, #F59E0B, #2563EB);
+            background-size: 200% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 3s linear infinite;
+        }
+        
+        @keyframes shine {
+            to {
+                background-position: 200% center;
+            }
+        }
+        
+        .isometric-box {
+            transform: rotateX(60deg) rotateY(0deg) rotateZ(-45deg);
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+        }
+        
+        .isometric-box:hover {
+            transform: rotateX(60deg) rotateY(10deg) rotateZ(-45deg);
+        }
+        
+        .card-3d {
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+        }
+        
+        .card-3d:hover {
+            transform: rotateY(10deg) rotateX(5deg);
+        }
+        
+        .accessibility-highlight {
+            outline: 2px solid transparent;
+            transition: outline 0.3s ease;
+        }
+        
+        .accessibility-highlight:focus {
+            outline: 2px solid #2563EB;
+        }
+        
+        .loading-dots {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+        
+        .loading-dots div {
+            position: absolute;
+            top: 33px;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            background: #2563EB;
+            animation-timing-function: cubic-bezier(0, 1, 1, 0);
+        }
+        
+        .loading-dots div:nth-child(1) {
+            left: 8px;
+            animation: loading-dots1 0.6s infinite;
+        }
+        
+        .loading-dots div:nth-child(2) {
+            left: 8px;
+            animation: loading-dots2 0.6s infinite;
+        }
+        
+        .loading-dots div:nth-child(3) {
+            left: 32px;
+            animation: loading-dots2 0.6s infinite;
+        }
+        
+        .loading-dots div:nth-child(4) {
+            left: 56px;
+            animation: loading-dots3 0.6s infinite;
+        }
+        
+        @keyframes loading-dots1 {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes loading-dots3 {
+            0% { transform: scale(1); }
+            100% { transform: scale(0); }
+        }
+        
+        @keyframes loading-dots2 {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(24px, 0); }
+        }
+        
+        .content-preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #F8FAFC;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10002;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        
+        .dark-mode .content-preloader {
+            background: #0F172A;
+        }
+        
+        .content-preloader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .swipe-hint {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            color: #64748B;
+            font-size: 14px;
+            opacity: 0.7;
+            animation: pulse 2s infinite;
+        }
+        
+        .swipe-hint i {
+            margin: 0 5px;
+        }
+        
+        .contextual-help {
+            position: absolute;
+            background: #1E293B;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        
+        .contextual-help.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .state-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #10B981;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .state-indicator.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Parallax background for CTA */
+        .parallax-cta {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.9), rgba(245, 158, 11, 0.8)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="%23ffffff" fill-opacity="0.1" points="0,1000 1000,0 1000,1000"/></svg>');
+            background-attachment: fixed;
+            background-size: cover;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800">
+    <!-- Content Preloader -->
+    <div class="content-preloader" id="contentPreloader">
+        <div class="loading-dots">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+    <!-- Custom Cursor -->
+    <div id="custom-cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <!-- Scroll Progress Indicator -->
+    <div id="scroll-progress"></div>
+
+    <!-- Reading Progress Indicator -->
+    <div id="reading-progress">
+        <div id="reading-progress-bar"></div>
+    </div>
+
+    <!-- Pull to Refresh -->
+    <div class="pull-to-refresh" id="pullToRefresh">
+        <div class="refresh-spinner"></div>
+    </div>
+
+    <!-- State Preservation Indicator -->
+    <div class="state-indicator" id="stateIndicator">
+        <i class="fas fa-save mr-1"></i> Progress saved
+    </div>
+
+    <!-- Background Shapes -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="bg-shape-1"></div>
+        <div class="bg-shape-2"></div>
+        
+        <!-- Particles -->
+        <div class="particle w-4 h-4 top-1/4 left-1/4" style="animation-delay: 0s;"></div>
+        <div class="particle w-6 h-6 top-1/3 right-1/4" style="animation-delay: 2s;"></div>
+        <div class="particle w-3 h-3 bottom-1/4 left-1/3" style="animation-delay: 4s;"></div>
+        <div class="particle w-5 h-5 bottom-1/3 right-1/3" style="animation-delay: 6s;"></div>
+
+        <!-- Morphing Shapes -->
+        <div class="morphing-shape absolute top-20 left-10 w-40 h-40 bg-blue-100 opacity-30"></div>
+        <div class="morphing-shape absolute bottom-40 right-20 w-32 h-32 bg-amber-100 opacity-40"></div>
+    </div>
+
     <!-- Navigation -->
-    <nav id="navbar" class="fixed w-full bg-white z-50 transition-all duration-300">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-robot text-white text-xl"></i>
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-500 py-4">
+        <div class="container-custom">
+            <div class="flex justify-between items-center bg-white/90 backdrop-blur-md rounded-2xl px-6 py-3 shadow-sm dark:bg-slate-900/90">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-gradient-to-r from-blue-600 to-amber-500 rounded-xl flex items-center justify-center shadow-md pulse">
+                        <i class="fas fa-robot text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-black text-slate-800 dark:text-white">MentoraX</span>
+                        <!-- <span class="text-xs bg-gradient-to-r from-blue-600 to-amber-500 text-white px-2 py-1 rounded-full ml-2 font-bold">2.0</span> -->
+                    </div>
                 </div>
-                <span class="text-xl font-bold text-blue-600">Mentorax</span>
-                <span class="text-xs bg-amber-500 text-white px-2 py-1 rounded-full">2.0</span>
-            </div>
-            
-            <div class="hidden md:flex space-x-8">
-                <a href="#features" class="text-slate-600 hover:text-blue-600 transition-colors">Features</a>
-                <a href="#how-it-works" class="text-slate-600 hover:text-blue-600 transition-colors">How It Works</a>
-                <a href="#audience" class="text-slate-600 hover:text-blue-600 transition-colors">For You</a>
-                <a href="#faq" class="text-slate-600 hover:text-blue-600 transition-colors">FAQ</a>
-            </div>
-            
-            <div class="flex items-center space-x-4">
-                <button class="text-slate-600 hover:text-blue-600 transition-colors">Login</button>
-                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">Get Started</button>
-                <button id="mobile-menu-btn" class="md:hidden text-slate-600">
-                    <i class="fas fa-bars text-xl"></i>
-                </button>
+                
+                <div class="hidden lg:flex space-x-10">
+                    <a href="#features" class="text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors font-medium relative group accessibility-highlight">
+                        Features
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#how-it-works" class="text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors font-medium relative group accessibility-highlight">
+                        How It Works
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#audience" class="text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors font-medium relative group accessibility-highlight">
+                        For You
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#faq" class="text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors font-medium relative group accessibility-highlight">
+                        FAQ
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <!-- Dark Mode Toggle -->
+                    <div class="flex items-center space-x-4">
+                        <!-- Dark Mode Toggle removed -->
+                        <!-- Optional: keep a hidden placeholder so JS won't break -->
+                        <div id="darkModeToggle" style="display: none;"></div>
+                    </div>                    
+                    <a href="auth.html"><button class="hidden md:block text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors font-medium accessibility-highlight">Login/Signup</button></a>
+                    <button class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-5 py-2.5 rounded-xl font-medium hover:shadow-lg transition-all duration-300 glow-on-hover magnetic-btn liquid-btn accessibility-highlight">
+                        Get Started
+                    </button>
+                    <button id="mobile-menu-btn" class="lg:hidden text-slate-600 dark:text-slate-300">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
             </div>
         </div>
         
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="md:hidden bg-white px-4 py-2 hidden">
-            <a href="#features" class="block py-2 text-slate-600 hover:text-blue-600">Features</a>
-            <a href="#how-it-works" class="block py-2 text-slate-600 hover:text-blue-600">How It Works</a>
-            <a href="#audience" class="block py-2 text-slate-600 hover:text-blue-600">For You</a>
-            <a href="#faq" class="block py-2 text-slate-600 hover:text-blue-600">FAQ</a>
+        <div id="mobile-menu" class="lg:hidden bg-white/95 backdrop-blur-md mt-2 rounded-2xl mx-4 shadow-lg hidden transition-all duration-300 dark:bg-slate-900/95">
+            <div class="px-6 py-4 space-y-4">
+                <a href="#features" class="block py-2 text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors font-medium accessibility-highlight">Features</a>
+                <a href="#how-it-works" class="block py-2 text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors font-medium accessibility-highlight">How It Works</a>
+                <a href="#audience" class="block py-2 text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors font-medium accessibility-highlight">For You</a>
+                <a href="#faq" class="block py-2 text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors font-medium accessibility-highlight">FAQ</a>
+                <div class="pt-2 border-t border-slate-100 dark:border-slate-800">
+                    <button class="w-full text-center py-2 text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors font-medium accessibility-highlight">Login</button>
+                </div>
+            </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="pt-24 pb-16 md:pt-32 md:pb-24 bg-gradient-to-br from-blue-50 to-slate-100">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row items-center">
-                <div class="md:w-1/2 mb-10 md:mb-0 fade-in">
-                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-800 mb-4">
-                        Your AI-Powered <span class="text-blue-600">Career</span> Companion
+    <section class="pt-28 pb-20 md:pt-36 md:pb-28 bg-gradient-to-br from-blue-50 via-white to-slate-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 relative overflow-hidden page-transition">
+        <div class="container-custom relative z-10">
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 mb-12 lg:mb-0 fade-in">
+                    <div class="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm font-medium mb-6">
+                        <i class="fas fa-rocket mr-2"></i> AI-Powered Career Guidance
+                    </div>
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-slate-800 dark:text-white mb-6 leading-tight kinetic-text">
+                        Your AI <span class="gradient-text">Career</span> Companion
                     </h1>
-                    <p class="text-lg md:text-xl text-slate-600 mb-8">
-                        Mentorax 2.0 uses advanced AI to provide personalized career guidance, connect you with mentors, and help you achieve your professional goals.
+                    <p class="text-lg md:text-xl text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
+                        MentoraX uses advanced AI to provide personalized career guidance, connect you with mentors, and help you achieve your professional goals faster than ever before.
                     </p>
                     <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                        <button class="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors glow-on-hover">
-                            Start Free Trial
+                        <button class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-7 py-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 glow-on-hover magnetic-btn liquid-btn flex items-center justify-center accessibility-highlight">
+                            <span>Start Free Trial</span>
+                            <i class="fas fa-arrow-right ml-2"></i>
                         </button>
-                        <button class="border border-blue-600 text-blue-600 px-6 py-3 rounded-lg font-medium hover:bg-blue-50 transition-colors">
+                        <button class="border-2 border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400 px-7 py-4 rounded-xl font-semibold hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-300 flex items-center justify-center magnetic-btn accessibility-highlight">
                             <i class="fas fa-play-circle mr-2"></i> Watch Demo
                         </button>
                     </div>
+                    <div class="flex items-center mt-8 space-x-6 text-sm text-slate-500 dark:text-slate-400">
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                            <span>No credit card required</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                            <span>14-day free trial</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="md:w-1/2 flex justify-center zoom-in">
-                    <div class="relative w-full max-w-md">
-                        <div class="bg-white rounded-2xl shadow-xl p-6 transform rotate-3">
-                            <div class="bg-gradient-to-r from-blue-500 to-amber-500 h-48 rounded-lg mb-4 flex items-center justify-center">
-                                <i class="fas fa-brain text-white text-6xl"></i>
+                <div class="lg:w-1/2 flex justify-center zoom-in">
+                    <div class="relative w-full max-w-lg floating">
+                        <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl p-8 transform rotate-3 border border-slate-100 dark:border-slate-700 demo-mockup card-3d">
+                            <div class="bg-gradient-to-r from-blue-500 to-amber-500 h-56 rounded-2xl mb-6 flex items-center justify-center relative overflow-hidden">
+                                <i class="fas fa-brain text-white text-7xl z-10"></i>
+                                <div class="absolute inset-0 bg-black/10"></div>
                             </div>
-                            <div class="space-y-3">
-                                <div class="h-4 bg-slate-200 rounded w-3/4"></div>
-                                <div class="h-4 bg-slate-200 rounded w-1/2"></div>
-                                <div class="h-4 bg-slate-200 rounded w-5/6"></div>
+                            <div class="space-y-4">
+                                <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded-full w-3/4"></div>
+                                <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded-full w-1/2"></div>
+                                <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded-full w-5/6"></div>
                             </div>
                         </div>
-                        <div class="absolute -bottom-6 -right-6 bg-amber-500 rounded-2xl shadow-xl p-6 w-3/4 transform -rotate-3">
-                            <div class="flex items-center space-x-3 mb-3">
-                                <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-                                    <i class="fas fa-user-graduate text-amber-500"></i>
+                        <div class="absolute -bottom-6 -right-6 bg-gradient-to-r from-amber-500 to-amber-600 rounded-2xl shadow-2xl p-6 w-3/4 transform -rotate-3 border border-amber-400 card-3d">
+                            <div class="flex items-center space-x-4 mb-4">
+                                <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-md">
+                                    <i class="fas fa-user-graduate text-amber-500 text-xl"></i>
                                 </div>
                                 <div>
-                                    <div class="h-3 bg-white rounded w-24 mb-1"></div>
-                                    <div class="h-2 bg-white rounded w-16"></div>
+                                    <div class="h-3 bg-white/90 rounded-full w-28 mb-2"></div>
+                                    <div class="h-2 bg-white/80 rounded-full w-20"></div>
                                 </div>
                             </div>
-                            <div class="h-3 bg-white rounded w-full mb-2"></div>
-                            <div class="h-3 bg-white rounded w-5/6"></div>
+                            <div class="h-3 bg-white/90 rounded-full w-full mb-2"></div>
+                            <div class="h-3 bg-white/80 rounded-full w-5/6"></div>
+                        </div>
+                        
+                        <!-- Floating elements -->
+                        <div class="absolute -top-4 -left-4 w-20 h-20 bg-blue-100 dark:bg-blue-900/40 rounded-2xl flex items-center justify-center shadow-lg isometric-box">
+                            <i class="fas fa-chart-line text-blue-600 dark:text-blue-400 text-2xl"></i>
+                        </div>
+                        <div class="absolute -bottom-4 left-10 w-16 h-16 bg-amber-100 dark:bg-amber-900/40 rounded-2xl flex items-center justify-center shadow-lg isometric-box">
+                            <i class="fas fa-award text-amber-600 dark:text-amber-400 text-xl"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Swipe Hint for Mobile -->
+        <div class="swipe-hint lg:hidden">
+            <i class="fas fa-chevron-left"></i>
+            <span>Swipe to explore</span>
+            <i class="fas fa-chevron-right"></i>
+        </div>
     </section>
 
     <!-- Problem & Solution Section -->
-    <section class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row items-center">
-                <div class="md:w-1/2 mb-10 md:mb-0 slide-in-left">
-                    <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-6">
-                        The Career Guidance <span class="text-blue-600">Problem</span>
+    <section class="py-20 bg-white dark:bg-slate-800 relative overflow-hidden">
+        <div class="container-custom">
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 mb-14 lg:mb-0 slide-in-left">
+                    <h2 class="text-3xl md:text-4xl font-black text-slate-800 dark:text-white mb-6">
+                        The Career Guidance <span class="gradient-text">Problem</span>
                     </h2>
-                    <p class="text-slate-600 mb-6">
+                    <p class="text-slate-600 dark:text-slate-300 mb-8 text-lg leading-relaxed">
                         Traditional career guidance is often generic, inaccessible, and fails to account for individual strengths, market trends, and personal aspirations.
                     </p>
-                    <ul class="space-y-4 mb-8">
+                    <ul class="space-y-5 mb-10">
                         <li class="flex items-start">
-                            <i class="fas fa-times-circle text-red-500 mt-1 mr-3"></i>
-                            <span class="text-slate-600">One-size-fits-all advice that doesn't match your unique profile</span>
+                            <div class="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
+                                <i class="fas fa-times-circle text-red-500 text-lg"></i>
+                            </div>
+                            <span class="text-slate-600 dark:text-slate-300 text-lg pt-1">One-size-fits-all advice that doesn't match your unique profile</span>
                         </li>
                         <li class="flex items-start">
-                            <i class="fas fa-times-circle text-red-500 mt-1 mr-3"></i>
-                            <span class="text-slate-600">Limited access to experienced mentors in your field</span>
+                            <div class="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
+                                <i class="fas fa-times-circle text-red-500 text-lg"></i>
+                            </div>
+                            <span class="text-slate-600 dark:text-slate-300 text-lg pt-1">Limited access to experienced mentors in your field</span>
                         </li>
                         <li class="flex items-start">
-                            <i class="fas fa-times-circle text-red-500 mt-1 mr-3"></i>
-                            <span class="text-slate-600">Outdated information that doesn't reflect current job markets</span>
+                            <div class="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
+                                <i class="fas fa-times-circle text-red-500 text-lg"></i>
+                            </div>
+                            <span class="text-slate-600 dark:text-slate-300 text-lg pt-1">Outdated information that doesn't reflect current job markets</span>
                         </li>
                     </ul>
-                    <h3 class="text-2xl font-bold text-slate-800 mb-4">
-                        Our <span class="text-amber-500">AI-Powered Solution</span>
+                    <h3 class="text-2xl md:text-3xl font-black text-slate-800 dark:text-white mb-5">
+                        Our <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-amber-600">AI-Powered Solution</span>
                     </h3>
-                    <p class="text-slate-600">
-                        Mentorax 2.0 combines artificial intelligence with human expertise to deliver personalized, data-driven career guidance that evolves with you.
+                    <p class="text-slate-600 dark:text-slate-300 text-lg leading-relaxed">
+                        MentoraX combines artificial intelligence with human expertise to deliver personalized, data-driven career guidance that evolves with you.
                     </p>
                 </div>
-                <div class="md:w-1/2 flex justify-center slide-in-right">
+                <div class="lg:w-1/2 flex justify-center slide-in-right">
                     <div class="relative w-full max-w-md">
-                        <div class="bg-gradient-to-br from-blue-600 to-amber-500 rounded-2xl p-1">
-                            <div class="bg-white rounded-xl p-8">
+                        <div class="bg-gradient-to-br from-blue-600 to-amber-500 rounded-3xl p-1.5 shadow-xl">
+                            <div class="bg-white dark:bg-slate-800 rounded-2xl p-8">
                                 <div class="flex justify-center mb-6">
-                                    <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center">
-                                        <i class="fas fa-robot text-blue-600 text-3xl"></i>
+                                    <div class="w-24 h-24 bg-gradient-to-r from-blue-100 to-amber-100 dark:from-blue-900/30 dark:to-amber-900/30 rounded-full flex items-center justify-center shadow-inner">
+                                        <i class="fas fa-robot text-4xl bg-gradient-to-r from-blue-600 to-amber-500 bg-clip-text text-transparent"></i>
                                     </div>
                                 </div>
-                                <h4 class="text-xl font-bold text-center text-slate-800 mb-4">AI Career Analysis</h4>
-                                <div class="space-y-4">
+                                <h4 class="text-2xl font-black text-center text-slate-800 dark:text-white mb-6">AI Career Analysis</h4>
+                                <div class="space-y-5">
                                     <div class="flex items-center">
-                                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                                            <i class="fas fa-check text-green-600"></i>
+                                        <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center mr-4 shadow-sm">
+                                            <i class="fas fa-check text-green-600 text-lg"></i>
                                         </div>
-                                        <span class="text-slate-600">Personalized career path recommendations</span>
+                                        <span class="text-slate-600 dark:text-slate-300 text-lg">Personalized career path recommendations</span>
                                     </div>
                                     <div class="flex items-center">
-                                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                                            <i class="fas fa-check text-green-600"></i>
+                                        <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center mr-4 shadow-sm">
+                                            <i class="fas fa-check text-green-600 text-lg"></i>
                                         </div>
-                                        <span class="text-slate-600">Skill gap analysis and learning plans</span>
+                                        <span class="text-slate-600 dark:text-slate-300 text-lg">Skill gap analysis and learning plans</span>
                                     </div>
                                     <div class="flex items-center">
-                                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                                            <i class="fas fa-check text-green-600"></i>
+                                        <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center mr-4 shadow-sm">
+                                            <i class="fas fa-check text-green-600 text-lg"></i>
                                         </div>
-                                        <span class="text-slate-600">Matching with relevant industry mentors</span>
+                                        <span class="text-slate-600 dark:text-slate-300 text-lg">Matching with relevant industry mentors</span>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        
+                        <!-- Floating elements -->
+                        <div class="absolute -top-6 -left-6 w-16 h-16 bg-blue-100 dark:bg-blue-900/40 rounded-2xl flex items-center justify-center shadow-lg isometric-box">
+                            <i class="fas fa-lightbulb text-blue-600 dark:text-blue-400 text-xl"></i>
+                        </div>
+                        <div class="absolute -bottom-6 -right-6 w-14 h-14 bg-amber-100 dark:bg-amber-900/40 rounded-2xl flex items-center justify-center shadow-lg isometric-box">
+                            <i class="fas fa-bolt text-amber-600 dark:text-amber-400 text-lg"></i>
                         </div>
                     </div>
                 </div>
@@ -264,80 +972,80 @@
     </section>
 
     <!-- Key Features Section -->
-    <section id="features" class="py-16 bg-slate-50">
-        <div class="container mx-auto px-4">
+    <section id="features" class="py-20 bg-slate-50 dark:bg-slate-900 relative overflow-hidden">
+        <div class="container-custom">
             <div class="text-center mb-16 fade-in">
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
-                    Powerful <span class="text-blue-600">Features</span>
+                <h2 class="text-3xl md:text-4xl font-black text-slate-800 dark:text-white mb-4">
+                    Powerful <span class="gradient-text">Features</span>
                 </h2>
-                <p class="text-xl text-slate-600 max-w-2xl mx-auto">
-                    Discover how Mentorax 2.0 uses cutting-edge AI to transform your career journey
+                <p class="text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
+                    Discover how MentoraX uses cutting-edge AI to transform your career journey
                 </p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Feature 1 -->
-                <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300 zoom-in">
-                    <div class="w-14 h-14 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                        <i class="fas fa-user-check text-blue-600 text-2xl"></i>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-md p-8 feature-card stagger-item">
+                    <div class="w-16 h-16 bg-gradient-to-r from-blue-100 to-blue-200 dark:from-blue-900/30 dark:to-blue-800/30 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
+                        <i class="fas fa-user-check text-blue-600 dark:text-blue-400 text-2xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-800 mb-3">Personalized Career Paths</h3>
-                    <p class="text-slate-600">
+                    <h3 class="text-xl font-black text-slate-800 dark:text-white mb-4">Personalized Career Paths</h3>
+                    <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
                         AI algorithms analyze your skills, interests, and goals to recommend customized career trajectories.
                     </p>
                 </div>
                 
                 <!-- Feature 2 -->
-                <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300 zoom-in">
-                    <div class="w-14 h-14 bg-amber-100 rounded-lg flex items-center justify-center mb-4">
-                        <i class="fas fa-chart-line text-amber-600 text-2xl"></i>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-md p-8 feature-card stagger-item">
+                    <div class="w-16 h-16 bg-gradient-to-r from-amber-100 to-amber-200 dark:from-amber-900/30 dark:to-amber-800/30 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
+                        <i class="fas fa-chart-line text-amber-600 dark:text-amber-400 text-2xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-800 mb-3">Skill Gap Analysis</h3>
-                    <p class="text-slate-600">
+                    <h3 class="text-xl font-black text-slate-800 dark:text-white mb-4">Skill Gap Analysis</h3>
+                    <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
                         Identify missing competencies and receive tailored learning recommendations to bridge the gaps.
                     </p>
                 </div>
                 
                 <!-- Feature 3 -->
-                <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300 zoom-in">
-                    <div class="w-14 h-14 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                        <i class="fas fa-handshake text-blue-600 text-2xl"></i>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-md p-8 feature-card stagger-item">
+                    <div class="w-16 h-16 bg-gradient-to-r from-blue-100 to-blue-200 dark:from-blue-900/30 dark:to-blue-800/30 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
+                        <i class="fas fa-handshake text-blue-600 dark:text-blue-400 text-2xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-800 mb-3">Smart Mentor Matching</h3>
-                    <p class="text-slate-600">
+                    <h3 class="text-xl font-black text-slate-800 dark:text-white mb-4">Smart Mentor Matching</h3>
+                    <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
                         Connect with ideal mentors based on compatibility scores and shared professional interests.
                     </p>
                 </div>
                 
                 <!-- Feature 4 -->
-                <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300 zoom-in">
-                    <div class="w-14 h-14 bg-amber-100 rounded-lg flex items-center justify-center mb-4">
-                        <i class="fas fa-briefcase text-amber-600 text-2xl"></i>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-md p-8 feature-card stagger-item">
+                    <div class="w-16 h-16 bg-gradient-to-r from-amber-100 to-amber-200 dark:from-amber-900/30 dark:to-amber-800/30 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
+                        <i class="fas fa-briefcase text-amber-600 dark:text-amber-400 text-2xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-800 mb-3">Job Market Insights</h3>
-                    <p class="text-slate-600">
+                    <h3 class="text-xl font-black text-slate-800 dark:text-white mb-4">Job Market Insights</h3>
+                    <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
                         Real-time data on industry trends, salary benchmarks, and in-demand skills.
                     </p>
                 </div>
                 
                 <!-- Feature 5 -->
-                <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300 zoom-in">
-                    <div class="w-14 h-14 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                        <i class="fas fa-file-alt text-blue-600 text-2xl"></i>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-md p-8 feature-card stagger-item">
+                    <div class="w-16 h-16 bg-gradient-to-r from-blue-100 to-blue-200 dark:from-blue-900/30 dark:to-blue-800/30 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
+                        <i class="fas fa-file-alt text-blue-600 dark:text-blue-400 text-2xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-800 mb-3">Resume Optimization</h3>
-                    <p class="text-slate-600">
+                    <h3 class="text-xl font-black text-slate-800 dark:text-white mb-4">Resume Optimization</h3>
+                    <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
                         AI-powered tools to enhance your resume with keywords and formatting that appeal to recruiters.
                     </p>
                 </div>
                 
                 <!-- Feature 6 -->
-                <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300 zoom-in">
-                    <div class="w-14 h-14 bg-amber-100 rounded-lg flex items-center justify-center mb-4">
-                        <i class="fas fa-video text-amber-600 text-2xl"></i>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-md p-8 feature-card stagger-item">
+                    <div class="w-16 h-16 bg-gradient-to-r from-amber-100 to-amber-200 dark:from-amber-900/30 dark:to-amber-800/30 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
+                        <i class="fas fa-video text-amber-600 dark:text-amber-400 text-2xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-800 mb-3">Mock Interview Simulator</h3>
-                    <p class="text-slate-600">
+                    <h3 class="text-xl font-black text-slate-800 dark:text-white mb-4">Mock Interview Simulator</h3>
+                    <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
                         Practice interviews with AI that provides feedback on your responses and communication style.
                     </p>
                 </div>
@@ -346,13 +1054,13 @@
     </section>
 
     <!-- How It Works Section -->
-    <section id="how-it-works" class="py-16 bg-white">
-        <div class="container mx-auto px-4">
+    <section id="how-it-works" class="py-20 bg-white dark:bg-slate-800 relative overflow-hidden">
+        <div class="container-custom">
             <div class="text-center mb-16 fade-in">
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
-                    How <span class="text-blue-600">Mentorax</span> Works
+                <h2 class="text-3xl md:text-4xl font-black text-slate-800 dark:text-white mb-4">
+                    How <span class="gradient-text">MentoraX</span> Works
                 </h2>
-                <p class="text-xl text-slate-600 max-w-2xl mx-auto">
+                <p class="text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
                     Get started with our simple 4-step process to unlock your career potential
                 </p>
             </div>
@@ -360,52 +1068,52 @@
             <div class="relative step-timeline">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
                     <!-- Step 1 -->
-                    <div class="flex flex-col md:flex-row items-center slide-in-left">
-                        <div class="flex-shrink-0 w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl mb-4 md:mb-0 md:mr-6 z-10">
+                    <div class="flex flex-col md:flex-row items-center stagger-item">
+                        <div class="flex-shrink-0 w-20 h-20 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center text-white font-black text-2xl mb-4 md:mb-0 md:mr-8 z-10 shadow-lg">
                             1
                         </div>
-                        <div class="bg-slate-50 rounded-xl p-6 text-center md:text-left">
-                            <h3 class="text-xl font-bold text-slate-800 mb-2">Create Your Profile</h3>
-                            <p class="text-slate-600">
+                        <div class="bg-slate-50 dark:bg-slate-700 rounded-2xl p-8 text-center md:text-left border border-slate-100 dark:border-slate-600 shadow-sm hover:shadow-md transition-shadow duration-300">
+                            <h3 class="text-xl font-black text-slate-800 dark:text-white mb-3">Create Your Profile</h3>
+                            <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
                                 Share your skills, interests, career goals, and background to help our AI understand your unique profile.
                             </p>
                         </div>
                     </div>
                     
                     <!-- Step 2 -->
-                    <div class="flex flex-col md:flex-row items-center slide-in-right">
-                        <div class="flex-shrink-0 w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl mb-4 md:mb-0 md:mr-6 z-10 order-2 md:order-1">
+                    <div class="flex flex-col md:flex-row items-center stagger-item">
+                        <div class="flex-shrink-0 w-20 h-20 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center text-white font-black text-2xl mb-4 md:mb-0 md:mr-8 z-10 shadow-lg order-2 md:order-1">
                             2
                         </div>
-                        <div class="bg-slate-50 rounded-xl p-6 text-center md:text-left order-1 md:order-2">
-                            <h3 class="text-xl font-bold text-slate-800 mb-2">Get AI Analysis</h3>
-                            <p class="text-slate-600">
+                        <div class="bg-slate-50 dark:bg-slate-700 rounded-2xl p-8 text-center md:text-left border border-slate-100 dark:border-slate-600 shadow-sm hover:shadow-md transition-shadow duration-300 order-1 md:order-2">
+                            <h3 class="text-xl font-black text-slate-800 dark:text-white mb-3">Get AI Analysis</h3>
+                            <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
                                 Our AI analyzes your profile against market data to identify ideal career paths and skill gaps.
                             </p>
                         </div>
                     </div>
                     
                     <!-- Step 3 -->
-                    <div class="flex flex-col md:flex-row items-center slide-in-left">
-                        <div class="flex-shrink-0 w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl mb-4 md:mb-0 md:mr-6 z-10">
+                    <div class="flex flex-col md:flex-row items-center stagger-item">
+                        <div class="flex-shrink-0 w-20 h-20 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center text-white font-black text-2xl mb-4 md:mb-0 md:mr-8 z-10 shadow-lg">
                             3
                         </div>
-                        <div class="bg-slate-50 rounded-xl p-6 text-center md:text-left">
-                            <h3 class="text-xl font-bold text-slate-800 mb-2">Connect with Mentors</h3>
-                            <p class="text-slate-600">
+                        <div class="bg-slate-50 dark:bg-slate-700 rounded-2xl p-8 text-center md:text-left border border-slate-100 dark:border-slate-600 shadow-sm hover:shadow-md transition-shadow duration-300">
+                            <h3 class="text-xl font-black text-slate-800 dark:text-white mb-3">Connect with Mentors</h3>
+                            <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
                                 Get matched with vetted mentors in your target industries for personalized guidance.
                             </p>
                         </div>
                     </div>
                     
                     <!-- Step 4 -->
-                    <div class="flex flex-col md:flex-row items-center slide-in-right">
-                        <div class="flex-shrink-0 w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl mb-4 md:mb-0 md:mr-6 z-10 order-2 md:order-1">
+                    <div class="flex flex-col md:flex-row items-center stagger-item">
+                        <div class="flex-shrink-0 w-20 h-20 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center text-white font-black text-2xl mb-4 md:mb-0 md:mr-8 z-10 shadow-lg order-2 md:order-1">
                             4
                         </div>
-                        <div class="bg-slate-50 rounded-xl p-6 text-center md:text-left order-1 md:order-2">
-                            <h3 class="text-xl font-bold text-slate-800 mb-2">Track Your Progress</h3>
-                            <p class="text-slate-600">
+                        <div class="bg-slate-50 dark:bg-slate-700 rounded-2xl p-8 text-center md:text-left border border-slate-100 dark:border-slate-600 shadow-sm hover:shadow-md transition-shadow duration-300 order-1 md:order-2">
+                            <h3 class="text-xl font-black text-slate-800 dark:text-white mb-3">Track Your Progress</h3>
+                            <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
                                 Monitor your career development with our progress dashboard and adjust your plan as needed.
                             </p>
                         </div>
@@ -416,128 +1124,155 @@
     </section>
 
     <!-- Audience Section -->
-    <section id="audience" class="py-16 bg-slate-50">
-        <div class="container mx-auto px-4">
+    <section id="audience" class="py-20 bg-slate-50 dark:bg-slate-900 relative overflow-hidden">
+        <div class="container-custom">
             <div class="text-center mb-16 fade-in">
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
-                    Who Can Benefit from <span class="text-blue-600">Mentorax</span>
+                <h2 class="text-3xl md:text-4xl font-black text-slate-800 dark:text-white mb-4">
+                    Who Can Benefit from <span class="gradient-text">MentoraX</span>
                 </h2>
-                <p class="text-xl text-slate-600 max-w-2xl mx-auto">
+                <p class="text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
                     Our platform is designed for everyone looking to advance their career journey
                 </p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Student Card -->
-                <div class="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-2 zoom-in">
-                    <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-user-graduate text-blue-600 text-3xl"></i>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-md p-8 text-center audience-card stagger-item">
+                    <div class="w-24 h-24 bg-gradient-to-r from-blue-100 to-blue-200 dark:from-blue-900/30 dark:to-blue-800/30 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm">
+                        <i class="fas fa-user-graduate text-blue-600 dark:text-blue-400 text-3xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-800 mb-3">Students</h3>
-                    <p class="text-slate-600 mb-4">
+                    <h3 class="text-xl font-black text-slate-800 dark:text-white mb-4">Students</h3>
+                    <p class="text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">
                         Discover career paths, build skills, and connect with mentors in your field of interest.
                     </p>
-                    <div class="text-blue-600 font-medium">Learn More →</div>
+                    <div class="text-blue-600 dark:text-blue-400 font-semibold flex items-center justify-center">
+                        <span>Learn More</span>
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </div>
                 </div>
                 
                 <!-- Mentor Card -->
-                <div class="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-2 zoom-in">
-                    <div class="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-chalkboard-teacher text-amber-600 text-3xl"></i>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-md p-8 text-center audience-card stagger-item">
+                    <div class="w-24 h-24 bg-gradient-to-r from-amber-100 to-amber-200 dark:from-amber-900/30 dark:to-amber-800/30 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm">
+                        <i class="fas fa-chalkboard-teacher text-amber-600 dark:text-amber-400 text-3xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-800 mb-3">Mentors</h3>
-                    <p class="text-slate-600 mb-4">
+                    <h3 class="text-xl font-black text-slate-800 dark:text-white mb-4">Mentors</h3>
+                    <p class="text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">
                         Share your expertise, give back to the community, and expand your professional network.
                     </p>
-                    <div class="text-blue-600 font-medium">Learn More →</div>
+                    <div class="text-blue-600 dark:text-blue-400 font-semibold flex items-center justify-center">
+                        <span>Learn More</span>
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </div>
                 </div>
                 
                 <!-- Placement Cell Card -->
-                <div class="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-2 zoom-in">
-                    <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-university text-blue-600 text-3xl"></i>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-md p-8 text-center audience-card stagger-item">
+                    <div class="w-24 h-24 bg-gradient-to-r from-blue-100 to-blue-200 dark:from-blue-900/30 dark:to-blue-800/30 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm">
+                        <i class="fas fa-university text-blue-600 dark:text-blue-400 text-3xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-800 mb-3">Placement Cells</h3>
-                    <p class="text-slate-600 mb-4">
+                    <h3 class="text-xl font-black text-slate-800 dark:text-white mb-4">Placement Cells</h3>
+                    <p class="text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">
                         Enhance your career services with AI-powered tools and expanded mentor networks.
                     </p>
-                    <div class="text-blue-600 font-medium">Learn More →</div>
+                    <div class="text-blue-600 dark:text-blue-400 font-semibold flex items-center justify-center">
+                        <span>Learn More</span>
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </div>
                 </div>
                 
                 <!-- Alumni Card -->
-                <div class="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-2 zoom-in">
-                    <div class="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-users text-amber-600 text-3xl"></i>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-md p-8 text-center audience-card stagger-item">
+                    <div class="w-24 h-24 bg-gradient-to-r from-amber-100 to-amber-200 dark:from-amber-900/30 dark:to-amber-800/30 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm">
+                        <i class="fas fa-users text-amber-600 dark:text-amber-400 text-3xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-800 mb-3">Alumni</h3>
-                    <p class="text-slate-600 mb-4">
+                    <h3 class="text-xl font-black text-slate-800 dark:text-white mb-4">Alumni</h3>
+                    <p class="text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">
                         Stay connected with your alma mater, mentor students, and advance your own career.
                     </p>
-                    <div class="text-blue-600 font-medium">Learn More →</div>
+                    <div class="text-blue-600 dark:text-blue-400 font-semibold flex items-center justify-center">
+                        <span>Learn More</span>
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Demo / Preview Section -->
-    <section class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row items-center">
-                <div class="md:w-1/2 mb-10 md:mb-0 slide-in-left">
-                    <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-6">
-                        See Mentorax <span class="text-blue-600">in Action</span>
+    <section class="py-20 bg-white dark:bg-slate-800 relative overflow-hidden">
+        <div class="container-custom">
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 mb-14 lg:mb-0 slide-in-left">
+                    <h2 class="text-3xl md:text-4xl font-black text-slate-800 dark:text-white mb-6">
+                        See MentoraX <span class="gradient-text">in Action</span>
                     </h2>
-                    <p class="text-slate-600 mb-6">
-                        Experience our platform through an interactive demo that showcases how Mentorax can transform your career journey.
+                    <p class="text-slate-600 dark:text-slate-300 mb-8 text-lg leading-relaxed">
+                        Experience our platform through an interactive demo that showcases how MentoraX can transform your career journey.
                     </p>
-                    <ul class="space-y-4 mb-8">
+                    <ul class="space-y-5 mb-10">
                         <li class="flex items-start">
-                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
-                            <span class="text-slate-600">Interactive career path explorer</span>
+                            <div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
+                                <i class="fas fa-check-circle text-green-500 text-lg"></i>
+                            </div>
+                            <span class="text-slate-600 dark:text-slate-300 text-lg pt-1">Interactive career path explorer</span>
                         </li>
                         <li class="flex items-start">
-                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
-                            <span class="text-slate-600">Live skill assessment dashboard</span>
+                            <div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
+                                <i class="fas fa-check-circle text-green-500 text-lg"></i>
+                            </div>
+                            <span class="text-slate-600 dark:text-slate-300 text-lg pt-1">Live skill assessment dashboard</span>
                         </li>
                         <li class="flex items-start">
-                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
-                            <span class="text-slate-600">Mentor matching simulation</span>
+                            <div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
+                                <i class="fas fa-check-circle text-green-500 text-lg"></i>
+                            </div>
+                            <span class="text-slate-600 dark:text-slate-300 text-lg pt-1">Mentor matching simulation</span>
                         </li>
                     </ul>
-                    <button class="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors">
-                        <i class="fas fa-play-circle mr-2"></i> Launch Interactive Demo
+                    <button class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-7 py-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 glow-on-hover magnetic-btn liquid-btn flex items-center accessibility-highlight">
+                        <i class="fas fa-play-circle mr-3 text-lg"></i> Launch Interactive Demo
                     </button>
                 </div>
-                <div class="md:w-1/2 flex justify-center slide-in-right">
+                <div class="lg:w-1/2 flex justify-center slide-in-right">
                     <div class="relative w-full max-w-lg">
-                        <div class="bg-gradient-to-br from-blue-600 to-amber-500 rounded-2xl p-1 transform hover:scale-105 transition-transform duration-300">
-                            <div class="bg-white rounded-xl p-2">
-                                <div class="bg-slate-800 rounded-lg p-4 flex items-center">
+                        <div class="bg-gradient-to-br from-blue-600 to-amber-500 rounded-3xl p-1.5 shadow-2xl transform hover:scale-105 transition-transform duration-500 demo-mockup card-3d">
+                            <div class="bg-white dark:bg-slate-800 rounded-2xl p-3">
+                                <div class="bg-slate-800 rounded-xl p-4 flex items-center">
                                     <div class="flex space-x-2">
                                         <div class="w-3 h-3 bg-red-500 rounded-full"></div>
                                         <div class="w-3 h-3 bg-amber-500 rounded-full"></div>
                                         <div class="w-3 h-3 bg-green-500 rounded-full"></div>
                                     </div>
-                                    <div class="flex-1 text-center text-slate-300 text-sm">
+                                    <div class="flex-1 text-center text-slate-300 text-sm font-medium">
                                         app.mentorax.com/demo
                                     </div>
                                 </div>
                                 <div class="p-4">
-                                    <div class="bg-gradient-to-r from-blue-500 to-amber-500 h-48 rounded-lg mb-4 flex items-center justify-center">
-                                        <i class="fas fa-laptop-code text-white text-6xl"></i>
+                                    <div class="bg-gradient-to-r from-blue-500 to-amber-500 h-56 rounded-xl mb-6 flex items-center justify-center relative overflow-hidden">
+                                        <i class="fas fa-laptop-code text-white text-7xl z-10"></i>
+                                        <div class="absolute inset-0 bg-black/10"></div>
                                     </div>
-                                    <div class="grid grid-cols-3 gap-4 mb-4">
-                                        <div class="h-3 bg-slate-200 rounded"></div>
-                                        <div class="h-3 bg-slate-200 rounded"></div>
-                                        <div class="h-3 bg-slate-200 rounded"></div>
+                                    <div class="grid grid-cols-3 gap-4 mb-6">
+                                        <div class="h-3 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
+                                        <div class="h-3 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
+                                        <div class="h-3 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
                                     </div>
-                                    <div class="space-y-3">
-                                        <div class="h-4 bg-slate-200 rounded w-full"></div>
-                                        <div class="h-4 bg-slate-200 rounded w-5/6"></div>
-                                        <div class="h-4 bg-slate-200 rounded w-4/6"></div>
+                                    <div class="space-y-4">
+                                        <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded-full w-full"></div>
+                                        <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded-full w-5/6"></div>
+                                        <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded-full w-4/6"></div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        
+                        <!-- Floating elements -->
+                        <div class="absolute -top-6 -left-6 w-20 h-20 bg-blue-100 dark:bg-blue-900/40 rounded-2xl flex items-center justify-center shadow-lg isometric-box">
+                            <i class="fas fa-magic text-blue-600 dark:text-blue-400 text-2xl"></i>
+                        </div>
+                        <div class="absolute -bottom-6 -right-6 w-16 h-16 bg-amber-100 dark:bg-amber-900/40 rounded-2xl flex items-center justify-center shadow-lg isometric-box">
+                            <i class="fas fa-star text-amber-600 dark:text-amber-400 text-xl"></i>
                         </div>
                     </div>
                 </div>
@@ -546,85 +1281,91 @@
     </section>
 
     <!-- Call To Action Section -->
-    <section class="py-16 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
-        <div class="container mx-auto px-4 text-center">
+    <section class="py-20 parallax-cta text-white relative overflow-hidden">
+        <div class="container-custom text-center relative z-10">
             <div class="max-w-3xl mx-auto fade-in">
-                <h2 class="text-3xl md:text-4xl font-bold mb-6">
+                <h2 class="text-3xl md:text-4xl font-black mb-6">
                     Ready to Transform Your Career Journey?
                 </h2>
-                <p class="text-xl mb-8 text-blue-100">
-                    Join thousands of users who have accelerated their career growth with Mentorax 2.0
+                <p class="text-xl mb-10 text-blue-100 leading-relaxed">
+                    Join thousands of users who have accelerated their career growth with MentoraX
                 </p>
-                <button class="bg-amber-500 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-amber-600 transition-colors glow-on-hover">
-                    Start Your Free Trial Now
+                <button class="bg-amber-500 text-white px-10 py-5 rounded-2xl font-black text-lg hover:bg-amber-600 transition-all duration-300 glow-on-hover magnetic-btn liquid-btn inline-flex items-center accessibility-highlight">
+                    <span>Start Your Free Trial Now</span>
+                    <i class="fas fa-arrow-right ml-3"></i>
                 </button>
-                <p class="mt-4 text-blue-200">No credit card required • 14-day free trial</p>
+                <p class="mt-6 text-blue-200 font-medium">No credit card required • 14-day free trial</p>
             </div>
+        </div>
+        
+        <!-- Background shapes -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden">
+            <div class="absolute top-10 left-10 w-40 h-40 bg-white/10 rounded-full"></div>
+            <div class="absolute bottom-10 right-10 w-60 h-60 bg-white/5 rounded-full"></div>
+            <div class="absolute top-1/2 left-1/4 w-32 h-32 bg-white/10 rounded-full"></div>
         </div>
     </section>
 
     <!-- FAQ Section -->
-    <section id="faq" class="py-16 bg-slate-50">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16 fade-in">
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
-                    Frequently Asked <span class="text-blue-600">Questions</span>
-                </h2>
-                <p class="text-xl text-slate-600 max-w-2xl mx-auto">
-                    Find answers to common questions about Mentorax 2.0
+    <section id="faq" class="py-20 px-4 bg-primary">
+        <div class="container mx-auto max-w-4xl">
+            <div class="text-center mb-16 animate-on-scroll">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Frequently Asked <span class="gradient-text">Questions</span></h2>
+                <p class="text-xl text-slate-300 max-w-2xl mx-auto">
+                    Find answers to common questions about MentoraX and how it can help you.
                 </p>
             </div>
             
-            <div class="max-w-3xl mx-auto">
+            <div class="space-y-4 animate-on-scroll">
                 <!-- FAQ 1 -->
-                <div class="bg-white rounded-xl shadow-md mb-4 faq-item">
-                    <button class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
-                        <span class="text-lg font-medium text-slate-800">How does the AI career guidance work?</span>
-                        <i class="fas fa-chevron-down text-slate-500 faq-icon transition-transform duration-300"></i>
+                <div class="faq-item bg-secondary rounded-xl overflow-hidden">
+                    <button class="faq-question w-full text-left p-6 flex justify-between items-center hover:bg-slate-700 transition-colors">
+                        <span class="text-lg font-semibold">How does the AI determine the best career path for me?</span>
+                        <i class="fas fa-chevron-down faq-toggle transition-transform"></i>
                     </button>
-                    <div class="faq-answer px-6 pb-6">
-                        <p class="text-slate-600">
-                            Our AI analyzes your skills, interests, experience, and goals using advanced algorithms. It then compares your profile with current market trends, job requirements, and successful career paths to provide personalized recommendations for your career development.
-                        </p>
+                    <div class="faq-answer">
+                        <div class="p-6 pt-0 text-slate-300">
+                            <p>Our AI analyzes multiple data points including your skills, interests, academic background, personality traits, and current market trends. It compares your profile with thousands of successful career paths to identify the best matches for you.</p>
+                        </div>
                     </div>
                 </div>
                 
                 <!-- FAQ 2 -->
-                <div class="bg-white rounded-xl shadow-md mb-4 faq-item">
-                    <button class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
-                        <span class="text-lg font-medium text-slate-800">How are mentors selected and matched?</span>
-                        <i class="fas fa-chevron-down text-slate-500 faq-icon transition-transform duration-300"></i>
+                <div class="faq-item bg-secondary rounded-xl overflow-hidden">
+                    <button class="faq-question w-full text-left p-6 flex justify-between items-center hover:bg-slate-700 transition-colors">
+                        <span class="text-lg font-semibold">Is my personal data safe with MentoraX?</span>
+                        <i class="fas fa-chevron-down faq-toggle transition-transform"></i>
                     </button>
-                    <div class="faq-answer px-6 pb-6">
-                        <p class="text-slate-600">
-                            Mentors are vetted professionals with proven expertise in their fields. Our matching algorithm considers factors like industry experience, specialization, communication style, and shared interests to create optimal mentor-mentee pairs that facilitate meaningful connections.
-                        </p>
+                    <div class="faq-answer">
+                        <div class="p-6 pt-0 text-slate-300">
+                            <p>Yes, we take data privacy very seriously. All your personal information is encrypted and stored securely. We never share your data with third parties without your explicit consent, and you have full control over what information is visible to mentors or employers.</p>
+                        </div>
                     </div>
                 </div>
                 
                 <!-- FAQ 3 -->
-                <div class="bg-white rounded-xl shadow-md mb-4 faq-item">
-                    <button class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
-                        <span class="text-lg font-medium text-slate-800">Is my data secure and private?</span>
-                        <i class="fas fa-chevron-down text-slate-500 faq-icon transition-transform duration-300"></i>
+                <div class="faq-item bg-secondary rounded-xl overflow-hidden">
+                    <button class="faq-question w-full text-left p-6 flex justify-between items-center hover:bg-slate-700 transition-colors">
+                        <span class="text-lg font-semibold">How much does MentoraX cost?</span>
+                        <i class="fas fa-chevron-down faq-toggle transition-transform"></i>
                     </button>
-                    <div class="faq-answer px-6 pb-6">
-                        <p class="text-slate-600">
-                            Absolutely. We employ enterprise-grade security measures including encryption, secure data storage, and strict privacy controls. Your personal information is never shared without your explicit consent, and you have full control over what data is visible to mentors and other users.
-                        </p>
+                    <div class="faq-answer">
+                        <div class="p-6 pt-0 text-slate-300">
+                            <p>We offer a free basic plan with limited features, and premium plans starting at $9.99/month for students. Institutional plans are available for colleges and universities. All plans include a 7-day free trial so you can experience the full platform before committing.</p>
+                        </div>
                     </div>
                 </div>
                 
                 <!-- FAQ 4 -->
-                <div class="bg-white rounded-xl shadow-md mb-4 faq-item">
-                    <button class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
-                        <span class="text-lg font-medium text-slate-800">What makes Mentorax 2.0 different from other career platforms?</span>
-                        <i class="fas fa-chevron-down text-slate-500 faq-icon transition-transform duration-300"></i>
+                <div class="faq-item bg-secondary rounded-xl overflow-hidden">
+                    <button class="faq-question w-full text-left p-6 flex justify-between items-center hover:bg-slate-700 transition-colors">
+                        <span class="text-lg font-semibold">Can I change my career path recommendations later?</span>
+                        <i class="fas fa-chevron-down faq-toggle transition-transform"></i>
                     </button>
-                    <div class="faq-answer px-6 pb-6">
-                        <p class="text-slate-600">
-                            Mentorax 2.0 combines the power of AI with human mentorship in a way no other platform does. While other services might offer either automated recommendations or mentor connections, we integrate both to create a holistic career development ecosystem that adapts to your evolving needs.
-                        </p>
+                    <div class="faq-answer">
+                        <div class="p-6 pt-0 text-slate-300">
+                            <p>Absolutely! Your career journey is dynamic, and so is our platform. As you gain new skills, experiences, or interests, you can update your profile, and our AI will recalculate your recommendations. You can also explore alternative paths at any time.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -632,66 +1373,239 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-slate-800 text-white py-12">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer class="bg-slate-800 dark:bg-slate-900 text-white py-16 relative overflow-hidden">
+        <div class="container-custom relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
                 <div class="md:col-span-2">
-                    <div class="flex items-center space-x-2 mb-4">
-                        <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-12 h-12 bg-gradient-to-r from-blue-600 to-amber-500 rounded-xl flex items-center justify-center shadow-md">
                             <i class="fas fa-robot text-white text-xl"></i>
                         </div>
-                        <span class="text-xl font-bold">Mentorax</span>
-                        <span class="text-xs bg-amber-500 text-white px-2 py-1 rounded-full">2.0</span>
+                        <div>
+                            <span class="text-2xl font-black">MentoraX</span>
+                            <span class="text-xs bg-gradient-to-r from-blue-600 to-amber-500 text-white px-2 py-1 rounded-full ml-2 font-bold">2.0</span>
+                        </div>
                     </div>
-                    <p class="text-slate-300 mb-6 max-w-md">
-                        Mentorax 2.0 is an AI-powered career guidance platform that helps individuals discover their ideal career paths, develop necessary skills, and connect with experienced mentors.
+                    <p class="text-slate-300 mb-8 max-w-md leading-relaxed">
+                        MentoraX is an AI-powered career guidance platform that helps individuals discover their ideal career paths, develop necessary skills, and connect with experienced mentors.
                     </p>
                     <div class="flex space-x-4">
-                        <a href="#" class="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
+                        <a href="#" class="w-12 h-12 bg-slate-700 rounded-2xl flex items-center justify-center hover:bg-blue-600 transition-all duration-300 hover:-translate-y-1 shadow-md magnetic-btn">
                             <i class="fab fa-twitter"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
+                        <a href="#" class="w-12 h-12 bg-slate-700 rounded-2xl flex items-center justify-center hover:bg-blue-600 transition-all duration-300 hover:-translate-y-1 shadow-md magnetic-btn">
                             <i class="fab fa-linkedin-in"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
+                        <a href="#" class="w-12 h-12 bg-slate-700 rounded-2xl flex items-center justify-center hover:bg-blue-600 transition-all duration-300 hover:-translate-y-1 shadow-md magnetic-btn">
                             <i class="fab fa-facebook-f"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
+                        <a href="#" class="w-12 h-12 bg-slate-700 rounded-2xl flex items-center justify-center hover:bg-blue-600 transition-all duration-300 hover:-translate-y-1 shadow-md magnetic-btn">
                             <i class="fab fa-instagram"></i>
                         </a>
                     </div>
                 </div>
                 
                 <div>
-                    <h3 class="text-lg font-bold mb-4">Company</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-slate-300 hover:text-white transition-colors">About Us</a></li>
-                        <li><a href="#" class="text-slate-300 hover:text-white transition-colors">Careers</a></li>
-                        <li><a href="#" class="text-slate-300 hover:text-white transition-colors">Blog</a></li>
-                        <li><a href="#" class="text-slate-300 hover:text-white transition-colors">Press</a></li>
+                    <h3 class="text-lg font-black mb-6">Company</h3>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-slate-300 hover:text-white transition-colors font-medium">About Us</a></li>
+                        <li><a href="#" class="text-slate-300 hover:text-white transition-colors font-medium">Careers</a></li>
+                        <li><a href="#" class="text-slate-300 hover:text-white transition-colors font-medium">Blog</a></li>
+                        <li><a href="#" class="text-slate-300 hover:text-white transition-colors font-medium">Press</a></li>
                     </ul>
                 </div>
                 
                 <div>
-                    <h3 class="text-lg font-bold mb-4">Support</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-slate-300 hover:text-white transition-colors">Contact Us</a></li>
-                        <li><a href="#" class="text-slate-300 hover:text-white transition-colors">Help Center</a></li>
-                        <li><a href="#" class="text-slate-300 hover:text-white transition-colors">Privacy Policy</a></li>
-                        <li><a href="#" class="text-slate-300 hover:text-white transition-colors">Terms of Service</a></li>
+                    <h3 class="text-lg font-black mb-6">Support</h3>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-slate-300 hover:text-white transition-colors font-medium">Contact Us</a></li>
+                        <li><a href="#" class="text-slate-300 hover:text-white transition-colors font-medium">Help Center</a></li>
+                        <li><a href="#" class="text-slate-300 hover:text-white transition-colors font-medium">Privacy Policy</a></li>
+                        <li><a href="#" class="text-slate-300 hover:text-white transition-colors font-medium">Terms of Service</a></li>
                     </ul>
                 </div>
             </div>
             
             <div class="border-t border-slate-700 mt-12 pt-8 text-center text-slate-400">
-                <p>© 2023 Mentorax 2.0. All rights reserved.</p>
+                <p>© 2025 MentoraX. All rights reserved.</p>
             </div>
         </div>
+        
+        <!-- Background shapes -->
+        <div class="absolute bottom-0 right-0 w-64 h-64 bg-blue-900/20 rounded-full -mr-32 -mb-32"></div>
+        <div class="absolute top-0 left-0 w-48 h-48 bg-amber-900/20 rounded-full -ml-24 -mt-24"></div>
     </footer>
 
     <script>
-        // Scroll animations
+        // Enhanced JavaScript for all premium features
         document.addEventListener('DOMContentLoaded', function() {
+            // Content Preloader
+            const contentPreloader = document.getElementById('contentPreloader');
+            setTimeout(() => {
+                contentPreloader.classList.add('hidden');
+            }, 1500);
+
+            // Custom Cursor
+            const cursor = document.getElementById('custom-cursor');
+            const cursorFollower = document.querySelector('.cursor-follower');
+            
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+                
+                setTimeout(() => {
+                    cursorFollower.style.left = (e.clientX - 20) + 'px';
+                    cursorFollower.style.top = (e.clientY - 20) + 'px';
+                }, 100);
+            });
+            
+            // Magnetic buttons
+            const magneticButtons = document.querySelectorAll('.magnetic-btn');
+            magneticButtons.forEach(btn => {
+                btn.addEventListener('mousemove', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const deltaX = (x - centerX) / centerX * 10;
+                    const deltaY = (y - centerY) / centerY * 10;
+                    
+                    btn.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+                });
+                
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.transform = 'translate(0, 0)';
+                });
+            });
+
+            // Scroll Progress Indicator
+            const scrollProgress = document.getElementById('scroll-progress');
+            window.addEventListener('scroll', () => {
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                scrollProgress.style.width = scrolled + '%';
+            });
+
+            // Reading Progress Indicator
+            const readingProgressBar = document.getElementById('reading-progress-bar');
+            const sections = document.querySelectorAll('section');
+            
+            function updateReadingProgress() {
+                let currentSection = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (pageYOffset >= sectionTop - 200) {
+                        currentSection = section.id;
+                    }
+                });
+                
+                const currentIndex = Array.from(sections).findIndex(section => section.id === currentSection);
+                const progress = (currentIndex / (sections.length - 1)) * 100;
+                readingProgressBar.style.height = progress + '%';
+            }
+            
+            window.addEventListener('scroll', updateReadingProgress);
+
+            // Dark Mode Toggle
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const body = document.body;
+            
+            // Check for saved theme or prefer-color-scheme
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                body.classList.add('dark-mode');
+            }
+            
+            darkModeToggle.addEventListener('click', () => {
+                body.classList.toggle('dark-mode');
+                localStorage.theme = body.classList.contains('dark-mode') ? 'dark' : 'light';
+                
+                // Show state indicator
+                const stateIndicator = document.getElementById('stateIndicator');
+                stateIndicator.textContent = body.classList.contains('dark-mode') ? 'Dark mode enabled' : 'Light mode enabled';
+                stateIndicator.classList.add('active');
+                setTimeout(() => {
+                    stateIndicator.classList.remove('active');
+                }, 2000);
+            });
+
+            // Pull to Refresh
+            let startY = 0;
+            let currentY = 0;
+            const pullToRefresh = document.getElementById('pullToRefresh');
+            
+            document.addEventListener('touchstart', e => {
+                if (window.scrollY === 0) {
+                    startY = e.touches[0].pageY;
+                }
+            });
+            
+            document.addEventListener('touchmove', e => {
+                if (window.scrollY === 0) {
+                    currentY = e.touches[0].pageY;
+                    
+                    if (currentY > startY) {
+                        pullToRefresh.classList.add('active');
+                    }
+                }
+            });
+            
+            document.addEventListener('touchend', () => {
+                if (pullToRefresh.classList.contains('active')) {
+                    // Simulate refresh
+                    setTimeout(() => {
+                        pullToRefresh.classList.remove('active');
+                        location.reload();
+                    }, 1000);
+                }
+            });
+
+            // Swipeable cards for mobile
+            const swipeContainers = document.querySelectorAll('.swipe-container');
+            swipeContainers.forEach(container => {
+                let isDown = false;
+                let startX;
+                let scrollLeft;
+                
+                container.addEventListener('mousedown', (e) => {
+                    isDown = true;
+                    startX = e.pageX - container.offsetLeft;
+                    scrollLeft = container.scrollLeft;
+                });
+                
+                container.addEventListener('mouseleave', () => {
+                    isDown = false;
+                });
+                
+                container.addEventListener('mouseup', () => {
+                    isDown = false;
+                });
+                
+                container.addEventListener('mousemove', (e) => {
+                    if (!isDown) return;
+                    e.preventDefault();
+                    const x = e.pageX - container.offsetLeft;
+                    const walk = (x - startX) * 2;
+                    container.scrollLeft = scrollLeft - walk;
+                });
+            });
+
+            // Contextual Help
+            const helpElements = document.querySelectorAll('.contextual-help');
+            helpElements.forEach(help => {
+                help.parentElement.addEventListener('mouseenter', () => {
+                    help.classList.add('active');
+                });
+                
+                help.parentElement.addEventListener('mouseleave', () => {
+                    help.classList.remove('active');
+                });
+            });
+
             // Intersection Observer for scroll animations
             const observerOptions = {
                 threshold: 0.1,
@@ -702,12 +1616,24 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('visible');
+                        
+                        // Stagger animation for grid items
+                        if (entry.target.classList.contains('stagger-item')) {
+                            const items = document.querySelectorAll('.stagger-item');
+                            items.forEach((item, index) => {
+                                if (item === entry.target) {
+                                    setTimeout(() => {
+                                        item.classList.add('visible');
+                                    }, index * 100);
+                                }
+                            });
+                        }
                     }
                 });
             }, observerOptions);
             
             // Observe all elements with animation classes
-            document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right, .zoom-in').forEach(el => {
+            document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right, .zoom-in, .stagger-item').forEach(el => {
                 observer.observe(el);
             });
             
@@ -762,13 +1688,98 @@
                         mobileMenu.classList.add('hidden');
                         
                         window.scrollTo({
-                            top: targetElement.offsetTop - 80,
+                            top: targetElement.offsetTop - 100,
                             behavior: 'smooth'
                         });
                     }
                 });
             });
+
+            // Save scroll position on refresh
+            window.addEventListener('beforeunload', () => {
+                localStorage.setItem('scrollPosition', window.scrollY);
+            });
+            
+            // Restore scroll position
+            window.addEventListener('load', () => {
+                const scrollPosition = localStorage.getItem('scrollPosition');
+                if (scrollPosition) {
+                    window.scrollTo(0, parseInt(scrollPosition));
+                    localStorage.removeItem('scrollPosition');
+                }
+            });
+
+            // Accessibility enhancements
+            document.addEventListener('keydown', (e) => {
+                // Tab key navigation
+                if (e.key === 'Tab') {
+                    document.body.classList.add('keyboard-navigation');
+                }
+            });
+            
+            document.addEventListener('mousedown', () => {
+                document.body.classList.remove('keyboard-navigation');
+            });
         });
+
+        // Simple 3D background effect using Three.js
+        function init3DBackground() {
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true });
+            
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setClearColor(0x000000, 0);
+            document.body.appendChild(renderer.domElement);
+            renderer.domElement.style.position = 'fixed';
+            renderer.domElement.style.top = '0';
+            renderer.domElement.style.left = '0';
+            renderer.domElement.style.zIndex = '-1';
+            renderer.domElement.style.pointerEvents = 'none';
+            
+            // Create particles
+            const particlesGeometry = new THREE.BufferGeometry();
+            const particlesCount = 1000;
+            const posArray = new Float32Array(particlesCount * 3);
+            
+            for (let i = 0; i < particlesCount * 3; i++) {
+                posArray[i] = (Math.random() - 0.5) * 10;
+            }
+            
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            
+            const particlesMaterial = new THREE.PointsMaterial({
+                size: 0.02,
+                color: 0x2563EB,
+                transparent: true,
+                opacity: 0.6
+            });
+            
+            const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particlesMesh);
+            
+            camera.position.z = 2;
+            
+            function animate() {
+                requestAnimationFrame(animate);
+                particlesMesh.rotation.x += 0.001;
+                particlesMesh.rotation.y += 0.001;
+                renderer.render(scene, camera);
+            }
+            
+            animate();
+            
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+        
+        // Initialize 3D background if Three.js is available
+        if (typeof THREE !== 'undefined') {
+            init3DBackground();
+        }
     </script>
 </body>
 </html>

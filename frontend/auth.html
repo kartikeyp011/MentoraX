@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentorax 2.0 | Authentication</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0F172A',
+                        secondary: '#1E293B',
+                        accent: '#3B82F6',
+                        highlight: '#F59E0B',
+                        text: '#F8FAFC'
+                    },
+                    animation: {
+                        'gradient': 'gradient 15s ease infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'liquid': 'liquid 1.5s ease-out',
+                        'morph': 'morph 0.5s ease-in-out',
+                        'slide-in': 'slideIn 0.5s ease-out',
+                        'fade-in': 'fadeIn 0.5s ease-out',
+                        'shake': 'shake 0.5s ease-in-out',
+                        'pulse-glow': 'pulseGlow 2s infinite',
+                        'bounce-in': 'bounceIn 0.6s ease-out',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                        'ripple': 'ripple 0.6s linear',
+                        'typewriter': 'typewriter 2s steps(20) 1s forwards',
+                        'blink': 'blink 1s step-end infinite'
+                    },
+                    keyframes: {
+                        gradient: {
+                            '0%, 100%': { backgroundPosition: '0% 50%' },
+                            '50%': { backgroundPosition: '100% 50%' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        liquid: {
+                            '0%': { transform: 'scale(1)' },
+                            '50%': { transform: 'scale(1.05)' },
+                            '100%': { transform: 'scale(1)' },
+                        },
+                        morph: {
+                            '0%': { borderRadius: '20px' },
+                            '50%': { borderRadius: '30px' },
+                            '100%': { borderRadius: '20px' },
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateX(100px)', opacity: 0 },
+                            '100%': { transform: 'translateX(0)', opacity: 1 },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: 0 },
+                            '100%': { opacity: 1 },
+                        },
+                        shake: {
+                            '0%, 100%': { transform: 'translateX(0)' },
+                            '10%, 30%, 50%, 70%, 90%': { transform: 'translateX(-5px)' },
+                            '20%, 40%, 60%, 80%': { transform: 'translateX(5px)' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 5px rgba(59, 130, 246, 0.5)' },
+                            '50%': { boxShadow: '0 0 20px rgba(59, 130, 246, 0.8)' },
+                        },
+                        bounceIn: {
+                            '0%': { transform: 'scale(0.3)', opacity: 0 },
+                            '50%': { transform: 'scale(1.05)', opacity: 0.9 },
+                            '70%': { transform: 'scale(0.9)', opacity: 1 },
+                            '100%': { transform: 'scale(1)', opacity: 1 },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: 0 },
+                            '100%': { transform: 'translateY(0)', opacity: 1 },
+                        },
+                        ripple: {
+                            '0%': { transform: 'scale(0)', opacity: 1 },
+                            '100%': { transform: 'scale(4)', opacity: 0 },
+                        },
+                        typewriter: {
+                            '0%': { width: '0' },
+                            '100%': { width: '100%' },
+                        },
+                        blink: {
+                            '0%, 100%': { borderColor: 'transparent' },
+                            '50%': { borderColor: '#F59E0B' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(-45deg, #0a0f1f, #0F172A, #1E293B, #1E3A8A, #0F172A);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            color: #F8FAFC;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .glassmorphism {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
+        }
+        
+        .input-glow:focus {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.6);
+            border-color: rgba(59, 130, 246, 0.6);
+        }
+        
+        .btn-liquid {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+        
+        .btn-liquid::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.7s ease;
+        }
+        
+        .btn-liquid:hover::before {
+            left: 100%;
+        }
+        
+        .toggle-switch {
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        .toggle-switch.active {
+            transform: translateX(100%);
+        }
+        
+        .form-transition {
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        .form-hidden {
+            opacity: 0;
+            transform: translateX(-50px) scale(0.95);
+            pointer-events: none;
+            position: absolute;
+            width: 100%;
+        }
+        
+        .form-visible {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+            pointer-events: all;
+        }
+        
+        .error-message {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+        
+        .error-message.active {
+            max-height: 50px;
+        }
+        
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid #F8FAFC;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .btn-loading .btn-text {
+            display: none;
+        }
+        
+        .btn-loading .loading-spinner {
+            display: block;
+        }
+        
+        .success-checkmark {
+            display: none;
+            color: #10B981;
+        }
+        
+        .btn-success .success-checkmark {
+            display: block;
+        }
+        
+        .btn-success .btn-text, .btn-success .loading-spinner {
+            display: none;
+        }
+        
+        .password-toggle {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .password-toggle:hover {
+            color: #3B82F6;
+            transform: scale(1.1);
+        }
+        
+        .floating-label {
+            position: absolute;
+            top: 50%;
+            left: 16px;
+            transform: translateY(-50%);
+            color: #94A3B8;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus + .floating-label,
+        .input-field:not(:placeholder-shown) + .floating-label {
+            top: 0;
+            left: 12px;
+            font-size: 0.75rem;
+            background: #1E293B;
+            padding: 0 4px;
+            color: #3B82F6;
+        }
+        
+        .ripple-effect {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        }
+        
+        .typewriter-text {
+            overflow: hidden;
+            border-right: 2px solid #F59E0B;
+            white-space: nowrap;
+            width: 0;
+            animation: typewriter 2s steps(20) 1s forwards, blink 1s step-end infinite;
+        }
+        
+        /* Mobile swipe toggle */
+        @media (max-width: 640px) {
+            .toggle-container {
+                touch-action: pan-x;
+            }
+        }
+        
+        .floating-element {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .floating-element-delay-1 {
+            animation-delay: 1s;
+        }
+        
+        .floating-element-delay-2 {
+            animation-delay: 2s;
+        }
+        
+        .floating-element-delay-3 {
+            animation-delay: 3s;
+        }
+        
+        .checkbox-custom {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #475569;
+            border-radius: 4px;
+            background-color: #1E293B;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .checkbox-custom:checked {
+            background-color: #3B82F6;
+            border-color: #3B82F6;
+        }
+        
+        .checkbox-custom:checked::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 5px;
+            width: 4px;
+            height: 8px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        
+        .select-custom {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394A3B8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <!-- Particles Background -->
+    <div id="particles-js" class="absolute inset-0 z-0"></div>
+    
+    <!-- Floating Elements -->
+    <div class="absolute top-10 left-10 w-20 h-20 rounded-full bg-gradient-to-r from-accent/20 to-highlight/20 floating-element"></div>
+    <div class="absolute bottom-20 right-10 w-16 h-16 rounded-full bg-gradient-to-r from-highlight/20 to-accent/20 floating-element floating-element-delay-1"></div>
+    <div class="absolute top-1/3 right-1/4 w-12 h-12 rounded-full bg-gradient-to-r from-accent/30 to-highlight/30 floating-element floating-element-delay-2"></div>
+    <div class="absolute bottom-1/3 left-1/4 w-10 h-10 rounded-full bg-gradient-to-r from-highlight/30 to-accent/30 floating-element floating-element-delay-3"></div>
+    
+    <!-- Auth Container -->
+    <div class="w-full max-w-md z-10 animate-bounce-in">
+        <!-- Auth Card -->
+        <div class="glassmorphism rounded-2xl p-8 shadow-2xl border border-white/10">
+            <!-- Logo -->
+            <div class="flex justify-center mb-6 animate-slide-up">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-r from-accent to-highlight flex items-center justify-center mr-3 shadow-lg">
+                        <i class="fas fa-robot text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-2xl font-bold">Mentorax <span class="text-highlight">2.0</span></span>
+                        <p class="text-xs text-slate-400 mt-1">AI Career Guidance Platform</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Toggle Switch -->
+            <div class="flex justify-center mb-8 animate-slide-up" style="animation-delay: 0.1s">
+                <div class="relative bg-secondary/80 rounded-full p-1 w-64 flex toggle-container border border-white/10">
+                    <div class="absolute top-1 left-1 w-32 h-10 bg-gradient-to-r from-accent to-blue-600 rounded-full toggle-switch transition-transform duration-400 shadow-md"></div>
+                    <button id="login-toggle" class="relative z-10 w-32 py-2 rounded-full font-semibold transition-colors duration-300 text-white">Login</button>
+                    <button id="signup-toggle" class="relative z-10 w-32 py-2 rounded-full font-semibold transition-colors duration-300 text-slate-300">Sign Up</button>
+                </div>
+            </div>
+            
+            <!-- Login Form -->
+            <form id="login-form" class="form-transition form-visible">
+                <!-- Google Login -->
+                <button type="button" class="w-full flex items-center justify-center gap-3 py-3 px-4 mb-6 rounded-xl bg-white/10 hover:bg-white/15 text-white font-medium transition-all duration-300 border border-white/10 hover:border-white/20 shadow-md animate-slide-up" style="animation-delay: 0.2s">
+                    <i class="fab fa-google text-red-400"></i>
+                    Continue with Google
+                </button>
+                
+                <div class="relative flex items-center my-6 animate-slide-up" style="animation-delay: 0.3s">
+                    <div class="flex-grow border-t border-slate-600/50"></div>
+                    <span class="flex-shrink mx-4 text-slate-400 text-sm">or continue with email</span>
+                    <div class="flex-grow border-t border-slate-600/50"></div>
+                </div>
+                
+                <!-- Email -->
+                <div class="mb-5 relative animate-slide-up" style="animation-delay: 0.4s">
+                    <div class="relative">
+                        <input 
+                            type="email" 
+                            id="login-email" 
+                            class="w-full py-3 px-4 bg-slate-800/50 border border-slate-700/50 rounded-xl focus:outline-none transition-all duration-300 input-glow text-white input-field" 
+                            placeholder=" "
+                            required
+                        >
+                        <label for="login-email" class="floating-label">Email Address</label>
+                        <i class="fas fa-envelope absolute right-3 top-3.5 text-slate-500"></i>
+                    </div>
+                    <div id="login-email-error" class="error-message text-red-400 text-sm mt-1"></div>
+                </div>
+                
+                <!-- Password -->
+                <div class="mb-5 relative animate-slide-up" style="animation-delay: 0.5s">
+                    <div class="relative">
+                        <input 
+                            type="password" 
+                            id="login-password" 
+                            class="w-full py-3 px-4 bg-slate-800/50 border border-slate-700/50 rounded-xl focus:outline-none transition-all duration-300 input-glow text-white input-field pr-10" 
+                            placeholder=" "
+                            required
+                        >
+                        <label for="login-password" class="floating-label">Password</label>
+                        <i class="fas fa-lock absolute right-3 top-3.5 text-slate-500"></i>
+                        <i class="fas fa-eye password-toggle absolute right-10 top-3.5 text-slate-500" id="login-password-toggle"></i>
+                    </div>
+                    <div id="login-password-error" class="error-message text-red-400 text-sm mt-1"></div>
+                </div>
+                
+                <!-- Remember Me & Forgot Password -->
+                <div class="flex items-center justify-between mb-6 animate-slide-up" style="animation-delay: 0.6s">
+                    <div class="flex items-center">
+                        <input 
+                            type="checkbox" 
+                            id="remember-me" 
+                            class="checkbox-custom"
+                        >
+                        <label for="remember-me" class="ml-2 text-sm text-slate-300">Remember me</label>
+                    </div>
+                    <a href="#" class="text-sm text-accent hover:text-blue-400 transition-colors duration-300 font-medium">Forgot Password?</a>
+                </div>
+                
+                <!-- Login Button -->
+                <button 
+                    type="submit" 
+                    id="login-btn"
+                    class="w-full py-3.5 px-4 bg-gradient-to-r from-accent to-blue-600 hover:from-blue-600 hover:to-accent text-white font-semibold rounded-xl transition-all duration-300 btn-liquid flex items-center justify-center shadow-lg animate-slide-up relative overflow-hidden" 
+                    style="animation-delay: 0.25s"
+                >
+                    <span class="btn-text">Login to Account</span>
+                    <div class="loading-spinner"></div>
+                    <i class="fas fa-check success-checkmark"></i>
+                </button>
+            </form>
+            
+            <!-- Signup Form -->
+            <form id="signup-form" class="form-transition form-hidden">
+                <!-- Google Signup -->
+                <button type="button" class="w-full flex items-center justify-center gap-3 py-3 px-4 mb-6 rounded-xl bg-white/10 hover:bg-white/15 text-white font-medium transition-all duration-300 border border-white/10 hover:border-white/20 shadow-md">
+                    <i class="fab fa-google text-red-400"></i>
+                    Continue with Google
+                </button>
+                
+                <div class="relative flex items-center my-6">
+                    <div class="flex-grow border-t border-slate-600/50"></div>
+                    <span class="flex-shrink mx-4 text-slate-400 text-sm">or sign up with email</span>
+                    <div class="flex-grow border-t border-slate-600/50"></div>
+                </div>
+                
+                <!-- Full Name -->
+                <div class="mb-5 relative">
+                    <div class="relative">
+                        <input 
+                            type="text" 
+                            id="signup-name" 
+                            class="w-full py-3 px-4 bg-slate-800/50 border border-slate-700/50 rounded-xl focus:outline-none transition-all duration-300 input-glow text-white input-field" 
+                            placeholder=" "
+                            required
+                        >
+                        <label for="signup-name" class="floating-label">Full Name</label>
+                        <i class="fas fa-user absolute right-3 top-3.5 text-slate-500"></i>
+                    </div>
+                    <div id="signup-name-error" class="error-message text-red-400 text-sm mt-1"></div>
+                </div>
+                
+                <!-- Email -->
+                <div class="mb-5 relative">
+                    <div class="relative">
+                        <input 
+                            type="email" 
+                            id="signup-email" 
+                            class="w-full py-3 px-4 bg-slate-800/50 border border-slate-700/50 rounded-xl focus:outline-none transition-all duration-300 input-glow text-white input-field" 
+                            placeholder=" "
+                            required
+                        >
+                        <label for="signup-email" class="floating-label">Email Address</label>
+                        <i class="fas fa-envelope absolute right-3 top-3.5 text-slate-500"></i>
+                    </div>
+                    <div id="signup-email-error" class="error-message text-red-400 text-sm mt-1"></div>
+                </div>
+                
+                <!-- Role -->
+                <div class="mb-4">
+                    <label for="signup-role" class="block text-sm font-medium text-slate-300 mb-2">Role</label>
+                    <div class="relative">
+                        <select 
+                            id="signup-role" 
+                            class="w-full py-3 px-4 bg-slate-800 border border-slate-700 rounded-lg focus:outline-none focus:border-accent transition-colors duration-300 input-glow text-white appearance-none"
+                            required
+                        >
+                            <option value="" disabled selected>Select your role</option>
+                            <option value="student">Student</option>
+                            <option value="mentor">Mentor</option>
+                            <option value="alumni">Alumni</option>
+                            <option value="placement-cell">Placement Cell</option>
+                        </select>
+                        <i class="fas fa-chevron-down absolute right-3 top-3.5 text-slate-500 pointer-events-none"></i>
+                    </div>
+                    <div id="signup-role-error" class="error-message text-red-400 text-sm mt-1"></div>
+                </div>
+                
+                <!-- Password -->
+                <div class="mb-5 relative">
+                    <div class="relative">
+                        <input 
+                            type="password" 
+                            id="signup-password" 
+                            class="w-full py-3 px-4 bg-slate-800/50 border border-slate-700/50 rounded-xl focus:outline-none transition-all duration-300 input-glow text-white input-field pr-10" 
+                            placeholder=" "
+                            required
+                        >
+                        <label for="signup-password" class="floating-label">Password</label>
+                        <i class="fas fa-lock absolute right-3 top-3.5 text-slate-500"></i>
+                        <i class="fas fa-eye password-toggle absolute right-10 top-3.5 text-slate-500" id="signup-password-toggle"></i>
+                    </div>
+                    <div id="signup-password-error" class="error-message text-red-400 text-sm mt-1"></div>
+                </div>
+                
+                <!-- Confirm Password -->
+                <div class="mb-6 relative">
+                    <div class="relative">
+                        <input 
+                            type="password" 
+                            id="signup-confirm-password" 
+                            class="w-full py-3 px-4 bg-slate-800/50 border border-slate-700/50 rounded-xl focus:outline-none transition-all duration-300 input-glow text-white input-field pr-10" 
+                            placeholder=" "
+                            required
+                        >
+                        <label for="signup-confirm-password" class="floating-label">Confirm Password</label>
+                        <i class="fas fa-lock absolute right-3 top-3.5 text-slate-500"></i>
+                        <i class="fas fa-eye password-toggle absolute right-10 top-3.5 text-slate-500" id="signup-confirm-password-toggle"></i>
+                    </div>
+                    <div id="signup-confirm-password-error" class="error-message text-red-400 text-sm mt-1"></div>
+                </div>
+                
+                <!-- Signup Button -->
+                <button 
+                    type="submit" 
+                    id="signup-btn"
+                    class="w-full py-3.5 px-4 bg-gradient-to-r from-highlight to-amber-500 hover:from-amber-500 hover:to-highlight text-primary font-semibold rounded-xl transition-all duration-300 btn-liquid flex items-center justify-center shadow-lg relative overflow-hidden"
+                >
+                    <span class="btn-text">Create Account</span>
+                    <div class="loading-spinner"></div>
+                    <i class="fas fa-check success-checkmark"></i>
+                </button>
+            </form>
+        </div>
+        
+        <!-- Footer Text -->
+        <div class="text-center mt-6 text-slate-400 animate-slide-up" style="animation-delay: 0.8s">
+            <p>By continuing, you agree to our <a href="#" class="text-accent hover:text-blue-400 transition-colors duration-300 font-medium">Terms of Service</a> and <a href="#" class="text-accent hover:text-blue-400 transition-colors duration-300 font-medium">Privacy Policy</a>.</p>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Particles.js
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#3B82F6" },
+                shape: { type: "circle" },
+                opacity: { value: 0.3, random: true },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#3B82F6",
+                    opacity: 0.2,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 1.5,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "repulse" },
+                    onclick: { enable: true, mode: "push" },
+                    resize: true
+                }
+            }
+        });
+
+        // DOM Elements
+        const loginToggle = document.getElementById('login-toggle');
+        const signupToggle = document.getElementById('signup-toggle');
+        const toggleSwitch = document.querySelector('.toggle-switch');
+        const loginForm = document.getElementById('login-form');
+        const signupForm = document.getElementById('signup-form');
+        const loginBtn = document.getElementById('login-btn');
+        const signupBtn = document.getElementById('signup-btn');
+        const toggleContainer = document.querySelector('.toggle-container');
+
+        // Password Toggle Elements
+        const loginPasswordToggle = document.getElementById('login-password-toggle');
+        const signupPasswordToggle = document.getElementById('signup-password-toggle');
+        const signupConfirmPasswordToggle = document.getElementById('signup-confirm-password-toggle');
+
+        // Form Toggle Functionality
+        function switchToLogin() {
+            loginToggle.classList.add('text-white');
+            loginToggle.classList.remove('text-slate-300');
+            signupToggle.classList.add('text-slate-300');
+            signupToggle.classList.remove('text-white');
+            toggleSwitch.classList.remove('active');
+            
+            loginForm.classList.remove('form-hidden');
+            loginForm.classList.add('form-visible');
+            signupForm.classList.remove('form-visible');
+            signupForm.classList.add('form-hidden');
+        }
+
+        function switchToSignup() {
+            signupToggle.classList.add('text-white');
+            signupToggle.classList.remove('text-slate-300');
+            loginToggle.classList.add('text-slate-300');
+            loginToggle.classList.remove('text-white');
+            toggleSwitch.classList.add('active');
+            
+            signupForm.classList.remove('form-hidden');
+            signupForm.classList.add('form-visible');
+            loginForm.classList.remove('form-visible');
+            loginForm.classList.add('form-hidden');
+        }
+
+        // Toggle Event Listeners
+        loginToggle.addEventListener('click', switchToLogin);
+        signupToggle.addEventListener('click', switchToSignup);
+
+        // Mobile Swipe Toggle
+        let startX = 0;
+        let currentX = 0;
+        let isSwiping = false;
+
+        toggleContainer.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            isSwiping = true;
+        });
+
+        toggleContainer.addEventListener('touchmove', (e) => {
+            if (!isSwiping) return;
+            currentX = e.touches[0].clientX;
+        });
+
+        toggleContainer.addEventListener('touchend', () => {
+            if (!isSwiping) return;
+            
+            const diffX = currentX - startX;
+            const threshold = 50;
+            
+            if (Math.abs(diffX) > threshold) {
+                if (diffX > 0 && toggleSwitch.classList.contains('active')) {
+                    // Swipe right - switch to login
+                    switchToLogin();
+                } else if (diffX < 0 && !toggleSwitch.classList.contains('active')) {
+                    // Swipe left - switch to signup
+                    switchToSignup();
+                }
+            }
+            
+            isSwiping = false;
+        });
+
+        // Password Visibility Toggle
+        function togglePasswordVisibility(inputId, toggleIcon) {
+            const passwordInput = document.getElementById(inputId);
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+
+        loginPasswordToggle.addEventListener('click', () => {
+            togglePasswordVisibility('login-password', loginPasswordToggle);
+        });
+
+        signupPasswordToggle.addEventListener('click', () => {
+            togglePasswordVisibility('signup-password', signupPasswordToggle);
+        });
+
+        signupConfirmPasswordToggle.addEventListener('click', () => {
+            togglePasswordVisibility('signup-confirm-password', signupConfirmPasswordToggle);
+        });
+
+        // Form Validation Functions
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        function validatePassword(password) {
+            return password.length >= 6;
+        }
+
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+            errorElement.classList.add('active');
+            
+            // Add shake animation to input
+            const inputElement = document.getElementById(elementId.replace('-error', ''));
+            inputElement.classList.add('animate-shake');
+            inputElement.style.borderColor = '#EF4444';
+            
+            setTimeout(() => {
+                inputElement.classList.remove('animate-shake');
+            }, 500);
+        }
+
+        function hideError(elementId) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.classList.remove('active');
+            
+            const inputElement = document.getElementById(elementId.replace('-error', ''));
+            inputElement.style.borderColor = '';
+        }
+
+        // Ripple Effect for Buttons
+        function createRipple(event) {
+            const button = event.currentTarget;
+            const circle = document.createElement("span");
+            const diameter = Math.max(button.clientWidth, button.clientHeight);
+            const radius = diameter / 2;
+
+            circle.style.width = circle.style.height = `${diameter}px`;
+            circle.style.left = `${event.clientX - button.getBoundingClientRect().left - radius}px`;
+            circle.style.top = `${event.clientY - button.getBoundingClientRect().top - radius}px`;
+            circle.classList.add("ripple-effect");
+
+            const ripple = button.getElementsByClassName("ripple-effect")[0];
+            if (ripple) {
+                ripple.remove();
+            }
+
+            button.appendChild(circle);
+        }
+
+        // Add ripple effect to buttons
+        const buttons = document.querySelectorAll('button');
+        buttons.forEach(button => {
+            button.addEventListener('click', createRipple);
+        });
+
+        // Login Form Validation
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            let isValid = true;
+            
+            // Reset errors
+            hideError('login-email-error');
+            hideError('login-password-error');
+            
+            // Validate email
+            if (!validateEmail(email)) {
+                showError('login-email-error', 'Please enter a valid email address');
+                isValid = false;
+            }
+            
+            // Validate password
+            if (!validatePassword(password)) {
+                showError('login-password-error', 'Password must be at least 6 characters');
+                isValid = false;
+            }
+            
+            if (isValid) {
+                // Simulate login process
+                loginBtn.classList.add('btn-loading');
+                
+                setTimeout(() => {
+                    loginBtn.classList.remove('btn-loading');
+                    loginBtn.classList.add('btn-success');
+                    
+                    setTimeout(() => {
+                        // Reset button state
+                        loginBtn.classList.remove('btn-success');
+                        alert('Login successful!');
+                    }, 1500);
+                }, 2000);
+            }
+        });
+
+        // Signup Form Validation
+        signupForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('signup-name').value;
+            const email = document.getElementById('signup-email').value;
+            const role = document.getElementById('signup-role').value;
+            const password = document.getElementById('signup-password').value;
+            const confirmPassword = document.getElementById('signup-confirm-password').value;
+            let isValid = true;
+            
+            // Reset errors
+            hideError('signup-name-error');
+            hideError('signup-email-error');
+            hideError('signup-role-error');
+            hideError('signup-password-error');
+            hideError('signup-confirm-password-error');
+            
+            // Validate name
+            if (name.trim().length < 2) {
+                showError('signup-name-error', 'Please enter your full name');
+                isValid = false;
+            }
+            
+            // Validate email
+            if (!validateEmail(email)) {
+                showError('signup-email-error', 'Please enter a valid email address');
+                isValid = false;
+            }
+            
+            // Validate role
+            if (!role) {
+                showError('signup-role-error', 'Please select your role');
+                isValid = false;
+            }
+            
+            // Validate password
+            if (!validatePassword(password)) {
+                showError('signup-password-error', 'Password must be at least 6 characters');
+                isValid = false;
+            }
+            
+            // Validate confirm password
+            if (password !== confirmPassword) {
+                showError('signup-confirm-password-error', 'Passwords do not match');
+                isValid = false;
+            }
+            
+            if (isValid) {
+                // Simulate signup process
+                signupBtn.classList.add('btn-loading');
+                
+                setTimeout(() => {
+                    signupBtn.classList.remove('btn-loading');
+                    signupBtn.classList.add('btn-success');
+                    
+                    setTimeout(() => {
+                        // Reset button state
+                        signupBtn.classList.remove('btn-success');
+                        alert('Account created successfully!');
+                    }, 1500);
+                }, 2000);
+            }
+        });
+
+        // Input focus effects
+        document.querySelectorAll('input, select').forEach(input => {
+            input.addEventListener('focus', () => {
+                input.classList.add('animate-pulse-glow');
+            });
+            
+            input.addEventListener('blur', () => {
+                input.classList.remove('animate-pulse-glow');
+            });
+            
+            // Clear error on input
+            input.addEventListener('input', () => {
+                const errorId = input.id + '-error';
+                if (document.getElementById(errorId)) {
+                    hideError(errorId);
+                }
+            });
+        });
+
+        // Google buttons animation
+        document.querySelectorAll('button[type="button"]').forEach(button => {
+            button.addEventListener('mouseenter', () => {
+                button.style.transform = 'translateY(-2px)';
+                button.style.boxShadow = '0 10px 20px rgba(0, 0, 0, 0.2)';
+            });
+            
+            button.addEventListener('mouseleave', () => {
+                button.style.transform = 'translateY(0)';
+                button.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+            });
+        });
+
+        // Typewriter effect for the page title
+        document.addEventListener('DOMContentLoaded', () => {
+            const title = document.querySelector('title');
+            const originalTitle = title.textContent;
+            title.textContent = '';
+            
+            // Create a typewriter effect for the title
+            let i = 0;
+            function typeWriter() {
+                if (i < originalTitle.length) {
+                    title.textContent += originalTitle.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 100);
+                }
+            }
+            
+            setTimeout(typeWriter, 1000);
+        });
+    </script>
+</body>
+</html>
