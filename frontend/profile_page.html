@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile | Mentorax 2.0</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <style>
+        :root {
+            --bg-primary: #0A0F1C;
+            --bg-secondary: #0F172A;
+            --bg-tertiary: #1E293B;
+            --primary: #3B82F6;
+            --primary-dark: #1D4ED8;
+            --accent: #F59E0B;
+            --accent-dark: #D97706;
+            --text: #F8FAFC;
+            --text-secondary: #CBD5E1;
+            --text-muted: #64748B;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --error: #EF4444;
+            --border: #334155;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Improved focus states for accessibility */
+        button:focus-visible,
+        input:focus-visible,
+        textarea:focus-visible,
+        a:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+        
+        .glassmorphism {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--bg-secondary);
+            border-color: var(--primary);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .section-title i {
+            color: var(--primary);
+        }
+        
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+        
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.5s ease;
+            transform-origin: 50% 50%;
+        }
+        
+        .skill-tag {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+        
+        .skill-tag:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text);
+        }
+        
+        .form-input {
+            width: 100%;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: var(--text);
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+        
+        .form-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 12px 16px;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            background: var(--bg-tertiary);
+            color: var(--text);
+        }
+        
+        .nav-item.active {
+            color: var(--primary);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .stat-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-left: 2rem;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -9px;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 3px solid var(--bg-secondary);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-muted);
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        
+        .skeleton {
+            background: linear-gradient(90deg, var(--bg-tertiary) 25%, var(--border) 50%, var(--bg-tertiary) 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: 4px;
+        }
+        
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        .mobile-bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            display: none;
+            padding: 0.75rem;
+            z-index: 1000;
+        }
+        
+        .mobile-nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.75rem;
+            transition: all 0.2s ease;
+        }
+        
+        .mobile-nav-item.active {
+            color: var(--primary);
+            background: var(--bg-tertiary);
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-bottom-nav {
+                display: flex;
+            }
+            
+            .section-title {
+                font-size: 1.25rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            .card {
+                border: 2px solid var(--text);
+            }
+            
+            .btn-primary {
+                border: 2px solid var(--text);
+            }
+        }
+
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .search-box {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .search-input {
+            background: transparent;
+            border: none;
+            color: var(--text);
+            width: 100%;
+            font-size: 0.875rem;
+        }
+        
+        .search-input:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-900">
+    <!-- Notification System -->
+    <div id="notification" class="notification" style="display: none;">
+        <span id="notification-message"></span>
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav">
+        <a href="#profile" class="mobile-nav-item active">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </a>
+        <a href="#skills" class="mobile-nav-item">
+            <i class="fas fa-code"></i>
+            <span>Skills</span>
+        </a>
+        <a href="#progress" class="mobile-nav-item">
+            <i class="fas fa-chart-line"></i>
+            <span>Progress</span>
+        </a>
+        <a href="#portfolio" class="mobile-nav-item">
+            <i class="fas fa-briefcase"></i>
+            <span>Portfolio</span>
+        </a>
+        <a href="#settings" class="mobile-nav-item">
+            <i class="fas fa-cog"></i>
+            <span>Settings</span>
+        </a>
+    </nav>
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar Navigation -->
+        <aside class="w-64 bg-gray-800 border-r border-gray-700 p-6 hidden md:block">
+            <div class="mb-8">
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
+                        <span class="font-bold text-white">M</span>
+                    </div>
+                    <span class="text-xl font-bold text-white">Mentorax 2.0</span>
+                </div>
+                <p class="text-gray-400 text-sm">AI Career Guidance Platform</p>
+            </div>
+
+            <nav class="space-y-2">
+                <a href="#" class="nav-item">
+                    <i class="fas fa-th-large w-5"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item active">
+                    <i class="fas fa-user w-5"></i>
+                    <span>Profile</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-graduation-cap w-5"></i>
+                    <span>Learning</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-briefcase w-5"></i>
+                    <span>Jobs</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-users w-5"></i>
+                    <span>Mentors</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-cog w-5"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+
+            <div class="mt-8 pt-6 border-t border-gray-700">
+                <div class="search-box">
+                    <i class="fas fa-search text-gray-400"></i>
+                    <input type="text" placeholder="Search..." class="search-input">
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6 overflow-auto">
+            <!-- Header -->
+            <header class="flex justify-between items-center mb-8">
+                <div>
+                    <h1 class="text-2xl font-bold text-white">Profile</h1>
+                    <p class="text-gray-400">Manage your professional profile and career goals</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button class="btn-secondary">
+                        <i class="fas fa-download mr-2"></i>
+                        Export Profile
+                    </button>
+                    <button class="btn-primary">
+                        <i class="fas fa-sync-alt mr-2"></i>
+                        Refresh Data
+                    </button>
+                </div>
+            </header>
+
+            <!-- Profile Overview -->
+            <section id="profile" class="mb-8">
+                <div class="card p-6">
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <!-- Profile Picture -->
+                        <div class="flex-shrink-0">
+                            <div class="relative">
+                                <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-blue-500">
+                                    <img id="profile-picture" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" 
+                                         alt="Profile" class="w-full h-full object-cover">
+                                </div>
+                                <button id="edit-picture" class="absolute bottom-0 right-0 bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition-colors">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Profile Info -->
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h2 class="text-2xl font-bold text-white" id="user-name">Alex Johnson</h2>
+                                    <p class="text-gray-400" id="user-degree">Computer Science, Stanford University</p>
+                                    <p class="text-gray-500 text-sm mt-1" id="user-goals">Aspiring Software Engineer | AI & Machine Learning</p>
+                                </div>
+                                <button id="edit-profile" class="btn-secondary">
+                                    <i class="fas fa-edit mr-2"></i>
+                                    Edit Profile
+                                </button>
+                            </div>
+                            
+                            <!-- Stats -->
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-blue-400">12</div>
+                                    <div class="text-gray-400 text-sm">Skills</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-green-400">8</div>
+                                    <div class="text-gray-400 text-sm">Courses</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-yellow-400">24</div>
+                                    <div class="text-gray-400 text-sm">Applications</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-purple-400">3</div>
+                                    <div class="text-gray-400 text-sm">Mentors</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Left Column -->
+                <div class="lg:col-span-2 space-y-6">
+                    <!-- Bio & Goals -->
+                    <section class="card p-6">
+                        <h3 class="section-title">
+                            <i class="fas fa-user-edit"></i>
+                            Bio & Career Goals
+                        </h3>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Professional Bio</label>
+                            <textarea class="form-input min-h-[120px]" placeholder="Tell us about yourself...">Computer Science graduate with a passion for building innovative software solutions. Experienced in full-stack development with a focus on creating user-friendly applications. Currently exploring AI and machine learning to solve real-world problems.</textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Career Goals</label>
+                            <textarea class="form-input min-h-[100px]" placeholder="What are your career aspirations?">My goal is to become a Senior Software Engineer at a tech company that values innovation and has a positive impact on society. I aim to specialize in AI-driven applications and eventually lead a team of developers working on cutting-edge technology.</textarea>
+                        </div>
+                        
+                        <div class="flex justify-end">
+                            <button class="btn-primary">
+                                <i class="fas fa-save mr-2"></i>
+                                Save Changes
+                            </button>
+                        </div>
+                    </section>
+
+                    <!-- Skills & Interests -->
+                    <section id="skills" class="card p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="section-title">
+                                <i class="fas fa-code"></i>
+                                Skills & Interests
+                            </h3>
+                            <button id="add-skill-btn" class="btn-secondary">
+                                <i class="fas fa-plus mr-2"></i>
+                                Add Skill
+                            </button>
+                        </div>
+                        
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <div class="skill-tag">
+                                <span>JavaScript</span>
+                                <button class="text-gray-400 hover:text-white">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="skill-tag">
+                                <span>React</span>
+                                <button class="text-gray-400 hover:text-white">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="skill-tag">
+                                <span>Node.js</span>
+                                <button class="text-gray-400 hover:text-white">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="skill-tag">
+                                <span>Python</span>
+                                <button class="text-gray-400 hover:text-white">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="skill-tag">
+                                <span>Machine Learning</span>
+                                <button class="text-gray-400 hover:text-white">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="skill-tag">
+                                <span>UI/UX Design</span>
+                                <button class="text-gray-400 hover:text-white">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Interests</label>
+                            <input type="text" class="form-input" placeholder="Add your professional interests..." value="AI Research, Open Source, Tech Education, Sustainable Tech">
+                        </div>
+                    </section>
+
+                    <!-- Career Progress -->
+                    <section id="progress" class="card p-6">
+                        <h3 class="section-title">
+                            <i class="fas fa-chart-line"></i>
+                            Career Progress
+                        </h3>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-value">60%</div>
+                                <div class="stat-label">Skills Mastered</div>
+                                <div class="w-full bg-gray-700 rounded-full h-2 mt-2">
+                                    <div class="bg-blue-500 h-2 rounded-full" style="width: 60%"></div>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">80%</div>
+                                <div class="stat-label">Courses Completed</div>
+                                <div class="w-full bg-gray-700 rounded-full h-2 mt-2">
+                                    <div class="bg-green-500 h-2 rounded-full" style="width: 80%"></div>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">75%</div>
+                                <div class="stat-label">Job Applications</div>
+                                <div class="w-full bg-gray-700 rounded-full h-2 mt-2">
+                                    <div class="bg-yellow-500 h-2 rounded-full" style="width: 75%"></div>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">40%</div>
+                                <div class="stat-label">Mentorship Progress</div>
+                                <div class="w-full bg-gray-700 rounded-full h-2 mt-2">
+                                    <div class="bg-purple-500 h-2 rounded-full" style="width: 40%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Right Column -->
+                <div class="space-y-6">
+                    <!-- Resume & Portfolio -->
+                    <section id="portfolio" class="card p-6">
+                        <h3 class="section-title">
+                            <i class="fas fa-file-alt"></i>
+                            Resume & Portfolio
+                        </h3>
+                        
+                        <div class="space-y-4">
+                            <div class="border-2 border-dashed border-gray-600 rounded-lg p-4 text-center">
+                                <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
+                                <p class="text-gray-400 text-sm mb-3">Upload your resume</p>
+                                <button class="btn-secondary w-full">
+                                    <i class="fas fa-upload mr-2"></i>
+                                    Choose File
+                                </button>
+                            </div>
+                            
+                            <div class="bg-gray-800 rounded-lg p-4">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <i class="fas fa-file-pdf text-red-400"></i>
+                                    <div>
+                                        <div class="font-medium">Alex_Johnson_Resume.pdf</div>
+                                        <div class="text-gray-400 text-sm">Updated 2 days ago</div>
+                                    </div>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button class="btn-secondary flex-1">
+                                        <i class="fas fa-eye mr-2"></i>
+                                        Preview
+                                    </button>
+                                    <button class="btn-secondary flex-1">
+                                        <i class="fas fa-download mr-2"></i>
+                                        Download
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <h4 class="font-medium mb-3">Portfolio Links</h4>
+                            <div class="space-y-2">
+                                <a href="#" class="flex items-center gap-3 p-3 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors">
+                                    <i class="fab fa-github text-gray-400"></i>
+                                    <span>github.com/alexjohnson</span>
+                                </a>
+                                <a href="#" class="flex items-center gap-3 p-3 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors">
+                                    <i class="fab fa-linkedin text-blue-400"></i>
+                                    <span>linkedin.com/in/alexjohnson</span>
+                                </a>
+                                <a href="#" class="flex items-center gap-3 p-3 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors">
+                                    <i class="fas fa-globe text-green-400"></i>
+                                    <span>alexjohnson.dev</span>
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Recent Activity -->
+                    <section class="card p-6">
+                        <h3 class="section-title">
+                            <i class="fas fa-history"></i>
+                            Recent Activity
+                        </h3>
+                        
+                        <div class="space-y-4">
+                            <div class="flex gap-3">
+                                <div class="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-check text-green-400 text-sm"></i>
+                                </div>
+                                <div>
+                                    <div class="font-medium">Completed Python course</div>
+                                    <div class="text-gray-400 text-sm">2 days ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex gap-3">
+                                <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-bullseye text-blue-400 text-sm"></i>
+                                </div>
+                                <div>
+                                    <div class="font-medium">Updated career goals</div>
+                                    <div class="text-gray-400 text-sm">5 days ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex gap-3">
+                                <div class="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-user-friends text-purple-400 text-sm"></i>
+                                </div>
+                                <div>
+                                    <div class="font-medium">Connected with mentor</div>
+                                    <div class="text-gray-400 text-sm">1 week ago</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Quick Actions -->
+                    <section class="card p-6">
+                        <h3 class="section-title">
+                            <i class="fas fa-bolt"></i>
+                            Quick Actions
+                        </h3>
+                        
+                        <div class="space-y-3">
+                            <button class="w-full btn-secondary justify-start">
+                                <i class="fas fa-search mr-3"></i>
+                                Find Mentors
+                            </button>
+                            <button class="w-full btn-secondary justify-start">
+                                <i class="fas fa-book mr-3"></i>
+                                Browse Courses
+                            </button>
+                            <button class="w-full btn-secondary justify-start">
+                                <i class="fas fa-briefcase mr-3"></i>
+                                Job Recommendations
+                            </button>
+                            <button class="w-full btn-secondary justify-start">
+                                <i class="fas fa-chart-bar mr-3"></i>
+                                Progress Analytics
+                            </button>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Skill Modal -->
+    <div id="skill-modal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+        <div class="card p-6 w-full max-w-md mx-4">
+            <h3 class="text-xl font-bold mb-4">Add New Skill</h3>
+            <input type="text" id="new-skill-input" class="form-input mb-4" placeholder="Enter a skill">
+            <div class="flex justify-end gap-3">
+                <button id="cancel-skill" class="btn-secondary">Cancel</button>
+                <button id="save-skill" class="btn-primary">Add Skill</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Notification System
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const messageEl = document.getElementById('notification-message');
+            
+            messageEl.textContent = message;
+            notification.style.display = 'block';
+            notification.className = `notification show ${type === 'success' ? 'bg-green-500' : 'bg-red-500'}`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 300);
+            }, 3000);
+        }
+
+        // Mobile Navigation
+        const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+        mobileNavItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                mobileNavItems.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+                
+                const targetId = this.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Skill Management
+        const addSkillBtn = document.getElementById('add-skill-btn');
+        const skillModal = document.getElementById('skill-modal');
+        const cancelSkillBtn = document.getElementById('cancel-skill');
+        const saveSkillBtn = document.getElementById('save-skill');
+        const newSkillInput = document.getElementById('new-skill-input');
+        const skillsContainer = document.querySelector('.flex-wrap.gap-2');
+
+        addSkillBtn.addEventListener('click', () => {
+            skillModal.classList.remove('hidden');
+            newSkillInput.focus();
+        });
+
+        cancelSkillBtn.addEventListener('click', () => {
+            skillModal.classList.add('hidden');
+            newSkillInput.value = '';
+        });
+
+        saveSkillBtn.addEventListener('click', () => {
+            const skillText = newSkillInput.value.trim();
+            if (skillText) {
+                const skillElement = document.createElement('div');
+                skillElement.className = 'skill-tag';
+                skillElement.innerHTML = `
+                    <span>${skillText}</span>
+                    <button class="text-gray-400 hover:text-white">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                
+                skillsContainer.appendChild(skillElement);
+                
+                // Add event listener to the remove button
+                const removeButton = skillElement.querySelector('button');
+                removeButton.addEventListener('click', () => {
+                    skillElement.remove();
+                    showNotification('Skill removed');
+                });
+                
+                skillModal.classList.add('hidden');
+                newSkillInput.value = '';
+                showNotification('Skill added successfully');
+            }
+        });
+
+        // Initialize remove buttons for existing skills
+        document.querySelectorAll('.skill-tag button').forEach(button => {
+            button.addEventListener('click', function() {
+                const skillElement = this.closest('.skill-tag');
+                skillElement.remove();
+                showNotification('Skill removed');
+            });
+        });
+
+        // Profile Picture Edit
+        const editPictureBtn = document.getElementById('edit-picture');
+        const profilePicture = document.getElementById('profile-picture');
+        
+        editPictureBtn.addEventListener('click', () => {
+            // In a real app, this would open a file picker
+            // For demo, we'll just toggle between two images
+            if (profilePicture.src.includes('unsplash')) {
+                profilePicture.src = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80';
+            } else {
+                profilePicture.src = 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80';
+            }
+            showNotification('Profile picture updated');
+        });
+
+        // Profile Edit
+        const editProfileBtn = document.getElementById('edit-profile');
+        editProfileBtn.addEventListener('click', () => {
+            showNotification('Edit mode activated - this would open an edit form in a real application');
+        });
+
+        // Form Auto-save Simulation
+        const textareas = document.querySelectorAll('textarea');
+        textareas.forEach(textarea => {
+            let timeout;
+            textarea.addEventListener('input', () => {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    showNotification('Changes saved automatically');
+                }, 2000);
+            });
+        });
+
+        // Responsive Behavior
+        function handleResize() {
+            // Add any responsive behavior here
+        }
+
+        window.addEventListener('resize', handleResize);
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            showNotification('Welcome to your Mentorax profile!');
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                showNotification('Profile saved successfully');
+            }
+        });
+    </script>
+</body>
+</html>
