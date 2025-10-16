@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Guidance | Mentorax</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            min-height: 100vh;
+            color: #E2E8F0;
+            overflow-x: hidden;
+        }
+        
+        .glass-card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+        
+        .tab-active {
+            background: rgba(99, 102, 241, 0.2);
+            border: 1px solid rgba(99, 102, 241, 0.4);
+        }
+        
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.15;
+            z-index: -1;
+        }
+        
+        .skeleton-loader {
+            background: linear-gradient(90deg, rgba(30, 41, 59, 0.6) 25%, rgba(51, 65, 85, 0.8) 50%, rgba(30, 41, 59, 0.6) 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        
+        @keyframes loading {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+        
+        .slide-up {
+            animation: slideUp 0.5s ease-out forwards;
+            opacity: 0;
+        }
+        
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .magnetic-button {
+            transition: transform 0.2s ease;
+        }
+        
+        .magnetic-button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .glow-border {
+            position: relative;
+        }
+        
+        .glow-border::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 12px;
+            padding: 2px;
+            background: linear-gradient(45deg, #6366F1, #8B5CF6, #EC4899);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .glow-border:hover::before {
+            opacity: 1;
+        }
+        
+        .tab-indicator {
+            transition: all 0.3s ease;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+        
+        .particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Floating Background Shapes -->
+    <div class="floating-shape bg-blue-500 w-80 h-80 top-10 left-10"></div>
+    <div class="floating-shape bg-purple-500 w-96 h-96 bottom-10 right-10"></div>
+    <div class="floating-shape bg-pink-500 w-64 h-64 top-1/2 left-1/3"></div>
+    
+    <!-- Main Container -->
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <!-- Topbar -->
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+            <div>
+                <h1 class="text-3xl md:text-4xl font-bold text-white">Career Guidance</h1>
+                <p class="text-lg text-slate-300 mt-2">AI-powered recommendations for your growth</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="relative">
+                    <button id="bookmark-btn" class="p-3 rounded-full glass-card hover:bg-slate-700 transition-all duration-300">
+                        <i class="fas fa-bookmark text-xl text-indigo-400"></i>
+                    </button>
+                    <span id="bookmark-count" class="absolute -top-1 -right-1 bg-indigo-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                </div>
+                <div class="flex items-center gap-3 glass-card px-4 py-2 rounded-full">
+                    <div class="h-10 w-10 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold">A</div>
+                    <span class="font-medium">Alex Johnson</span>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Tab Navigation -->
+        <div class="relative mb-10">
+            <div class="flex flex-wrap gap-2 md:gap-4">
+                <button class="tab-btn px-6 py-3 rounded-xl glass-card font-medium transition-all duration-300 tab-active" data-tab="career-paths">
+                    Career Paths
+                </button>
+                <button class="tab-btn px-6 py-3 rounded-xl glass-card font-medium transition-all duration-300" data-tab="skill-gap">
+                    Skill Gap
+                </button>
+                <button class="tab-btn px-6 py-3 rounded-xl glass-card font-medium transition-all duration-300" data-tab="degree-explorer">
+                    Degree Explorer
+                </button>
+            </div>
+            <div id="tab-indicator" class="tab-indicator absolute bottom-0 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full transition-all duration-300" style="width: 120px; left: 16px;"></div>
+        </div>
+        
+        <!-- Tab Content -->
+        <main>
+            <!-- Career Paths Tab -->
+            <div id="career-paths" class="tab-content">
+                <!-- Filter Bar -->
+                <div class="flex flex-wrap gap-4 mb-8">
+                    <div class="relative">
+                        <select class="glass-card px-4 py-2 pr-8 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option>All Industries</option>
+                            <option>Technology</option>
+                            <option>Healthcare</option>
+                            <option>Business</option>
+                            <option>Creative</option>
+                        </select>
+                        <i class="fas fa-chevron-down absolute right-3 top-3 text-slate-400"></i>
+                    </div>
+                    
+                    <div class="flex items-center gap-2 glass-card px-4 py-2 rounded-lg">
+                        <span class="text-slate-300">Salary:</span>
+                        <input type="range" min="0" max="200000" value="100000" class="w-32 accent-indigo-500">
+                        <span class="text-sm">$100K+</span>
+                    </div>
+                    
+                    <div class="relative">
+                        <select class="glass-card px-4 py-2 pr-8 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option>All Growth Potential</option>
+                            <option>High Growth</option>
+                            <option>Medium Growth</option>
+                            <option>Low Growth</option>
+                        </select>
+                        <i class="fas fa-chevron-down absolute right-3 top-3 text-slate-400"></i>
+                    </div>
+                </div>
+                
+                <!-- Career Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Career Card 1 -->
+                    <div class="glass-card rounded-xl p-6 transition-all duration-300 hover:scale-105 glow-border">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-white">Data Scientist</h3>
+                                <div class="flex items-center mt-1">
+                                    <i class="fas fa-chart-line text-indigo-400 mr-2"></i>
+                                    <span class="text-slate-300">Technology</span>
+                                </div>
+                            </div>
+                            <i class="far fa-bookmark text-xl text-slate-400 hover:text-indigo-400 cursor-pointer transition-colors"></i>
+                        </div>
+                        
+                        <div class="flex justify-between items-center mb-4">
+                            <div>
+                                <p class="text-slate-400">Avg. Salary</p>
+                                <p class="text-white font-bold">$120,000</p>
+                            </div>
+                            <div>
+                                <p class="text-slate-400">Growth</p>
+                                <p class="text-green-400 font-bold">+22%</p>
+                            </div>
+                        </div>
+                        
+                        <p class="text-slate-300 mb-6">Analyze and interpret complex data to help organizations make better decisions.</p>
+                        
+                        <button class="w-full magnetic-button bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white py-3 rounded-lg font-medium transition-all duration-300 flex items-center justify-center gap-2">
+                            View Learning Plan <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Career Card 2 -->
+                    <div class="glass-card rounded-xl p-6 transition-all duration-300 hover:scale-105 glow-border">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-white">UX Designer</h3>
+                                <div class="flex items-center mt-1">
+                                    <i class="fas fa-palette text-pink-400 mr-2"></i>
+                                    <span class="text-slate-300">Creative</span>
+                                </div>
+                            </div>
+                            <i class="far fa-bookmark text-xl text-slate-400 hover:text-indigo-400 cursor-pointer transition-colors"></i>
+                        </div>
+                        
+                        <div class="flex justify-between items-center mb-4">
+                            <div>
+                                <p class="text-slate-400">Avg. Salary</p>
+                                <p class="text-white font-bold">$95,000</p>
+                            </div>
+                            <div>
+                                <p class="text-slate-400">Growth</p>
+                                <p class="text-green-400 font-bold">+15%</p>
+                            </div>
+                        </div>
+                        
+                        <p class="text-slate-300 mb-6">Create meaningful and enjoyable experiences for users of digital products.</p>
+                        
+                        <button class="w-full magnetic-button bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white py-3 rounded-lg font-medium transition-all duration-300 flex items-center justify-center gap-2">
+                            View Learning Plan <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Career Card 3 -->
+                    <div class="glass-card rounded-xl p-6 transition-all duration-300 hover:scale-105 glow-border">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-white">Product Manager</h3>
+                                <div class="flex items-center mt-1">
+                                    <i class="fas fa-briefcase text-amber-400 mr-2"></i>
+                                    <span class="text-slate-300">Business</span>
+                                </div>
+                            </div>
+                            <i class="far fa-bookmark text-xl text-slate-400 hover:text-indigo-400 cursor-pointer transition-colors"></i>
+                        </div>
+                        
+                        <div class="flex justify-between items-center mb-4">
+                            <div>
+                                <p class="text-slate-400">Avg. Salary</p>
+                                <p class="text-white font-bold">$115,000</p>
+                            </div>
+                            <div>
+                                <p class="text-slate-400">Growth</p>
+                                <p class="text-green-400 font-bold">+18%</p>
+                            </div>
+                        </div>
+                        
+                        <p class="text-slate-300 mb-6">Guide the success of a product and lead the team responsible for improving it.</p>
+                        
+                        <button class="w-full magnetic-button bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white py-3 rounded-lg font-medium transition-all duration-300 flex items-center justify-center gap-2">
+                            View Learning Plan <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Skill Gap Tab -->
+            <div id="skill-gap" class="tab-content hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Skill Gap Chart -->
+                    <div class="lg:col-span-2 glass-card rounded-xl p-6">
+                        <h2 class="text-2xl font-bold text-white mb-6">Your Skill Gap Analysis</h2>
+                        
+                        <div class="chart-container">
+                            <canvas id="skillChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Top Skills & Readiness -->
+                    <div class="space-y-6">
+                        <!-- Career Readiness -->
+                        <div class="glass-card rounded-xl p-6">
+                            <h3 class="text-xl font-bold text-white mb-4">Career Readiness</h3>
+                            <div class="relative w-40 h-40 mx-auto mb-4">
+                                <canvas id="readinessChart"></canvas>
+                                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                    <span class="text-3xl font-bold text-white">68%</span>
+                                    <span class="text-slate-300 text-sm">Ready</span>
+                                </div>
+                            </div>
+                            <p class="text-center text-slate-300">Complete 3 more courses to reach 85% readiness</p>
+                        </div>
+                        
+                        <!-- Top Skills to Improve -->
+                        <div class="glass-card rounded-xl p-6">
+                            <h3 class="text-xl font-bold text-white mb-4">Top Skills to Improve</h3>
+                            <div class="space-y-4">
+                                <div class="skill-item">
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-slate-300">Machine Learning</span>
+                                        <span class="text-slate-300">45%</span>
+                                    </div>
+                                    <div class="w-full bg-slate-700 rounded-full h-2">
+                                        <div class="bg-indigo-500 h-2 rounded-full" style="width: 45%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="skill-item">
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-slate-300">Data Visualization</span>
+                                        <span class="text-slate-300">60%</span>
+                                    </div>
+                                    <div class="w-full bg-slate-700 rounded-full h-2">
+                                        <div class="bg-indigo-500 h-2 rounded-full" style="width: 60%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="skill-item">
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-slate-300">Statistical Analysis</span>
+                                        <span class="text-slate-300">55%</span>
+                                    </div>
+                                    <div class="w-full bg-slate-700 rounded-full h-2">
+                                        <div class="bg-indigo-500 h-2 rounded-full" style="width: 55%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button class="w-full mt-6 magnetic-button bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white py-3 rounded-lg font-medium transition-all duration-300">
+                                View Improvement Plan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Degree Explorer Tab -->
+            <div id="degree-explorer" class="tab-content hidden">
+                <!-- Search Bar -->
+                <div class="glass-card rounded-xl p-4 mb-8">
+                    <div class="flex">
+                        <input type="text" placeholder="Search for a degree (e.g. Computer Science)" class="flex-grow bg-transparent border-0 focus:ring-0 text-white placeholder-slate-400">
+                        <button class="ml-4 px-6 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg font-medium">Search</button>
+                    </div>
+                </div>
+                
+                <!-- Degree Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Degree Card 1 -->
+                    <div class="glass-card rounded-xl p-6 transition-all duration-300 hover:scale-105 glow-border">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold text-white">Computer Science</h3>
+                            <i class="far fa-bookmark text-xl text-slate-400 hover:text-indigo-400 cursor-pointer transition-colors"></i>
+                        </div>
+                        
+                        <p class="text-slate-300 mb-6">Study computational systems, algorithms, and software development.</p>
+                        
+                        <div class="mb-4">
+                            <h4 class="text-white font-medium mb-2">Related Careers:</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-slate-700 rounded-full text-sm">Software Engineer</span>
+                                <span class="px-3 py-1 bg-slate-700 rounded-full text-sm">Data Scientist</span>
+                                <span class="px-3 py-1 bg-slate-700 rounded-full text-sm">Systems Analyst</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-400">Avg. Duration: 4 years</span>
+                            <button class="magnetic-button px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg font-medium text-sm">
+                                Explore
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Degree Card 2 -->
+                    <div class="glass-card rounded-xl p-6 transition-all duration-300 hover:scale-105 glow-border">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold text-white">Business Administration</h3>
+                            <i class="far fa-bookmark text-xl text-slate-400 hover:text-indigo-400 cursor-pointer transition-colors"></i>
+                        </div>
+                        
+                        <p class="text-slate-300 mb-6">Learn management principles, finance, marketing, and operations.</p>
+                        
+                        <div class="mb-4">
+                            <h4 class="text-white font-medium mb-2">Related Careers:</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-slate-700 rounded-full text-sm">Product Manager</span>
+                                <span class="px-3 py-1 bg-slate-700 rounded-full text-sm">Marketing Director</span>
+                                <span class="px-3 py-1 bg-slate-700 rounded-full text-sm">Business Analyst</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-400">Avg. Duration: 4 years</span>
+                            <button class="magnetic-button px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg font-medium text-sm">
+                                Explore
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Learning Plan Modal -->
+    <div id="learning-plan-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
+        <div class="glass-card rounded-xl p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-white">Data Scientist Learning Plan</h2>
+                <button id="close-modal" class="text-slate-400 hover:text-white">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="p-4 bg-slate-800 rounded-lg">
+                    <h3 class="text-white font-medium mb-2">Months 1-3: Foundation</h3>
+                    <ul class="text-slate-300 list-disc list-inside space-y-1">
+                        <li>Python Programming</li>
+                        <li>Statistics & Probability</li>
+                        <li>SQL Fundamentals</li>
+                    </ul>
+                </div>
+                
+                <div class="p-4 bg-slate-800 rounded-lg">
+                    <h3 class="text-white font-medium mb-2">Months 4-6: Core Skills</h3>
+                    <ul class="text-slate-300 list-disc list-inside space-y-1">
+                        <li>Machine Learning Algorithms</li>
+                        <li>Data Visualization</li>
+                        <li>Data Wrangling</li>
+                    </ul>
+                </div>
+                
+                <div class="p-4 bg-slate-800 rounded-lg">
+                    <h3 class="text-white font-medium mb-2">Months 7-9: Advanced Topics</h3>
+                    <ul class="text-slate-300 list-disc list-inside space-y-1">
+                        <li>Deep Learning</li>
+                        <li>Big Data Technologies</li>
+                        <li>MLOps</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <button class="w-full mt-6 magnetic-button bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white py-3 rounded-lg font-medium transition-all duration-300">
+                Save Learning Plan
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Tab Switching Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const tabIndicator = document.getElementById('tab-indicator');
+            
+            // Initialize first tab as active
+            switchTab('career-paths');
+            
+            // Add click event to all tab buttons
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+            
+            function switchTab(tabId) {
+                // Update tab buttons
+                tabButtons.forEach(btn => {
+                    if (btn.getAttribute('data-tab') === tabId) {
+                        btn.classList.add('tab-active');
+                    } else {
+                        btn.classList.remove('tab-active');
+                    }
+                });
+                
+                // Update tab contents
+                tabContents.forEach(content => {
+                    if (content.id === tabId) {
+                        content.classList.remove('hidden');
+                        // Add slide-up animation to cards in the active tab
+                        const cards = content.querySelectorAll('.glass-card');
+                        cards.forEach((card, index) => {
+                            card.classList.add('slide-up');
+                            card.style.animationDelay = `${index * 0.1}s`;
+                        });
+                    } else {
+                        content.classList.add('hidden');
+                    }
+                });
+                
+                // Update tab indicator position
+                const activeTab = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
+                if (activeTab) {
+                    const tabRect = activeTab.getBoundingClientRect();
+                    const containerRect = activeTab.parentElement.getBoundingClientRect();
+                    
+                    tabIndicator.style.width = `${tabRect.width}px`;
+                    tabIndicator.style.left = `${tabRect.left - containerRect.left}px`;
+                }
+                
+                // Update URL hash
+                window.location.hash = tabId;
+            }
+            
+            // Handle URL hash changes
+            window.addEventListener('hashchange', function() {
+                const hash = window.location.hash.substring(1);
+                if (['career-paths', 'skill-gap', 'degree-explorer'].includes(hash)) {
+                    switchTab(hash);
+                }
+            });
+            
+            // Initialize charts
+            initializeCharts();
+            
+            // Bookmark functionality
+            const bookmarkButtons = document.querySelectorAll('.fa-bookmark');
+            const bookmarkCount = document.getElementById('bookmark-count');
+            let bookmarks = 3;
+            
+            bookmarkButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    if (this.classList.contains('far')) {
+                        this.classList.remove('far');
+                        this.classList.add('fas', 'text-indigo-400');
+                        bookmarks++;
+                    } else {
+                        this.classList.remove('fas', 'text-indigo-400');
+                        this.classList.add('far');
+                        bookmarks--;
+                    }
+                    bookmarkCount.textContent = bookmarks;
+                });
+            });
+            
+            // Learning plan modal
+            const viewPlanButtons = document.querySelectorAll('.magnetic-button');
+            const modal = document.getElementById('learning-plan-modal');
+            const closeModal = document.getElementById('close-modal');
+            
+            viewPlanButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    modal.classList.remove('hidden');
+                });
+            });
+            
+            closeModal.addEventListener('click', function() {
+                modal.classList.add('hidden');
+            });
+            
+            // Close modal when clicking outside
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.classList.add('hidden');
+                }
+            });
+        });
+        
+        function initializeCharts() {
+            // Skill Gap Chart
+            const skillCtx = document.getElementById('skillChart').getContext('2d');
+            const skillChart = new Chart(skillCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Python', 'SQL', 'ML Algorithms', 'Data Visualization', 'Statistics', 'Cloud Computing'],
+                    datasets: [
+                        {
+                            label: 'Current Proficiency',
+                            data: [65, 70, 45, 60, 55, 40],
+                            backgroundColor: 'rgba(99, 102, 241, 0.7)',
+                            borderColor: 'rgba(99, 102, 241, 1)',
+                            borderWidth: 1,
+                            borderRadius: 5
+                        },
+                        {
+                            label: 'Target Proficiency',
+                            data: [90, 85, 85, 80, 80, 75],
+                            backgroundColor: 'rgba(139, 92, 246, 0.5)',
+                            borderColor: 'rgba(139, 92, 246, 1)',
+                            borderWidth: 1,
+                            borderRadius: 5
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Career Readiness Chart
+            const readinessCtx = document.getElementById('readinessChart').getContext('2d');
+            const readinessChart = new Chart(readinessCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Ready', 'Remaining'],
+                    datasets: [{
+                        data: [68, 32],
+                        backgroundColor: [
+                            'rgba(99, 102, 241, 0.8)',
+                            'rgba(30, 41, 59, 0.5)'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: false
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
