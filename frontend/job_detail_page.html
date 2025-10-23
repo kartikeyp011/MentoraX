@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Opportunities & Events</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen p-4">
+
+  <!-- Opportunities Page -->
+  <section id="opportunities" class="mb-12">
+    <h1 class="text-2xl font-bold mb-4">Opportunities</h1>
+    <div class="flex gap-6">
+      
+      <!-- Filter Sidebar -->
+      <aside class="w-80 bg-white p-4 rounded shadow space-y-6 sticky top-4 h-fit">
+        <h2 class="font-semibold text-lg mb-2">Filters</h2>
+
+        <div>
+          <label for="searchInput" class="block text-gray-700 mb-1">Search</label>
+          <input type="text" id="searchInput" placeholder="Search roles, skills, companies..." class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+
+        <div>
+          <label for="filterRole" class="block text-gray-700 mb-1">Role</label>
+          <select id="filterRole" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="">All</option>
+            <option>Developer</option>
+            <option>Designer</option>
+            <option>Product Manager</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="filterSkills" class="block text-gray-700 mb-1">Skills</label>
+          <select id="filterSkills" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" multiple size="3">
+            <option>JavaScript</option>
+            <option>Python</option>
+            <option>UI/UX</option>
+            <option>Marketing</option>
+          </select>
+          <small class="text-gray-400">Hold Ctrl (Cmd) to select multiple</small>
+        </div>
+
+        <div>
+          <label for="filterCompany" class="block text-gray-700 mb-1">Company</label>
+          <select id="filterCompany" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="">All</option>
+            <option>Google</option>
+            <option>Facebook</option>
+            <option>Amazon</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="filterType" class="block text-gray-700 mb-1">Type</label>
+          <select id="filterType" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="">All</option>
+            <option>Internship</option>
+            <option>Full-time</option>
+            <option>Part-time</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="filterStipend" class="block text-gray-700 mb-1">Stipend</label>
+          <select id="filterStipend" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="">All</option>
+            <option value="0">Unpaid</option>
+            <option value="1000">$0-$1000</option>
+            <option value="2000">$1000-$2000</option>
+            <option value="2001">Above $2000</option>
+          </select>
+        </div>
+      </aside>
+
+      <!-- Results Area -->
+      <div class="flex-1">
+        <div id="opportunitiesResults" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+
+        <!-- Loading, Error, Empty States -->
+        <div id="opportunitiesLoading" class="hidden text-center text-gray-600 mt-6">Loading opportunities...</div>
+        <div id="opportunitiesError" class="hidden text-center text-red-500 mt-6">Failed to load opportunities.</div>
+        <div id="opportunitiesEmpty" class="hidden text-center text-gray-500 mt-6">No opportunities match your filters.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal for View Details -->
+  <div id="modal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg max-w-2xl w-full p-6 relative">
+      <button id="modalClose" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800">&times;</button>
+      <h3 id="modalTitle" class="text-xl font-semibold mb-3"></h3>
+      <p id="modalDescription" class="mb-4"></p>
+      <a id="modalApplyLink" href="#" target="_blank" class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Apply Now</a>
+    </div>
+  </div>
+
+  <!-- Hackathons & Scholarships Page -->
+  <section id="events">
+    <h1 class="text-2xl font-bold mb-4">Hackathons & Scholarships</h1>
+
+    <div class="flex items-center gap-8 mb-6 flex-wrap">
+      <label class="flex items-center gap-2">
+        <input type="checkbox" id="filterRemote" />
+        <span>Remote</span>
+      </label>
+      <label class="flex items-center gap-2">
+        <input type="checkbox" id="filterOnsite" />
+        <span>On-site</span>
+      </label>
+
+      <label class="flex items-center gap-2">
+        Team size:
+        <select id="filterTeamSize" class="border rounded px-2 py-1">
+          <option value="">All</option>
+          <option value="1">Solo</option>
+          <option value="2-4">2-4</option>
+          <option value="5+">5+</option>
+        </select>
+      </label>
+
+      <label class="flex items-center gap-2">
+        <input type="checkbox" id="filterDeadlineSoon" />
+        <span>Deadline Soon</span>
+      </label>
+    </div>
+
+    <div id="eventsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
+
+    <div id="eventsLoading" class="hidden text-center text-gray-600">Loading events...</div>
+    <div id="eventsEmpty" class="hidden text-center text-gray-500">No events match your filters.</div>
+  </section>
+
+  <!-- Top Opportunities Card on Dashboard -->
+  <section id="dashboard" class="mt-12">
+    <h1 class="text-2xl font-bold mb-4">Dashboard</h1>
+    <div class="max-w-xl bg-white p-6 rounded shadow">
+      <h2 class="text-lg font-semibold mb-3">Top Opportunities</h2>
+      <div id="dashboardTopOpportunities" class="space-y-4">
+        <div class="text-gray-600">Loading top opportunities...</div>
+      </div>
+    </div>
+  </section>
+
+<script>
+  // Sample Data for opportunities and events
+  const opportunitiesData = [
+    {
+      id: '1', company: 'Google', title: 'Frontend Developer', stipend: 1500,
+      role: 'Developer', skills: ['JavaScript'], type: 'Internship',
+      description: 'Work on Google frontend projects.', applyLink: 'https://careers.google.com/jobs',
+      tags: ['Remote', 'UI', 'JavaScript']
+    },
+    {
+      id: '2', company: 'Facebook', title: 'Product Manager', stipend: 2500,
+      role: 'Product Manager', skills: ['Leadership'], type: 'Full-time',
+      description: 'Lead product teams at Facebook.', applyLink: 'https://facebook.com/jobs',
+      tags: ['Full-time', 'On-site']
+    },
+    {
+      id: '3', company: 'Amazon', title: 'UI/UX Designer', stipend: 1000,
+      role: 'Designer', skills: ['UI/UX'], type: 'Internship',
+      description: 'Design amazing user experiences.', applyLink: 'https://amazon.jobs',
+      tags: ['Remote', 'Design']
+    }
+  ];
+
+  const eventsData = [
+    {
+      id: 'e1', name: 'Dev Hackathon', teamSize: 2, type: 'Remote', deadline: '2025-11-20T23:59:59Z'
+    },
+    {
+      id: 'e2', name: 'Campus Coding Challenge', teamSize: 1, type: 'On-site', deadline: '2025-10-25T23:59:59Z'
+    },
+    {
+      id: 'e3', name: 'Scholarship Grant', teamSize: 5, type: 'Remote', deadline: '2025-12-01T23:59:59Z'
+    }
+  ];
+
+  // Elements for opportunities
+  const opportunitiesResults = document.getElementById('opportunitiesResults');
+  const searchInput = document.getElementById('searchInput');
+  const filterRole = document.getElementById('filterRole');
+  const filterSkills = document.getElementById('filterSkills');
+  const filterCompany = document.getElementById('filterCompany');
+  const filterType = document.getElementById('filterType');
+  const filterStipend = document.getElementById('filterStipend');
+  const loadingOpportunities = document.getElementById('opportunitiesLoading');
+  const errorOpportunities = document.getElementById('opportunitiesError');
+  const emptyOpportunities = document.getElementById('opportunitiesEmpty');
+
+  // Modal elements
+  const modal = document.getElementById('modal');
+  const modalClose = document.getElementById('modalClose');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalDescription = document.getElementById('modalDescription');
+  const modalApplyLink = document.getElementById('modalApplyLink');
+
+  // Events elements
+  const eventsGrid = document.getElementById('eventsGrid');
+  const filterRemote = document.getElementById('filterRemote');
+  const filterOnsite = document.getElementById('filterOnsite');
+  const filterTeamSize = document.getElementById('filterTeamSize');
+  const filterDeadlineSoon = document.getElementById('filterDeadlineSoon');
+  const loadingEvents = document.getElementById('eventsLoading');
+  const emptyEvents = document.getElementById('eventsEmpty');
+
+  // Dashboard elements
+  const dashboardTopOpportunities = document.getElementById('dashboardTopOpportunities');
+
+  // Utility functions
+  function filterOpportunities() {
+    loadingOpportunities.classList.remove('hidden');
+    errorOpportunities.classList.add('hidden');
+    emptyOpportunities.classList.add('hidden');
+    opportunitiesResults.innerHTML = '';
+
+    const query = searchInput.value.toLowerCase();
+    const role = filterRole.value;
+    const skills = Array.from(filterSkills.selectedOptions).map(o => o.value);
+    const company = filterCompany.value;
+    const type = filterType.value;
+    const stipendFilter = filterStipend.value;
+
+    const filtered = opportunitiesData.filter(opp => {
+      const matchesSearch = [opp.title, opp.company, ...opp.skills].some(str => str.toLowerCase().includes(query));
+      const matchesRole = role ? opp.role === role : true;
+      const matchesCompany = company ? opp.company === company : true;
+      const matchesType = type ? opp.type === type : true;
+      const matchesSkills = skills.length ? skills.every(skill => opp.skills.includes(skill)) : true;
+      let matchesStipend = true;
+      if (stipendFilter) {
+        if (stipendFilter === '0') matchesStipend = opp.stipend === 0;
+        else if (stipendFilter === '2001') matchesStipend = opp.stipend > 2000;
+        else matchesStipend = opp.stipend <= parseInt(stipendFilter);
+      }
+      return matchesSearch && matchesRole && matchesCompany && matchesType && matchesSkills && matchesStipend;
+    });
+
+    loadingOpportunities.classList.add('hidden');
+    if (filtered.length === 0) {
+      emptyOpportunities.classList.remove('hidden');
+    } else {
+      emptyOpportunities.classList.add('hidden');
+      filtered.forEach(opportunity => {
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded shadow p-4 flex flex-col justify-between border border-gray-200';
+        card.innerHTML = `
+          <div>
+            <h3 class="font-semibold text-lg">${opportunity.title}</h3>
+            <p class="text-gray-600">${opportunity.company}</p>
+            <p class="text-green-700 font-medium my-1">${opportunity.stipend > 0 ? '$' + opportunity.stipend : 'Unpaid'}</p>
+            <div class="flex flex-wrap gap-2 text-xs mt-2">
+              ${opportunity.tags.map(tag => `<span class="bg-blue-100 text-blue-700 px-2 py-1 rounded">${tag}</span>`).join('')}
+            </div>
+          </div>
+          <div class="mt-4 flex gap-2">
+            <button class="flex-1 bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 apply-btn" data-id="${opportunity.id}">Apply</button>
+            <button class="flex-1 border border-blue-600 text-blue-600 px-3 py-2 rounded hover:bg-blue-100 details-btn" data-id="${opportunity.id}">View Details</button>
+          </div>
+        `;
+        opportunitiesResults.appendChild(card);
+      });
+    }
+  }
+
+  function openModal(id) {
+    const opportunity = opportunitiesData.find(o => o.id === id);
+    if (!opportunity) return;
+    modalTitle.textContent = `${opportunity.title} at ${opportunity.company}`;
+    modalDescription.textContent = opportunity.description;
+    modalApplyLink.href = opportunity.applyLink;
+    modal.classList.remove('hidden');
+  }
+
+  function closeModal() {
+    modal.classList.add('hidden');
+  }
+
+  // Bookmarks saved in localStorage
+  function getBookmarks() {
+    const saved = localStorage.getItem('bookmarks');
+    return saved ? JSON.parse(saved) : [];
+  }
+
+  function saveBookmark(id) {
+    const bookmarks = getBookmarks();
+    if (!bookmarks.includes(id)) {
+      bookmarks.push(id);
+      localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+      alert('Opportunity saved to bookmarks.');
+    }
+  }
+
+  // Events filtering and countdown
+  function filterEvents() {
+    eventsGrid.innerHTML = '';
+    let filteredEvents = eventsData;
+
+    // Filter by Remote/On-site
+    if (filterRemote.checked && !filterOnsite.checked) {
+      filteredEvents = filteredEvents.filter(e => e.type === 'Remote');
+    } else if (!filterRemote.checked && filterOnsite.checked) {
+      filteredEvents = filteredEvents.filter(e => e.type === 'On-site');
+    }
+
+    // Filter team size
+    const teamSize = filterTeamSize.value;
+    if (teamSize) {
+      if(teamSize === '1') filteredEvents = filteredEvents.filter(e => e.teamSize === 1);
+      else if(teamSize === '2-4') filteredEvents = filteredEvents.filter(e => e.teamSize >=2 && e.teamSize <=4);
+      else if(teamSize === '5+') filteredEvents = filteredEvents.filter(e => e.teamSize >= 5);
+    }
+
+    // Filter deadline soon (next 7 days)
+    if(filterDeadlineSoon.checked) {
+      const now = new Date();
+      const soonDate = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+      filteredEvents = filteredEvents.filter(e => new Date(e.deadline) <= soonDate);
+    }
+
+    if(filteredEvents.length === 0) {
+      emptyEvents.classList.remove('hidden');
+    } else {
+      emptyEvents.classList.add('hidden');
+      filteredEvents.forEach(event => {
+        const deadlineDate = new Date(event.deadline);
+        const countdown = getCountdown(deadlineDate);
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded shadow p-4 flex flex-col justify-between border border-gray-200';
+        card.innerHTML = `
+          <h3 class="font-semibold text-lg">${event.name}</h3>
+          <p>Type: ${event.type}</p>
+          <p>Team size: ${event.teamSize}</p>
+          <p class="mt-2 text-red-600 font-semibold">Deadline in: <span class="countdown" data-deadline="${event.deadline}">${countdown}</span></p>
+        `;
+        eventsGrid.appendChild(card);
+      });
+    }
+  }
+
+  function getCountdown(deadline) {
+    const now = new Date();
+    const diffMs = deadline - now;
+    if(diffMs <= 0) return 'Expired';
+    const days = Math.floor(diffMs / (24*60*60*1000));
+    const hrs = Math.floor((diffMs % (24*60*60*1000)) / (60*60*1000));
+    const mins = Math.floor((diffMs % (60*60*1000)) / (60*1000));
+    return `${days}d ${hrs}h ${mins}m`;
+  }
+
+  // Refresh countdown timers every minute
+  function refreshCountdowns() {
+    document.querySelectorAll('.countdown').forEach(span => {
+      const deadline = new Date(span.getAttribute('data-deadline'));
+      span.textContent = getCountdown(deadline);
+    });
+  }
+
+  // Dashboard fetch top opportunities simulation
+  async function fetchTopOpportunities() {
+    dashboardTopOpportunities.innerHTML = 'Loading top opportunities...';
+    try {
+      // Simulate fetch with local data, replace with actual API call in production
+      const topOpps = opportunitiesData.slice(0, 2);
+      dashboardTopOpportunities.innerHTML = '';
+      topOpps.forEach(opp => {
+        const div = document.createElement('div');
+        div.className = 'border p-3 rounded hover:bg-gray-100 cursor-pointer';
+        div.textContent = `${opp.title} at ${opp.company} - $${opp.stipend || 'Unpaid'}`;
+        dashboardTopOpportunities.appendChild(div);
+      });
+    } catch (error) {
+      dashboardTopOpportunities.textContent = 'Failed to load top opportunities.';
+    }
+  }
+
+  // Event listeners
+  document.querySelectorAll('#searchInput, #filterRole, #filterSkills, #filterCompany, #filterType, #filterStipend').forEach(el => {
+    el.addEventListener('input', filterOpportunities);
+    el.addEventListener('change', filterOpportunities);
+  });
+
+  opportunitiesResults.addEventListener('click', e => {
+    if(e.target.classList.contains('details-btn')) {
+      openModal(e.target.dataset.id);
+    } else if(e.target.classList.contains('apply-btn')) {
+      saveBookmark(e.target.dataset.id);
+      window.open(opportunitiesData.find(o => o.id === e.target.dataset.id).applyLink, '_blank');
+    }
+  });
+
+  modalClose.addEventListener('click', closeModal);
+  modal.addEventListener('click', e => {
+    if(e.target === modal) closeModal();
+  });
+
+  // Hackathons & Scholarships filters events
+  [filterRemote, filterOnsite, filterTeamSize, filterDeadlineSoon].forEach(el => {
+    el.addEventListener('change', filterEvents);
+  });
+
+  // Initial render
+  filterOpportunities();
+  filterEvents();
+  fetchTopOpportunities();
+
+  // Update countdowns every minute
+  setInterval(refreshCountdowns, 60*1000);
+
+</script>
+</body>
+</html>
