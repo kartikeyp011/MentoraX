@@ -1,0 +1,77 @@
+{
+  "1": {
+    "title": "Python for Beginners - Full Course",
+    "description": "Complete Python programming course covering basics to advanced topics. Learn data structures, OOP, and more.",
+    "url": "https://www.youtube.com/watch?v=python-course"
+  },
+  "2": {
+    "title": "Machine Learning Specialization",
+    "description": "Andrew Ng's complete ML course. Covers supervised learning, neural networks, and deep learning fundamentals.",
+    "url": "https://www.coursera.org/specializations/machine-learning"
+  },
+  "3": {
+    "title": "React - The Complete Guide",
+    "description": "Master React.js from basics to advanced. Build modern web applications with hooks, context, and Redux.",
+    "url": "https://www.udemy.com/course/react-the-complete-guide"
+  },
+  "4": {
+    "title": "SQL for Data Analysis",
+    "description": "Learn SQL queries, joins, aggregations, and database design. Perfect for data analysts and developers.",
+    "url": "https://mode.com/sql-tutorial"
+  },
+  "5": {
+    "title": "Deep Learning Specialization",
+    "description": "Advanced deep learning course covering CNNs, RNNs, transformers. Build neural networks from scratch.",
+    "url": "https://www.coursera.org/specializations/deep-learning"
+  },
+  "6": {
+    "title": "JavaScript - The Complete Guide",
+    "description": "Modern JavaScript ES6+ course. Learn async programming, DOM manipulation, and web APIs.",
+    "url": "https://javascript.info"
+  },
+  "7": {
+    "title": "Node.js Backend Development",
+    "description": "Build scalable backend APIs with Node.js and Express. Learn authentication, databases, and deployment.",
+    "url": "https://www.udemy.com/course/nodejs-express-mongodb"
+  },
+  "8": {
+    "title": "AWS Cloud Practitioner",
+    "description": "Introduction to AWS cloud services. Learn EC2, S3, Lambda, and cloud architecture fundamentals.",
+    "url": "https://aws.amazon.com/training"
+  },
+  "9": {
+    "title": "Data Structures and Algorithms",
+    "description": "Master DSA for coding interviews. Arrays, trees, graphs, dynamic programming with Python/Java.",
+    "url": "https://www.leetcode.com"
+  },
+  "10": {
+    "title": "Web Development Bootcamp",
+    "description": "Full stack web development course. HTML, CSS, JavaScript, React, Node.js, MongoDB.",
+    "url": "https://www.udemy.com/course/web-development-bootcamp"
+  },
+  "11": {
+    "title": "DevOps with Docker and Kubernetes",
+    "description": "Learn containerization with Docker and orchestration with Kubernetes. CI/CD pipelines and deployment.",
+    "url": "https://www.udemy.com/course/docker-kubernetes"
+  },
+  "12": {
+    "title": "UI/UX Design Fundamentals",
+    "description": "Learn user interface and experience design. Figma, wireframing, prototyping, and user research.",
+    "url": "https://www.coursera.org/learn/ui-ux-design"
+  },
+  "13": {
+    "title": "Cybersecurity Basics",
+    "description": "Introduction to information security. Network security, encryption, ethical hacking, and best practices.",
+    "url": "https://www.cybrary.it"
+  },
+  "14": {
+    "title": "Java Programming Masterclass",
+    "description": "Complete Java course from basics to advanced. OOP, collections, multithreading, and Spring framework.",
+    "url": "https://www.udemy.com/course/java-programming-masterclass"
+  },
+  "15": {
+    "title": "Data Science with Python",
+    "description": "Learn data analysis with Pandas, NumPy, Matplotlib. Statistical analysis and machine learning basics.",
+    "url": "https://www.datacamp.com/courses/intro-to-python-for-data-science"
+  }
+}

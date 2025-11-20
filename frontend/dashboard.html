@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - MentoraX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Navbar -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-blue-600">MentoraX</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span id="userName" class="text-gray-700"></span>
+                    <button onclick="logoutUser()" class="text-gray-700 hover:text-red-600 px-3 py-2 rounded-md text-sm font-medium">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <div class="w-64 bg-white shadow-lg h-screen sticky top-0">
+            <div class="p-6">
+                <nav class="space-y-2">
+                    <a href="/dashboard" class="flex items-center px-4 py-3 text-blue-600 bg-blue-50 rounded-lg">
+                        <span class="text-xl mr-3">📊</span>
+                        <span class="font-medium">Dashboard</span>
+                    </a>
+                    <a href="/career-guidance" class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg">
+                        <span class="text-xl mr-3">🎯</span>
+                        <span class="font-medium">Career Guidance</span>
+                    </a>
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg">
+                        <span class="text-xl mr-3">💼</span>
+                        <span class="font-medium">Opportunities</span>
+                    </a>
+                    <a href="/profile" class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg">
+                        <span class="text-xl mr-3">👤</span>
+                        <span class="font-medium">Profile</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-8">
+            <!-- Welcome Section -->
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-900">Welcome back, <span id="userNameMain"></span>!</h2>
+                <p class="text-gray-600 mt-2">Here's what's happening with your career journey today.</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <!-- Card 1: Opportunities -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500 text-sm font-medium">Available Opportunities</p>
+                            <p id="oppCount" class="text-3xl font-bold text-gray-900 mt-2">--</p>
+                        </div>
+                        <div class="bg-blue-100 rounded-full p-3">
+                            <span class="text-3xl">💼</span>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-4">Internships and jobs waiting for you</p>
+                </div>
+
+                <!-- Card 2: Skills -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500 text-sm font-medium">Your Skills</p>
+                            <p id="skillCount" class="text-3xl font-bold text-gray-900 mt-2">--</p>
+                        </div>
+                        <div class="bg-green-100 rounded-full p-3">
+                            <span class="text-3xl">🎯</span>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-4">Skills in your profile</p>
+                </div>
+
+                <!-- Card 3: Career Paths -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500 text-sm font-medium">Career Paths</p>
+                            <p class="text-3xl font-bold text-gray-900 mt-2">AI</p>
+                        </div>
+                        <div class="bg-purple-100 rounded-full p-3">
+                            <span class="text-3xl">🚀</span>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-4">Personalized recommendations ready</p>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="bg-white rounded-lg shadow p-6 mb-8">
+                <h3 class="text-xl font-bold text-gray-900 mb-4">Quick Actions</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <a href="/career-guidance" class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition">
+                        <span class="text-2xl mr-4">🎯</span>
+                        <div>
+                            <h4 class="font-medium text-gray-900">Get Career Guidance</h4>
+                            <p class="text-sm text-gray-600">AI-powered career path suggestions</p>
+                        </div>
+                    </a>
+                    <a href="/profile" class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition">
+                        <span class="text-2xl mr-4">👤</span>
+                        <div>
+                            <h4 class="font-medium text-gray-900">Update Profile</h4>
+                            <p class="text-sm text-gray-600">Add skills and upload resume</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Recent Opportunities -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-gray-900">Recent Opportunities</h3>
+                    <a href="#" class="text-blue-600 hover:text-blue-700 text-sm font-medium">View All →</a>
+                </div>
+                <div id="recentOpportunities" class="space-y-4">
+                    <!-- Opportunities will be loaded here -->
+                    <p class="text-gray-500 text-center py-8">Loading opportunities...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/config.js"></script>
+    <script src="/static/js/auth.js"></script>
+    <script src="/static/js/dashboard.js"></script>
+</body>
+</html>

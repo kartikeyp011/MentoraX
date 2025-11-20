@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - MentoraX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Navbar -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-blue-600">MentoraX</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="/dashboard" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
+                    <button onclick="logoutUser()" class="text-gray-700 hover:text-red-600 px-3 py-2 rounded-md text-sm font-medium">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <div class="w-64 bg-white shadow-lg h-screen sticky top-0">
+            <div class="p-6">
+                <nav class="space-y-2">
+                    <a href="/dashboard" class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg">
+                        <span class="text-xl mr-3">📊</span>
+                        <span class="font-medium">Dashboard</span>
+                    </a>
+                    <a href="/career-guidance" class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg">
+                        <span class="text-xl mr-3">🎯</span>
+                        <span class="font-medium">Career Guidance</span>
+                    </a>
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg">
+                        <span class="text-xl mr-3">💼</span>
+                        <span class="font-medium">Opportunities</span>
+                    </a>
+                    <a href="/profile" class="flex items-center px-4 py-3 text-blue-600 bg-blue-50 rounded-lg">
+                        <span class="text-xl mr-3">👤</span>
+                        <span class="font-medium">Profile</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-8">
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">My Profile</h2>
+            <p class="text-gray-600 mb-8">Manage your profile and skills</p>
+
+            <!-- Alert -->
+            <div id="alertMessage" class="hidden rounded-md p-4 mb-6">
+                <p id="alertText" class="text-sm"></p>
+            </div>
+
+            <!-- Basic Info Card -->
+            <div class="bg-white rounded-lg shadow p-6 mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-gray-900">Basic Information</h3>
+                    <button onclick="openEditModal()" class="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                        ✏️ Edit
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <p class="text-sm text-gray-500">Name</p>
+                        <p id="profileName" class="font-medium text-gray-900 mt-1">--</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Email</p>
+                        <p id="profileEmail" class="font-medium text-gray-900 mt-1">--</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Degree/Major</p>
+                        <p id="profileDegree" class="font-medium text-gray-900 mt-1">--</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Career Goal</p>
+                        <p id="profileGoal" class="font-medium text-gray-900 mt-1">--</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skills Card -->
+            <div class="bg-white rounded-lg shadow p-6 mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-gray-900">My Skills</h3>
+                    <button onclick="openSkillsModal()" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700">
+                        + Add Skills
+                    </button>
+                </div>
+
+                <div id="skillsList" class="space-y-3">
+                    <p class="text-gray-500">No skills added yet</p>
+                </div>
+            </div>
+
+            <!-- Resume Card -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-xl font-bold text-gray-900 mb-4">Resume</h3>
+
+                <div id="resumeSection">
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                        <input type="file" id="resumeFile" accept=".pdf" class="hidden" onchange="handleResumeUpload()">
+                        <p class="text-gray-600 mb-4">📄 Upload your resume (PDF only, max 5MB)</p>
+                        <button onclick="document.getElementById('resumeFile').click()"
+                                class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+                            Choose File
+                        </button>
+                    </div>
+                </div>
+
+                <div id="resumeUploaded" class="hidden">
+                    <div class="flex items-center justify-between p-4 bg-green-50 rounded-lg">
+                        <div class="flex items-center">
+                            <span class="text-2xl mr-3">✅</span>
+                            <div>
+                                <p class="font-medium text-gray-900">Resume uploaded</p>
+                                <a id="resumeLink" href="#" target="_blank" class="text-sm text-blue-600 hover:text-blue-700">
+                                    View Resume →
+                                </a>
+                            </div>
+                        </div>
+                        <button onclick="document.getElementById('resumeFile').click()"
+                                class="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                            Replace
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div id="editModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold">Edit Profile</h3>
+                <button onclick="closeEditModal()" class="text-gray-500 hover:text-gray-700">&times;</button>
+            </div>
+
+            <form id="editProfileForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Degree/Major</label>
+                    <input type="text" id="editDegree" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Career Goal</label>
+                    <input type="text" id="editGoal" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                </div>
+
+                <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
+                    Save Changes
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Skills Modal -->
+    <div id="skillsModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white max-h-96 overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold">Add Skills</h3>
+                <button onclick="closeSkillsModal()" class="text-gray-500 hover:text-gray-700">&times;</button>
+            </div>
+
+            <div id="availableSkills" class="space-y-2">
+                <!-- Skills checkboxes will be loaded here -->
+            </div>
+
+            <button onclick="saveSkills()" class="w-full mt-4 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
+                Save Skills
+            </button>
+        </div>
+    </div>
+
+    <script src="/static/js/config.js"></script>
+    <script src="/static/js/auth.js"></script>
+    <script src="/static/js/profile.js"></script>
+</body>
+</html>

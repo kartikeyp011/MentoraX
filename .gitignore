@@ -1,0 +1,125 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+
+# IDE - PyCharm
+.idea/
+*.iml
+*.iws
+.idea_modules/
+
+# IDE - VS Code
+.vscode/
+*.code-workspace
+
+# Operating System
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+*.log.*
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# FAISS Indexes (optional - uncomment if you want to regenerate)
+# data/faiss_indexes/*.index
+# data/faiss_indexes/*.json
+
+# Temporary Files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Distribution / Packaging
+*.whl
+
+# Scraped Data (optional - uncomment if you want to regenerate)
+# data/opportunities.json
+# data/resources.json
+
+# Uploaded Files
+uploads/
+*.pdf
+
+# AWS Credentials (IMPORTANT - never commit these)
+.aws/
+aws_credentials.json
+
+# Backup Files
+*.bak
+*.backup
+*_backup.*
+
+# Node modules (if you ever add frontend build tools)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Compiled CSS (if you switch from CDN to local Tailwind)
+*.css.map
+
+# Test Coverage
+coverage/
+.coverage.*
+
+# Documentation Build
+docs/_build/
+site/

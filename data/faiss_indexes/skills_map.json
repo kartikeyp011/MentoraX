@@ -1,0 +1,62 @@
+{
+  "1": {
+    "skill_name": "Python",
+    "description": "Programming language for AI, web development, data science"
+  },
+  "2": {
+    "skill_name": "Java",
+    "description": "Programming language for enterprise applications"
+  },
+  "3": {
+    "skill_name": "JavaScript",
+    "description": "Programming language for web development"
+  },
+  "4": {
+    "skill_name": "Machine Learning",
+    "description": "AI technique for building predictive models"
+  },
+  "5": {
+    "skill_name": "Deep Learning",
+    "description": "Advanced ML using neural networks"
+  },
+  "6": {
+    "skill_name": "React",
+    "description": "Frontend JavaScript library"
+  },
+  "7": {
+    "skill_name": "Node.js",
+    "description": "Backend JavaScript runtime"
+  },
+  "8": {
+    "skill_name": "SQL",
+    "description": "Database query language"
+  },
+  "9": {
+    "skill_name": "Data Analysis",
+    "description": "Analyzing and interpreting data"
+  },
+  "10": {
+    "skill_name": "Web Development",
+    "description": "Building websites and web applications"
+  },
+  "11": {
+    "skill_name": "Cloud Computing",
+    "description": "AWS, Azure, GCP services"
+  },
+  "12": {
+    "skill_name": "DevOps",
+    "description": "CI/CD, Docker, Kubernetes"
+  },
+  "13": {
+    "skill_name": "Cybersecurity",
+    "description": "Security practices and tools"
+  },
+  "14": {
+    "skill_name": "UI/UX Design",
+    "description": "User interface and experience design"
+  },
+  "15": {
+    "skill_name": "Communication",
+    "description": "Effective verbal and written communication"
+  }
+}

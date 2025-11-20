@@ -1,0 +1,278 @@
+[
+  {
+    "title": "Software Development Intern",
+    "description": "Work on Python and JavaScript projects. Build web applications using React and Node.js. Learn cloud deployment on AWS.",
+    "link": "https://internshala.com/internship/detail/software-development-intern",
+    "source": "Internshala",
+    "location": "Bangalore",
+    "deadline": "2025-12-05",
+    "skill_ids": [
+      1,
+      2,
+      3,
+      6,
+      7,
+      11
+    ]
+  },
+  {
+    "title": "Machine Learning Intern",
+    "description": "Work on ML models using Python, TensorFlow. Experience with deep learning and data analysis required.",
+    "link": "https://internshala.com/internship/detail/machine-learning-intern",
+    "source": "Internshala",
+    "location": "Remote",
+    "deadline": "2025-12-10",
+    "skill_ids": [
+      1,
+      5,
+      9
+    ]
+  },
+  {
+    "title": "Frontend Developer Intern",
+    "description": "Build responsive web interfaces using React and JavaScript. Knowledge of UI/UX design principles preferred.",
+    "link": "https://internshala.com/internship/detail/frontend-developer-intern",
+    "source": "Internshala",
+    "location": "Mumbai",
+    "deadline": "2025-11-30",
+    "skill_ids": [
+      2,
+      3,
+      6,
+      14
+    ]
+  },
+  {
+    "title": "Data Analyst Intern",
+    "description": "Analyze data using SQL and Python. Create visualizations and reports. Strong communication skills required.",
+    "link": "https://internshala.com/internship/detail/data-analyst-intern",
+    "source": "Internshala",
+    "location": "Hyderabad",
+    "deadline": "2025-12-15",
+    "skill_ids": [
+      1,
+      8,
+      15
+    ]
+  },
+  {
+    "title": "Full Stack Developer Intern",
+    "description": "Work on both frontend (React) and backend (Node.js, Python). Database experience with SQL required.",
+    "link": "https://internshala.com/internship/detail/full-stack-developer-intern",
+    "source": "Internshala",
+    "location": "Pune",
+    "deadline": "2025-12-08",
+    "skill_ids": [
+      1,
+      6,
+      7,
+      8
+    ]
+  },
+  {
+    "title": "DevOps Intern",
+    "description": "Learn cloud infrastructure on AWS. Work with Docker, CI/CD pipelines. Basic Python and scripting knowledge needed.",
+    "link": "https://internshala.com/internship/detail/devops-intern",
+    "source": "Internshala",
+    "location": "Remote",
+    "deadline": "2025-12-02",
+    "skill_ids": [
+      1,
+      11,
+      12
+    ]
+  },
+  {
+    "title": "AI Research Intern",
+    "description": "Research in deep learning and machine learning. Python, TensorFlow experience required. Work on cutting-edge AI projects.",
+    "link": "https://internshala.com/internship/detail/ai-research-intern",
+    "source": "Internshala",
+    "location": "Bangalore",
+    "deadline": "2025-12-20",
+    "skill_ids": [
+      1,
+      4,
+      5
+    ]
+  },
+  {
+    "title": "Backend Developer Intern",
+    "description": "Build APIs using Python or Java. Work with SQL databases. Understanding of web development principles.",
+    "link": "https://internshala.com/internship/detail/backend-developer-intern",
+    "source": "Internshala",
+    "location": "Delhi",
+    "deadline": "2025-12-04",
+    "skill_ids": [
+      1,
+      2,
+      8,
+      10
+    ]
+  },
+  {
+    "title": "Mobile App Developer Intern",
+    "description": "Develop mobile apps using React Native or Flutter. JavaScript and UI/UX design skills needed.",
+    "link": "https://internshala.com/internship/detail/mobile-app-developer-intern",
+    "source": "Internshala",
+    "location": "Chennai",
+    "deadline": "2025-12-12",
+    "skill_ids": [
+      2,
+      3,
+      6,
+      14
+    ]
+  },
+  {
+    "title": "Cybersecurity Intern",
+    "description": "Learn security best practices. Work on vulnerability assessment. Python scripting and network security knowledge preferred.",
+    "link": "https://internshala.com/internship/detail/cybersecurity-intern",
+    "source": "Internshala",
+    "location": "Bangalore",
+    "deadline": "2025-12-06",
+    "skill_ids": [
+      1,
+      13
+    ]
+  },
+  {
+    "title": "Junior Software Engineer",
+    "description": "Join a startup building fintech solutions. Python, JavaScript, React experience. Fast-paced environment.",
+    "link": "https://angel.co/company/startup/jobs/software-engineer",
+    "source": "AngelList",
+    "location": "Bangalore",
+    "deadline": "2026-01-04",
+    "skill_ids": [
+      1,
+      2,
+      3,
+      6
+    ]
+  },
+  {
+    "title": "ML Engineer - Early Career",
+    "description": "Build machine learning models for recommendation systems. Python, deep learning, data analysis skills required.",
+    "link": "https://angel.co/company/aicompany/jobs/ml-engineer",
+    "source": "AngelList",
+    "location": "Remote",
+    "deadline": "2025-12-30",
+    "skill_ids": [
+      1,
+      4,
+      5,
+      9
+    ]
+  },
+  {
+    "title": "Frontend Engineer",
+    "description": "Create beautiful user interfaces with React and modern JavaScript. UI/UX design collaboration.",
+    "link": "https://angel.co/company/techstartup/jobs/frontend-engineer",
+    "source": "AngelList",
+    "location": "Mumbai",
+    "deadline": "2025-12-25",
+    "skill_ids": [
+      2,
+      3,
+      6,
+      14
+    ]
+  },
+  {
+    "title": "Data Engineer",
+    "description": "Build data pipelines using Python and SQL. Work with cloud infrastructure on AWS. DevOps knowledge helpful.",
+    "link": "https://angel.co/company/datacompany/jobs/data-engineer",
+    "source": "AngelList",
+    "location": "Hyderabad",
+    "deadline": "2026-01-09",
+    "skill_ids": [
+      1,
+      8,
+      11,
+      12
+    ]
+  },
+  {
+    "title": "Full Stack Engineer",
+    "description": "End-to-end development with React, Node.js, and Python. Work on web development projects from conception to deployment.",
+    "link": "https://angel.co/company/webstartup/jobs/full-stack-engineer",
+    "source": "AngelList",
+    "location": "Bangalore",
+    "deadline": "2025-12-28",
+    "skill_ids": [
+      1,
+      6,
+      7,
+      10
+    ]
+  },
+  {
+    "title": "Software Developer - New Grad",
+    "description": "Work with Java and cloud technologies. DevOps practices and CI/CD. Strong communication skills essential.",
+    "link": "https://linkedin.com/jobs/software-developer-new-grad",
+    "source": "LinkedIn",
+    "location": "Pune",
+    "deadline": "2025-12-18",
+    "skill_ids": [
+      2,
+      11,
+      12,
+      15
+    ]
+  },
+  {
+    "title": "Data Scientist - Entry Level",
+    "description": "Apply machine learning and data analysis techniques. Python, SQL, and statistical modeling. Collaborate with product teams.",
+    "link": "https://linkedin.com/jobs/data-scientist-entry-level",
+    "source": "LinkedIn",
+    "location": "Bangalore",
+    "deadline": "2025-12-22",
+    "skill_ids": [
+      1,
+      4,
+      8,
+      9
+    ]
+  },
+  {
+    "title": "React Developer",
+    "description": "Build scalable web applications with React and JavaScript. Modern web development practices. UI/UX collaboration.",
+    "link": "https://linkedin.com/jobs/react-developer",
+    "source": "LinkedIn",
+    "location": "Remote",
+    "deadline": "2025-12-16",
+    "skill_ids": [
+      2,
+      3,
+      6,
+      10,
+      14
+    ]
+  },
+  {
+    "title": "Cloud Engineer - Graduate",
+    "description": "Deploy and manage AWS infrastructure. DevOps tools like Docker. Python or Java scripting.",
+    "link": "https://linkedin.com/jobs/cloud-engineer-graduate",
+    "source": "LinkedIn",
+    "location": "Chennai",
+    "deadline": "2026-01-01",
+    "skill_ids": [
+      1,
+      2,
+      11,
+      12
+    ]
+  },
+  {
+    "title": "Security Analyst",
+    "description": "Monitor and protect systems from cybersecurity threats. Python scripting and security tools. Communication with stakeholders.",
+    "link": "https://linkedin.com/jobs/security-analyst",
+    "source": "LinkedIn",
+    "location": "Delhi",
+    "deadline": "2025-12-14",
+    "skill_ids": [
+      1,
+      13,
+      15
+    ]
+  }
+]
