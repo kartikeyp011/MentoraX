@@ -73,6 +73,7 @@ logs/
 *.swp
 *.swo
 *~
+old_working/
 
 # Jupyter Notebooks
 .ipynb_checkpoints/

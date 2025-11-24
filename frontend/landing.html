@@ -5,124 +5,627 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MentoraX - AI-Powered Career Guidance</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Space background with stars */
+        body {
+            background:
+                radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="white" opacity="0.5"/></svg>') repeat;
+            background-size: 100% 100%, 200px 200px;
+            animation: twinkle 20s linear infinite;
+            overflow-x: hidden;
+        }
+
+        @keyframes twinkle {
+            0% { background-position: 0 0, 0 0; }
+            100% { background-position: 0 0, 200px 200px; }
+        }
+
+        /* Glassmorphism effect */
+        .glass {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(59, 130, 246, 0.5);
+        }
+
+        /* Floating animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating {
+            animation: float 8s ease-in-out infinite;
+        }
+
+        /* Fade-in animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #3b82f6, #1e40af);
+            border-radius: 5px;
+        }
+
+        /* Button glow effect */
+        .glow {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .glow:hover {
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.8);
+            transform: scale(1.05);
+        }
+
+        /* Particle background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #3b82f6);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-shift 3s ease infinite;
+        }
+
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Navbar animation */
+        .navbar-scrolled {
+            background: rgba(15, 23, 42, 0.95);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Section dividers */
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.5), transparent);
+            margin: 60px 0;
+        }
+
+        /* Stats counter animation */
+        .counter {
+            font-variant-numeric: tabular-nums;
+        }
+    </style>
 </head>
-<body class="bg-gray-50">
-    <!-- Navbar -->
-    <nav class="bg-white shadow-lg">
+<body class="text-white">
+    <!-- Particle Background -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Enhanced Navbar -->
+    <nav id="navbar" class="glass fixed w-full z-50 transition-all duration-500">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
+            <div class="flex justify-between h-20">
                 <div class="flex items-center">
-                    <h1 class="text-2xl font-bold text-blue-600">MentoraX</h1>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
+                            <i class="fas fa-rocket text-white"></i>
+                        </div>
+                        <h1 class="text-2xl font-bold gradient-text">MentoraX</h1>
+                    </div>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <a href="/login" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Login</a>
-                    <a href="/signup" class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700">Sign Up</a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-gray-300 hover:text-blue-400 transition-colors duration-300">Home</a>
+                    <a href="#features" class="text-gray-300 hover:text-blue-400 transition-colors duration-300">Features</a>
+                    <a href="#how-it-works" class="text-gray-300 hover:text-blue-400 transition-colors duration-300">How It Works</a>
+                    <a href="#testimonials" class="text-gray-300 hover:text-blue-400 transition-colors duration-300">Testimonials</a>
+                    <a href="#stats" class="text-gray-300 hover:text-blue-400 transition-colors duration-300">Stats</a>
+                    <a href="/login" class="text-gray-300 hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">Login</a>
+                    <a href="/signup" class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-2 rounded-lg text-sm font-medium hover:from-blue-600 hover:to-purple-700 transition-all duration-300 glow">Sign Up</a>
                 </div>
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="text-gray-300 hover:text-white focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden glass hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" class="text-gray-300 hover:text-blue-400 block px-3 py-2 rounded-md text-base font-medium">Home</a>
+                <a href="#features" class="text-gray-300 hover:text-blue-400 block px-3 py-2 rounded-md text-base font-medium">Features</a>
+                <a href="#how-it-works" class="text-gray-300 hover:text-blue-400 block px-3 py-2 rounded-md text-base font-medium">How It Works</a>
+                <a href="#testimonials" class="text-gray-300 hover:text-blue-400 block px-3 py-2 rounded-md text-base font-medium">Testimonials</a>
+                <a href="#stats" class="text-gray-300 hover:text-blue-400 block px-3 py-2 rounded-md text-base font-medium">Stats</a>
+                <a href="/login" class="text-gray-300 hover:text-blue-400 block px-3 py-2 rounded-md text-base font-medium">Login</a>
+                <a href="/signup" class="bg-gradient-to-r from-blue-500 to-purple-600 text-white block px-3 py-2 rounded-md text-base font-medium mt-4 text-center">Sign Up</a>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div class="text-center">
-            <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-                <span class="block">AI-Powered Career Guidance</span>
-                <span class="block text-blue-600">For College Students</span>
-            </h1>
-            <p class="mt-3 max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
-                Make informed academic and career decisions with personalized insights, curated learning resources, and real-time opportunities powered by AI.
-            </p>
-            <div class="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8">
-                <div class="rounded-md shadow">
-                    <a href="/signup" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 md:py-4 md:text-lg md:px-10">
-                        Get Started
-                    </a>
+    <section id="home" class="min-h-screen flex items-center justify-center pt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="text-center">
+                <div class="floating mb-8">
+                    <div class="w-24 h-24 mx-auto rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mb-6">
+                        <i class="fas fa-rocket text-white text-4xl"></i>
+                    </div>
                 </div>
-                <div class="mt-3 rounded-md shadow sm:mt-0 sm:ml-3">
-                    <a href="/login" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10">
-                        Login
+                <h1 class="text-5xl md:text-7xl font-extrabold mb-6 fade-in">
+                    <span class="block">Launch Your</span>
+                    <span class="block gradient-text">Career Journey</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-10 fade-in" style="animation-delay: 0.2s">
+                    AI-powered career guidance platform helping college students navigate their future with confidence.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4 fade-in" style="animation-delay: 0.4s">
+                    <a href="/signup" class="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg text-lg font-semibold glow flex items-center justify-center">
+                        <span>Start Your Journey</span>
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                    <a href="#features" class="px-8 py-4 border border-blue-500 text-blue-400 rounded-lg text-lg font-semibold hover:bg-blue-500/10 transition-colors duration-300 flex items-center justify-center">
+                        <span>Explore Features</span>
+                        <i class="fas fa-chevron-down ml-2"></i>
                     </a>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section id="stats" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="glass-card p-6 rounded-xl text-center fade-in">
+                    <div class="text-4xl font-bold text-blue-400 counter" data-target="15000">0</div>
+                    <div class="text-gray-400 mt-2">Students Helped</div>
+                </div>
+                <div class="glass-card p-6 rounded-xl text-center fade-in" style="animation-delay: 0.1s">
+                    <div class="text-4xl font-bold text-blue-400 counter" data-target="95">0</div>
+                    <div class="text-gray-400 mt-2">Success Rate</div>
+                </div>
+                <div class="glass-card p-6 rounded-xl text-center fade-in" style="animation-delay: 0.2s">
+                    <div class="text-4xl font-bold text-blue-400 counter" data-target="500">0</div>
+                    <div class="text-gray-400 mt-2">Partner Companies</div>
+                </div>
+                <div class="glass-card p-6 rounded-xl text-center fade-in" style="animation-delay: 0.3s">
+                    <div class="text-4xl font-bold text-blue-400 counter" data-target="50">0</div>
+                    <div class="text-gray-400 mt-2">Countries</div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Features Section -->
-    <div class="py-12 bg-white">
+    <section id="features" class="py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h2 class="text-3xl font-extrabold text-gray-900">
-                    Everything You Need to Succeed
-                </h2>
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4 fade-in">Powerful Features</h2>
+                <p class="text-xl text-gray-300 max-w-2xl mx-auto fade-in" style="animation-delay: 0.2s">
+                    Everything you need to navigate your career path with confidence
+                </p>
             </div>
 
-            <div class="mt-10">
-                <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
-                    <!-- Feature 1 -->
-                    <div class="bg-gray-50 p-6 rounded-lg">
-                        <div class="text-blue-600 text-3xl mb-4">🎯</div>
-                        <h3 class="text-lg font-medium text-gray-900">AI Career Guidance</h3>
-                        <p class="mt-2 text-base text-gray-500">
-                            Get personalized career path recommendations based on your skills, interests, and academic background.
-                        </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="glass-card p-8 rounded-xl fade-in">
+                    <div class="text-blue-400 text-4xl mb-6">
+                        <i class="fas fa-bullseye"></i>
                     </div>
+                    <h3 class="text-xl font-semibold text-white mb-4">AI Career Guidance</h3>
+                    <p class="text-gray-300">
+                        Get personalized career path recommendations based on your skills, interests, and academic background.
+                    </p>
+                </div>
 
-                    <!-- Feature 2 -->
-                    <div class="bg-gray-50 p-6 rounded-lg">
-                        <div class="text-blue-600 text-3xl mb-4">📚</div>
-                        <h3 class="text-lg font-medium text-gray-900">Upskill Coach</h3>
-                        <p class="mt-2 text-base text-gray-500">
-                            Identify skill gaps and receive curated learning resources tailored to your career goals.
-                        </p>
+                <!-- Feature 2 -->
+                <div class="glass-card p-8 rounded-xl fade-in" style="animation-delay: 0.1s">
+                    <div class="text-blue-400 text-4xl mb-6">
+                        <i class="fas fa-book-open"></i>
                     </div>
+                    <h3 class="text-xl font-semibold text-white mb-4">Upskill Coach</h3>
+                    <p class="text-gray-300">
+                        Identify skill gaps and receive curated learning resources tailored to your career goals.
+                    </p>
+                </div>
 
-                    <!-- Feature 3 -->
-                    <div class="bg-gray-50 p-6 rounded-lg">
-                        <div class="text-blue-600 text-3xl mb-4">💼</div>
-                        <h3 class="text-lg font-medium text-gray-900">Opportunities Hub</h3>
-                        <p class="mt-2 text-base text-gray-500">
-                            Discover internships, jobs, and certifications matched to your profile and skills.
-                        </p>
+                <!-- Feature 3 -->
+                <div class="glass-card p-8 rounded-xl fade-in" style="animation-delay: 0.2s">
+                    <div class="text-blue-400 text-4xl mb-6">
+                        <i class="fas fa-briefcase"></i>
                     </div>
+                    <h3 class="text-xl font-semibold text-white mb-4">Opportunities Hub</h3>
+                    <p class="text-gray-300">
+                        Discover internships, jobs, and certifications matched to your profile and skills.
+                    </p>
+                </div>
 
-                    <!-- Feature 4 -->
-                    <div class="bg-gray-50 p-6 rounded-lg">
-                        <div class="text-blue-600 text-3xl mb-4">🔍</div>
-                        <h3 class="text-lg font-medium text-gray-900">Smart Search</h3>
-                        <p class="mt-2 text-base text-gray-500">
-                            Semantic search powered by AI to find the most relevant resources and opportunities.
-                        </p>
+                <!-- Feature 4 -->
+                <div class="glass-card p-8 rounded-xl fade-in" style="animation-delay: 0.3s">
+                    <div class="text-blue-400 text-4xl mb-6">
+                        <i class="fas fa-search"></i>
                     </div>
+                    <h3 class="text-xl font-semibold text-white mb-4">Smart Search</h3>
+                    <p class="text-gray-300">
+                        Semantic search powered by AI to find the most relevant resources and opportunities.
+                    </p>
+                </div>
 
-                    <!-- Feature 5 -->
-                    <div class="bg-gray-50 p-6 rounded-lg">
-                        <div class="text-blue-600 text-3xl mb-4">📊</div>
-                        <h3 class="text-lg font-medium text-gray-900">Progress Tracking</h3>
-                        <p class="mt-2 text-base text-gray-500">
-                            Monitor your skill development and career preparation journey in one place.
-                        </p>
+                <!-- Feature 5 -->
+                <div class="glass-card p-8 rounded-xl fade-in" style="animation-delay: 0.4s">
+                    <div class="text-blue-400 text-4xl mb-6">
+                        <i class="fas fa-chart-line"></i>
                     </div>
+                    <h3 class="text-xl font-semibold text-white mb-4">Progress Tracking</h3>
+                    <p class="text-gray-300">
+                        Monitor your skill development and career preparation journey in one place.
+                    </p>
+                </div>
 
-                    <!-- Feature 6 -->
-                    <div class="bg-gray-50 p-6 rounded-lg">
-                        <div class="text-blue-600 text-3xl mb-4">🎓</div>
-                        <h3 class="text-lg font-medium text-gray-900">Degree Mapping</h3>
-                        <p class="mt-2 text-base text-gray-500">
-                            Understand career options specific to your degree and academic specialization.
-                        </p>
+                <!-- Feature 6 -->
+                <div class="glass-card p-8 rounded-xl fade-in" style="animation-delay: 0.5s">
+                    <div class="text-blue-400 text-4xl mb-6">
+                        <i class="fas fa-graduation-cap"></i>
                     </div>
+                    <h3 class="text-xl font-semibold text-white mb-4">Degree Mapping</h3>
+                    <p class="text-gray-300">
+                        Understand career options specific to your degree and academic specialization.
+                    </p>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4 fade-in">How It Works</h2>
+                <p class="text-xl text-gray-300 max-w-2xl mx-auto fade-in" style="animation-delay: 0.2s">
+                    Simple steps to launch your career journey
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center fade-in">
+                    <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mb-6">
+                        <span class="text-white text-2xl font-bold">1</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Create Your Profile</h3>
+                    <p class="text-gray-300">
+                        Tell us about your skills, interests, and academic background to personalize your experience.
+                    </p>
+                </div>
+
+                <div class="text-center fade-in" style="animation-delay: 0.2s">
+                    <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mb-6">
+                        <span class="text-white text-2xl font-bold">2</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Get AI Recommendations</h3>
+                    <p class="text-gray-300">
+                        Receive personalized career paths, skill development plans, and opportunity matches.
+                    </p>
+                </div>
+
+                <div class="text-center fade-in" style="animation-delay: 0.4s">
+                    <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mb-6">
+                        <span class="text-white text-2xl font-bold">3</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Launch Your Career</h3>
+                    <p class="text-gray-300">
+                        Track your progress, apply to opportunities, and achieve your career goals.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4 fade-in">Student Success Stories</h2>
+                <p class="text-xl text-gray-300 max-w-2xl mx-auto fade-in" style="animation-delay: 0.2s">
+                    Hear from students who transformed their careers with MentoraX
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="glass-card p-6 rounded-xl fade-in">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold mr-4">
+                            A
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Alex Johnson</h4>
+                            <p class="text-gray-400 text-sm">Computer Science Graduate</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 italic">
+                        "MentoraX helped me land my dream job at a tech giant. The AI recommendations were spot on!"
+                    </p>
+                </div>
+
+                <div class="glass-card p-6 rounded-xl fade-in" style="animation-delay: 0.2s">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold mr-4">
+                            S
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Sarah Chen</h4>
+                            <p class="text-gray-400 text-sm">Business Major</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 italic">
+                        "The personalized learning path helped me develop skills I didn't even know I needed. Highly recommend!"
+                    </p>
+                </div>
+
+                <div class="glass-card p-6 rounded-xl fade-in" style="animation-delay: 0.4s">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold mr-4">
+                            M
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Michael Rodriguez</h4>
+                            <p class="text-gray-400 text-sm">Engineering Student</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 italic">
+                        "Found the perfect internship through MentoraX. The opportunity matching is incredible!"
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="glass-card p-12 rounded-2xl fade-in">
+                <h2 class="text-4xl font-bold mb-6">Ready to Launch Your Career?</h2>
+                <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                    Join thousands of students who have already transformed their career journeys with MentoraX
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="/signup" class="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg text-lg font-semibold glow flex items-center justify-center">
+                        <span>Get Started Now</span>
+                        <i class="fas fa-rocket ml-2"></i>
+                    </a>
+                    <a href="/login" class="px-8 py-4 border border-blue-500 text-blue-400 rounded-lg text-lg font-semibold hover:bg-blue-500/10 transition-colors duration-300 flex items-center justify-center">
+                        <span>Existing User? Login</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-800">
-        <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-            <p class="text-center text-gray-400 text-sm">
-                © 2025 MentoraX. Empowering students to make informed career decisions.
-            </p>
+    <footer class="bg-gray-900/80 backdrop-blur-sm py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
+                            <i class="fas fa-rocket text-white text-sm"></i>
+                        </div>
+                        <h2 class="text-xl font-bold gradient-text">MentoraX</h2>
+                    </div>
+                    <p class="text-gray-400">
+                        Empowering students to make informed career decisions with AI-powered guidance.
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-400 hover:text-blue-400 transition-colors">Home</a></li>
+                        <li><a href="#features" class="text-gray-400 hover:text-blue-400 transition-colors">Features</a></li>
+                        <li><a href="#how-it-works" class="text-gray-400 hover:text-blue-400 transition-colors">How It Works</a></li>
+                        <li><a href="#testimonials" class="text-gray-400 hover:text-blue-400 transition-colors">Testimonials</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Resources</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-blue-400 transition-colors">Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-blue-400 transition-colors">Career Guides</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-blue-400 transition-colors">FAQ</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-blue-400 transition-colors">Support</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Connect With Us</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors">
+                            <i class="fab fa-linkedin text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors">
+                            <i class="fab fa-facebook text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+                <p class="text-gray-400">
+                    © 2025 MentoraX. All rights reserved.
+                </p>
+            </div>
         </div>
     </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Initialize particles
+        function initParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.style.position = 'absolute';
+                particle.style.width = Math.random() * 3 + 1 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.background = 'white';
+                particle.style.borderRadius = '50%';
+                particle.style.opacity = Math.random() * 0.7 + 0.3;
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animation = `float ${Math.random() * 10 + 10}s linear infinite`;
+                container.appendChild(particle);
+            }
+        }
+
+        // Navbar scroll effect
+        function handleNavbarScroll() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('navbar-scrolled');
+            } else {
+                navbar.classList.remove('navbar-scrolled');
+            }
+        }
+
+        // Mobile menu toggle
+        function setupMobileMenu() {
+            const menuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            menuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        // Fade-in animation on scroll
+        function setupScrollAnimations() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+
+            const fadeInOnScroll = function() {
+                fadeElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const elementVisible = 150;
+
+                    if (elementTop < window.innerHeight - elementVisible) {
+                        element.classList.add('visible');
+                    }
+                });
+            };
+
+            // Initial check
+            fadeInOnScroll();
+
+            // Check on scroll
+            window.addEventListener('scroll', fadeInOnScroll);
+        }
+
+        // Counter animation
+        function setupCounters() {
+            const counters = document.querySelectorAll('.counter');
+            const speed = 200;
+
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                const count = +counter.innerText;
+                const increment = target / speed;
+
+                if (count < target) {
+                    counter.innerText = Math.ceil(count + increment);
+                    setTimeout(() => setupCounters(), 1);
+                } else {
+                    counter.innerText = target;
+                }
+            });
+        }
+
+        // Smooth scrolling for anchor links
+        function setupSmoothScrolling() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+
+                        // Close mobile menu if open
+                        const mobileMenu = document.getElementById('mobile-menu');
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+        }
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initParticles();
+            setupMobileMenu();
+            setupScrollAnimations();
+            setupSmoothScrolling();
+
+            // Start counters after a delay
+            setTimeout(setupCounters, 1000);
+
+            // Navbar scroll effect
+            window.addEventListener('scroll', handleNavbarScroll);
+            handleNavbarScroll(); // Initial call
+        });
+    </script>
 </body>
 </html>

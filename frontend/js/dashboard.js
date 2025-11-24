@@ -98,7 +98,7 @@ async function loadRecentOpportunities() {
 
 function createOpportunityCard(opp) {
     const card = document.createElement('div');
-    card.className = 'border border-gray-200 rounded-lg p-4 hover:border-blue-500 transition';
+    card.className = 'opportunity-item';
 
     // Format deadline
     const deadline = new Date(opp.deadline).toLocaleDateString('en-US', {
@@ -108,29 +108,35 @@ function createOpportunityCard(opp) {
     });
 
     card.innerHTML = `
-        <div class="flex justify-between items-start">
+        <div class="opportunity-header">
             <div class="flex-1">
-                <h4 class="font-medium text-gray-900">${opp.title}</h4>
-                <p class="text-sm text-gray-600 mt-1">${opp.source} • ${opp.location}</p>
-                <p class="text-sm text-gray-500 mt-2 line-clamp-2">${opp.description}</p>
-                ${opp.required_skills && opp.required_skills.length > 0 ? `
-                    <div class="flex flex-wrap gap-2 mt-2">
-                        ${opp.required_skills.slice(0, 3).map(skill => 
-                            `<span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">${skill}</span>`
-                        ).join('')}
-                        ${opp.required_skills.length > 3 ? 
-                            `<span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">+${opp.required_skills.length - 3} more</span>` 
-                            : ''}
-                    </div>
-                ` : ''}
-            </div>
-            <div class="ml-4 text-right">
-                <p class="text-xs text-gray-500">Deadline</p>
-                <p class="text-sm font-medium text-gray-900">${deadline}</p>
+                <div class="opportunity-title">${opp.title}</div>
+                <div class="opportunity-company">${opp.source}</div>
+                <div class="opportunity-location">
+                    <span class="mr-1">📍</span>
+                    ${opp.location}
+                </div>
             </div>
         </div>
-        <div class="mt-3 flex space-x-2">
-            <a href="${opp.link}" target="_blank" class="text-blue-600 hover:text-blue-700 text-sm font-medium">
+        <div class="opportunity-description">
+            ${opp.description}
+        </div>
+        ${opp.required_skills && opp.required_skills.length > 0 ? `
+            <div class="opportunity-skills">
+                ${opp.required_skills.slice(0, 3).map(skill => 
+                    `<span class="opportunity-skill">${skill}</span>`
+                ).join('')}
+                ${opp.required_skills.length > 3 ? 
+                    `<span class="opportunity-skill">+${opp.required_skills.length - 3} more</span>` 
+                    : ''}
+            </div>
+        ` : ''}
+        <div class="opportunity-footer">
+            <div class="opportunity-deadline">
+                Deadline: 
+                <span class="opportunity-deadline-date">${deadline}</span>
+            </div>
+            <a href="${opp.link}" target="_blank" class="opportunity-action">
                 View Details →
             </a>
         </div>

@@ -5,18 +5,417 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - MentoraX</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Custom styles for enhanced design -->
+    <style>
+        /* Enhanced color palette with better contrast */
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --primary-light: #c7d2fe;
+            --secondary: #7c3aed;
+            --accent: #0ea5e9;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --dark-bg: #111827;
+            --dark-card: #1f2937;
+            --dark-card-hover: #374151;
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --text-muted: #9ca3af;
+            --border-color: #374151;
+        }
+
+        /* Enhanced animations */
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        @keyframes slideInLeft {
+            from { 
+                transform: translateX(-20px); 
+                opacity: 0; 
+            }
+            to { 
+                transform: translateX(0); 
+                opacity: 1; 
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                transform: scale(1); 
+            }
+            50% { 
+                transform: scale(1.05); 
+            }
+        }
+
+        @keyframes glow {
+            0%, 100% { 
+                box-shadow: 0 0 5px rgba(79, 70, 229, 0.4); 
+            }
+            50% { 
+                box-shadow: 0 0 20px rgba(79, 70, 229, 0.7); 
+            }
+        }
+
+        @keyframes shimmer {
+            0% { 
+                background-position: -200% 0; 
+            }
+            100% { 
+                background-position: 200% 0; 
+            }
+        }
+
+        /* Apply animations */
+        .animate-fadeInUp {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .animate-slideInLeft {
+            animation: slideInLeft 0.5s ease-out forwards;
+        }
+
+        .animate-pulse-slow {
+            animation: pulse 3s infinite ease-in-out;
+        }
+
+        .animate-glow {
+            animation: glow 2s infinite ease-in-out;
+        }
+
+        /* Enhanced hover effects */
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--border-color);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary);
+        }
+
+        /* Enhanced sidebar styling */
+        .sidebar-item {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: var(--primary);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-item:hover::before,
+        .sidebar-item.active::before {
+            transform: scaleY(1);
+        }
+
+        .sidebar-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            border-left: 4px solid var(--primary);
+        }
+
+        /* Loading animation */
+        .loading-shimmer {
+            background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        /* Enhanced button styles */
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Gradient text effect */
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Enhanced stats card styling */
+        .stats-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .stats-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        /* Improved typography */
+        .heading-1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .heading-2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .heading-3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        /* Enhanced navbar with subtle shadow */
+        .navbar {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--dark-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--dark-card);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--dark-card-hover);
+        }
+
+        /* Focus states for accessibility */
+        button:focus, a:focus {
+            outline: 2px solid var(--primary-light);
+            outline-offset: 2px;
+        }
+
+        /* Mobile responsiveness improvements */
+        @media (max-width: 768px) {
+            .heading-1 {
+                font-size: 1.875rem;
+            }
+            
+            .heading-2 {
+                font-size: 1.5rem;
+            }
+            
+            .stats-card {
+                margin-bottom: 1rem;
+            }
+        }
+
+        /* FIXED: Recent opportunities section with much better contrast and visibility */
+        .opportunity-item {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+
+        .opportunity-item:hover {
+            background: #1e293b;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        .opportunity-header {
+            display: flex;
+            justify-content: between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .opportunity-title {
+            color: #f8fafc;
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .opportunity-company {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .opportunity-location {
+            color: #94a3b8;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            margin-top: 0.25rem;
+        }
+
+        .opportunity-description {
+            color: #e2e8f0;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 1.25rem;
+            background: rgba(30, 41, 59, 0.5);
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            border-left: 3px solid var(--primary);
+        }
+
+        .opportunity-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .opportunity-skill {
+            background: #ffffff !important;
+            color: #000000 !important;
+            padding: 0.375rem 0.75rem !important;
+            border-radius: 1rem !important;
+            font-size: 0.8rem !important;
+            font-weight: 500 !important;
+            border: 1px solid #e2e8f0 !important;
+        }
+
+        /* Add this new rule to target any skill tags */
+        #recentOpportunities [class*="skill"],
+        #recentOpportunities [class*="tag"],
+        #recentOpportunities .skill,
+        #recentOpportunities .tag {
+            background: #ffffff !important;
+            color: #000000 !important;
+            padding: 0.375rem 0.75rem !important;
+            border-radius: 1rem !important;
+            font-size: 0.8rem !important;
+            font-weight: 500 !important;
+            border: 1px solid #e2e8f0 !important;
+            margin: 0.125rem !important;
+        }
+
+        .opportunity-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid #334155;
+        }
+
+        .opportunity-deadline {
+            color: #f8fafc;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .opportunity-deadline-date {
+            color: #f59e0b;
+            font-weight: 700;
+            margin-left: 0.5rem;
+        }
+
+        .opportunity-action {
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem 1.25rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .opportunity-action:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        /* FIX: Sidebar scrolling issue */
+        .sidebar-container {
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            overflow-y: auto;
+        }
+
+        /* CRITICAL FIX: Ensure dynamically loaded content maintains visibility */
+        #recentOpportunities > div {
+            background: #1e293b !important;
+            border: 1px solid #334155 !important;
+            border-radius: 0.75rem !important;
+            padding: 1.5rem !important;
+            margin-bottom: 1rem !important;
+        }
+
+        #recentOpportunities > div * {
+            color: inherit !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+    </style>
 </head>
-<body class="bg-gray-50">
-    <!-- Navbar -->
-    <nav class="bg-white shadow-lg">
+<body class="bg-gray-900 text-gray-100">
+    <!-- Enhanced Navbar with better styling -->
+    <nav class="navbar bg-gray-800/90 sticky top-0 z-50 border-b border-gray-700">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <h1 class="text-2xl font-bold text-blue-600">MentoraX</h1>
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center space-x-2">
+                    <!-- Enhanced logo with gradient -->
+                    <div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg p-2">
+                        <span class="text-white text-xl">🚀</span>
+                    </div>
+                    <h1 class="text-2xl font-bold gradient-text">MentoraX</h1>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <span id="userName" class="text-gray-700"></span>
-                    <button onclick="logoutUser()" class="text-gray-700 hover:text-red-600 px-3 py-2 rounded-md text-sm font-medium">
+                    <span id="userName" class="text-gray-300 font-medium"></span>
+                    <!-- Enhanced logout button -->
+                    <button onclick="logoutUser()" class="btn-primary px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 flex items-center">
+                        <span class="mr-2">🚪</span>
                         Logout
                     </button>
                 </div>
@@ -25,113 +424,157 @@
     </nav>
 
     <div class="flex">
-        <!-- Sidebar -->
-        <div class="w-64 bg-white shadow-lg h-screen sticky top-0">
+        <!-- Enhanced Sidebar with better visual hierarchy and fixed scrolling -->
+        <div class="w-64 sidebar-container bg-gray-800/80 shadow-xl border-r border-gray-700">
             <div class="p-6">
+                <h2 class="text-lg font-semibold text-gray-400 mb-4 uppercase tracking-wider">Navigation</h2>
                 <nav class="space-y-2">
-                    <a href="/dashboard" class="flex items-center px-4 py-3 text-blue-600 bg-blue-50 rounded-lg">
+                    <a href="/dashboard" class="flex items-center px-4 py-3 text-blue-400 rounded-lg sidebar-item active">
                         <span class="text-xl mr-3">📊</span>
                         <span class="font-medium">Dashboard</span>
                     </a>
-                    <a href="/career-guidance" class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg">
+                    <a href="/career-guidance" class="flex items-center px-4 py-3 text-gray-300 hover:text-white rounded-lg sidebar-item">
                         <span class="text-xl mr-3">🎯</span>
                         <span class="font-medium">Career Guidance</span>
                     </a>
-                    <a href="#" class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg">
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-300 hover:text-white rounded-lg sidebar-item">
                         <span class="text-xl mr-3">💼</span>
                         <span class="font-medium">Opportunities</span>
                     </a>
-                    <a href="/profile" class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg">
+                    <a href="/profile" class="flex items-center px-4 py-3 text-gray-300 hover:text-white rounded-lg sidebar-item">
                         <span class="text-xl mr-3">👤</span>
                         <span class="font-medium">Profile</span>
                     </a>
                 </nav>
+                
+                <!-- Added user status section -->
+                <div class="mt-8 pt-6 border-t border-gray-700">
+                    <h3 class="text-sm font-medium text-gray-400 mb-2">Your Progress</h3>
+                    <div class="bg-gray-700/50 rounded-lg p-3">
+                        <div class="flex justify-between text-xs text-gray-300 mb-1">
+                            <span>Profile Completion</span>
+                            <span id="profileCompletion">--%</span>
+                        </div>
+                        <div class="w-full bg-gray-600 rounded-full h-2">
+                            <div id="profileProgress" class="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Main Content -->
-        <div class="flex-1 p-8">
-            <!-- Welcome Section -->
-            <div class="mb-8">
-                <h2 class="text-3xl font-bold text-gray-900">Welcome back, <span id="userNameMain"></span>!</h2>
-                <p class="text-gray-600 mt-2">Here's what's happening with your career journey today.</p>
+        <!-- Main Content with improved layout and spacing -->
+        <div class="flex-1 p-6 md:p-8">
+            <!-- Enhanced Welcome Section -->
+            <div class="mb-8 animate-fadeInUp">
+                <h2 class="heading-1 text-white mb-2">Welcome back, <span id="userNameMain" class="gradient-text"></span>! 👋</h2>
+                <p class="text-gray-400 text-lg">Here's what's happening with your career journey today.</p>
+                
+                <!-- Date display for better context -->
+                <div class="mt-2 flex items-center text-gray-500">
+                    <span class="mr-2">📅</span>
+                    <span id="currentDate"></span>
+                </div>
             </div>
 
-            <!-- Stats Cards -->
+            <!-- Enhanced Stats Cards with better visual hierarchy -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <!-- Card 1: Opportunities -->
-                <div class="bg-white rounded-lg shadow p-6">
+                <div class="stats-card bg-gray-800 rounded-xl shadow-lg p-6 card-hover animate-fadeInUp" style="animation-delay: 0.1s">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-gray-500 text-sm font-medium">Available Opportunities</p>
-                            <p id="oppCount" class="text-3xl font-bold text-gray-900 mt-2">--</p>
+                            <p class="text-gray-400 text-sm font-medium uppercase tracking-wider">Available Opportunities</p>
+                            <p id="oppCount" class="text-4xl font-bold text-white mt-2">--</p>
                         </div>
-                        <div class="bg-blue-100 rounded-full p-3">
+                        <div class="bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-full p-4 animate-glow">
                             <span class="text-3xl">💼</span>
                         </div>
                     </div>
-                    <p class="text-sm text-gray-600 mt-4">Internships and jobs waiting for you</p>
+                    <div class="mt-4 flex items-center text-sm">
+                        <span class="text-green-400 mr-1">↑</span>
+                        <span class="text-gray-400">New opportunities this week</span>
+                    </div>
                 </div>
 
                 <!-- Card 2: Skills -->
-                <div class="bg-white rounded-lg shadow p-6">
+                <div class="stats-card bg-gray-800 rounded-xl shadow-lg p-6 card-hover animate-fadeInUp" style="animation-delay: 0.2s">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-gray-500 text-sm font-medium">Your Skills</p>
-                            <p id="skillCount" class="text-3xl font-bold text-gray-900 mt-2">--</p>
+                            <p class="text-gray-400 text-sm font-medium uppercase tracking-wider">Your Skills</p>
+                            <p id="skillCount" class="text-4xl font-bold text-white mt-2">--</p>
                         </div>
-                        <div class="bg-green-100 rounded-full p-3">
+                        <div class="bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-full p-4 animate-glow" style="animation-delay: 0.5s">
                             <span class="text-3xl">🎯</span>
                         </div>
                     </div>
-                    <p class="text-sm text-gray-600 mt-4">Skills in your profile</p>
+                    <div class="mt-4 flex items-center text-sm">
+                        <span class="text-blue-400 mr-1">+2</span>
+                        <span class="text-gray-400">Skills to develop next</span>
+                    </div>
                 </div>
 
                 <!-- Card 3: Career Paths -->
-                <div class="bg-white rounded-lg shadow p-6">
+                <div class="stats-card bg-gray-800 rounded-xl shadow-lg p-6 card-hover animate-fadeInUp" style="animation-delay: 0.3s">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-gray-500 text-sm font-medium">Career Paths</p>
-                            <p class="text-3xl font-bold text-gray-900 mt-2">AI</p>
+                            <p class="text-gray-400 text-sm font-medium uppercase tracking-wider">Career Paths</p>
+                            <p class="text-4xl font-bold text-white mt-2">AI</p>
                         </div>
-                        <div class="bg-purple-100 rounded-full p-3">
+                        <div class="bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-full p-4 animate-glow" style="animation-delay: 1s">
                             <span class="text-3xl">🚀</span>
                         </div>
                     </div>
-                    <p class="text-sm text-gray-600 mt-4">Personalized recommendations ready</p>
+                    <div class="mt-4 flex items-center text-sm">
+                        <span class="text-purple-400 mr-1">★</span>
+                        <span class="text-gray-400">Personalized recommendations ready</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Quick Actions -->
-            <div class="bg-white rounded-lg shadow p-6 mb-8">
-                <h3 class="text-xl font-bold text-gray-900 mb-4">Quick Actions</h3>
+            <!-- Enhanced Quick Actions with improved visual design -->
+            <div class="bg-gray-800 rounded-xl shadow-lg p-6 mb-8 animate-fadeInUp" style="animation-delay: 0.4s">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="heading-3 text-white">Quick Actions</h3>
+                    <span class="text-gray-500 text-sm">Get things done faster</span>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <a href="/career-guidance" class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition">
-                        <span class="text-2xl mr-4">🎯</span>
-                        <div>
-                            <h4 class="font-medium text-gray-900">Get Career Guidance</h4>
-                            <p class="text-sm text-gray-600">AI-powered career path suggestions</p>
+                    <a href="/career-guidance" class="group flex items-center p-5 bg-gray-700/50 rounded-xl border border-gray-600 hover:border-blue-500 transition-all duration-300 card-hover">
+                        <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg p-3 mr-4 group-hover:scale-110 transition-transform duration-300">
+                            <span class="text-2xl text-white">🎯</span>
                         </div>
+                        <div>
+                            <h4 class="font-semibold text-white group-hover:text-blue-300 transition-colors duration-300">Get Career Guidance</h4>
+                            <p class="text-sm text-gray-400 mt-1">AI-powered career path suggestions</p>
+                        </div>
+                        <span class="ml-auto text-gray-500 group-hover:text-blue-400 transition-colors duration-300">→</span>
                     </a>
-                    <a href="/profile" class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition">
-                        <span class="text-2xl mr-4">👤</span>
-                        <div>
-                            <h4 class="font-medium text-gray-900">Update Profile</h4>
-                            <p class="text-sm text-gray-600">Add skills and upload resume</p>
+                    <a href="/profile" class="group flex items-center p-5 bg-gray-700/50 rounded-xl border border-gray-600 hover:border-blue-500 transition-all duration-300 card-hover">
+                        <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-lg p-3 mr-4 group-hover:scale-110 transition-transform duration-300">
+                            <span class="text-2xl text-white">👤</span>
                         </div>
+                        <div>
+                            <h4 class="font-semibold text-white group-hover:text-green-300 transition-colors duration-300">Update Profile</h4>
+                            <p class="text-sm text-gray-400 mt-1">Add skills and upload resume</p>
+                        </div>
+                        <span class="ml-auto text-gray-500 group-hover:text-green-400 transition-colors duration-300">→</span>
                     </a>
                 </div>
             </div>
 
-            <!-- Recent Opportunities -->
-            <div class="bg-white rounded-lg shadow p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-bold text-gray-900">Recent Opportunities</h3>
-                    <a href="#" class="text-blue-600 hover:text-blue-700 text-sm font-medium">View All →</a>
+            <!-- FIXED: Recent Opportunities with much better visibility and contrast -->
+            <div class="bg-gray-800 rounded-xl shadow-lg p-6 animate-fadeInUp" style="animation-delay: 0.5s">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="heading-3 text-white">Recent Opportunities</h3>
+                    <a href="#" class="flex items-center text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors duration-300 group">
+                        View All
+                        <span class="ml-1 group-hover:translate-x-1 transition-transform duration-300">→</span>
+                    </a>
                 </div>
                 <div id="recentOpportunities" class="space-y-4">
-                    <!-- Opportunities will be loaded here -->
-                    <p class="text-gray-500 text-center py-8">Loading opportunities...</p>
+                    <!-- Loading state - will be replaced by dashboard.js -->
+                    <div class="loading-shimmer h-32 rounded-lg"></div>
+                    <div class="loading-shimmer h-32 rounded-lg"></div>
+                    <div class="loading-shimmer h-32 rounded-lg"></div>
                 </div>
             </div>
         </div>
@@ -140,5 +583,156 @@
     <script src="/static/js/config.js"></script>
     <script src="/static/js/auth.js"></script>
     <script src="/static/js/dashboard.js"></script>
+
+    <!-- Enhanced JavaScript for improved interactions -->
+    <script>
+        // Set current date
+        document.addEventListener('DOMContentLoaded', function() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', options);
+            
+            // Intersection Observer for scroll animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-fadeInUp');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all cards and sections for scroll animations
+            document.querySelectorAll('.card-hover, .animate-fadeInUp').forEach(el => {
+                observer.observe(el);
+            });
+
+            // Enhanced sidebar interactions
+            document.querySelectorAll('.sidebar-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    document.querySelectorAll('.sidebar-item').forEach(i => {
+                        i.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+            });
+
+            // Enhanced hover effects for cards
+            document.querySelectorAll('.card-hover').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                });
+
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+
+            // CRITICAL FIX: Override the dashboard.js function that loads opportunities
+            // to ensure our styling is preserved
+            const originalLoadOpportunities = window.loadOpportunities;
+            window.loadOpportunities = function(opportunities) {
+                // Call original function if it exists
+                if (originalLoadOpportunities) {
+                    originalLoadOpportunities(opportunities);
+                }
+                
+                // Apply our styling to any dynamically loaded content
+                setTimeout(() => {
+                    const recentOpps = document.getElementById('recentOpportunities');
+                    if (recentOpps) {
+                        recentOpps.querySelectorAll('div').forEach(div => {
+                            if (!div.classList.contains('loading-shimmer')) {
+                                div.classList.add('opportunity-item');
+                                
+                                // Ensure all child elements have proper styling
+                                const title = div.querySelector('h4, .title, [class*="title"]');
+                                if (title) {
+                                    title.classList.add('opportunity-title');
+                                }
+                                
+                                const company = div.querySelector('.company, [class*="company"]');
+                                if (company) {
+                                    company.classList.add('opportunity-company');
+                                }
+                                
+                                const description = div.querySelector('p, .description, [class*="description"]');
+                                if (description) {
+                                    description.classList.add('opportunity-description');
+                                }
+                                
+                                // Add any missing structural elements
+                                if (!div.querySelector('.opportunity-footer')) {
+                                    const footer = document.createElement('div');
+                                    footer.className = 'opportunity-footer';
+                                    footer.innerHTML = `
+                                        <div class="opportunity-deadline">
+                                            Deadline: 
+                                            <span class="opportunity-deadline-date">Soon</span>
+                                        </div>
+                                        <a href="#" class="opportunity-action">
+                                            View Details →
+                                        </a>
+                                    `;
+                                    div.appendChild(footer);
+                                }
+                            }
+                        });
+                    }
+                }, 100);
+            };
+
+            // Add ripple effect to buttons
+            document.querySelectorAll('button, a').forEach(element => {
+                element.addEventListener('click', function(e) {
+                    // Create ripple element
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    ripple.classList.add('ripple-effect');
+                    
+                    // Add styles for ripple
+                    ripple.style.position = 'absolute';
+                    ripple.style.borderRadius = '50%';
+                    ripple.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
+                    ripple.style.transform = 'scale(0)';
+                    ripple.style.animation = 'ripple-animation 0.6s linear';
+                    ripple.style.pointerEvents = 'none';
+                    
+                    this.style.position = 'relative';
+                    this.style.overflow = 'hidden';
+                    this.appendChild(ripple);
+                    
+                    // Remove ripple after animation
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+        });
+
+        // Add ripple animation to styles
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple-animation {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
 </body>
 </html>

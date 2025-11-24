@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Configure Gemini API
-genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
+genai.configure(api_key=os.getenv('GEMINI_API'))
 
 router = APIRouter(prefix="/career", tags=["Career Guidance"])
 
@@ -89,7 +89,7 @@ Return ONLY a valid JSON array with this structure:
 Be specific, practical, and encouraging. Focus on careers achievable for college students and recent graduates."""
 
         # Call Gemini API
-        model = genai.GenerativeModel('gemini-pro')
+        model = genai.GenerativeModel('gemini-2.0-flash')
         response = model.generate_content(prompt)
 
         # Extract JSON safely from response
@@ -199,7 +199,7 @@ Return ONLY a valid JSON array of strings:
 
 Be specific with job titles (e.g., "Machine Learning Engineer" not just "Engineer")."""
 
-        model = genai.GenerativeModel('gemini-pro')
+        model = genai.GenerativeModel('gemini-2.0-flash')
         response = model.generate_content(prompt)
 
         # Extract JSON safely from response
