@@ -13,7 +13,7 @@ from typing import List
 load_dotenv()
 
 # Configure Gemini API
-genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
+genai.configure(api_key=os.getenv('GEMINI_API'))
 
 router = APIRouter(prefix="/coach", tags=["Upskill Coach"])
 
@@ -103,7 +103,7 @@ Return your response in this format:
 Return ONLY valid JSON, no other text."""
 
         # Call Gemini API
-        model = genai.GenerativeModel('gemini-pro')
+        model = genai.GenerativeModel('gemini-2.0-flash')
         response = model.generate_content(context)
 
         response_text = response.text.strip()

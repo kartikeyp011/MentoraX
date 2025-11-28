@@ -102,12 +102,16 @@ Important: Return ONLY the JSON array, no other text."""
         print(f"Gemini API Response: {response_text[:200]}...")
 
         # Extract JSON from response (remove markdown code blocks if present)
-        if '```json'  in response_text:
-            response_text = response_text.split('```json').split('```')
+        if '```json' in response_text:
+            # Extract content between ```json and ```
+            response_text = response_text.split('```json')[1].split('```')[0].strip()
         elif '```' in response_text:
-            response_text = response_text.split('```')[0].strip()
+            # Extract content between first ``` and next ```
+            parts = response_text.split('```')
+            if len(parts) >= 2:
+                response_text = parts[1].strip()
 
-            # Try to parse JSON
+        # Try to parse JSON
         try:
             career_paths = json.loads(response_text)
         except json.JSONDecodeError:

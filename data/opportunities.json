@@ -5,7 +5,7 @@
     "link": "https://internshala.com/internship/detail/software-development-intern",
     "source": "Internshala",
     "location": "Bangalore",
-    "deadline": "2025-12-05",
+    "deadline": "2025-12-13",
     "skill_ids": [
       1,
       2,
@@ -21,7 +21,7 @@
     "link": "https://internshala.com/internship/detail/machine-learning-intern",
     "source": "Internshala",
     "location": "Remote",
-    "deadline": "2025-12-10",
+    "deadline": "2025-12-18",
     "skill_ids": [
       1,
       5,
@@ -34,7 +34,7 @@
     "link": "https://internshala.com/internship/detail/frontend-developer-intern",
     "source": "Internshala",
     "location": "Mumbai",
-    "deadline": "2025-11-30",
+    "deadline": "2025-12-08",
     "skill_ids": [
       2,
       3,
@@ -48,7 +48,7 @@
     "link": "https://internshala.com/internship/detail/data-analyst-intern",
     "source": "Internshala",
     "location": "Hyderabad",
-    "deadline": "2025-12-15",
+    "deadline": "2025-12-23",
     "skill_ids": [
       1,
       8,
@@ -61,7 +61,7 @@
     "link": "https://internshala.com/internship/detail/full-stack-developer-intern",
     "source": "Internshala",
     "location": "Pune",
-    "deadline": "2025-12-08",
+    "deadline": "2025-12-16",
     "skill_ids": [
       1,
       6,
@@ -75,7 +75,7 @@
     "link": "https://internshala.com/internship/detail/devops-intern",
     "source": "Internshala",
     "location": "Remote",
-    "deadline": "2025-12-02",
+    "deadline": "2025-12-10",
     "skill_ids": [
       1,
       11,
@@ -88,7 +88,7 @@
     "link": "https://internshala.com/internship/detail/ai-research-intern",
     "source": "Internshala",
     "location": "Bangalore",
-    "deadline": "2025-12-20",
+    "deadline": "2025-12-28",
     "skill_ids": [
       1,
       4,
@@ -101,7 +101,7 @@
     "link": "https://internshala.com/internship/detail/backend-developer-intern",
     "source": "Internshala",
     "location": "Delhi",
-    "deadline": "2025-12-04",
+    "deadline": "2025-12-12",
     "skill_ids": [
       1,
       2,
@@ -115,7 +115,7 @@
     "link": "https://internshala.com/internship/detail/mobile-app-developer-intern",
     "source": "Internshala",
     "location": "Chennai",
-    "deadline": "2025-12-12",
+    "deadline": "2025-12-20",
     "skill_ids": [
       2,
       3,
@@ -129,7 +129,7 @@
     "link": "https://internshala.com/internship/detail/cybersecurity-intern",
     "source": "Internshala",
     "location": "Bangalore",
-    "deadline": "2025-12-06",
+    "deadline": "2025-12-14",
     "skill_ids": [
       1,
       13
@@ -141,7 +141,7 @@
     "link": "https://angel.co/company/startup/jobs/software-engineer",
     "source": "AngelList",
     "location": "Bangalore",
-    "deadline": "2026-01-04",
+    "deadline": "2026-01-12",
     "skill_ids": [
       1,
       2,
@@ -155,7 +155,7 @@
     "link": "https://angel.co/company/aicompany/jobs/ml-engineer",
     "source": "AngelList",
     "location": "Remote",
-    "deadline": "2025-12-30",
+    "deadline": "2026-01-07",
     "skill_ids": [
       1,
       4,
@@ -169,7 +169,7 @@
     "link": "https://angel.co/company/techstartup/jobs/frontend-engineer",
     "source": "AngelList",
     "location": "Mumbai",
-    "deadline": "2025-12-25",
+    "deadline": "2026-01-02",
     "skill_ids": [
       2,
       3,
@@ -183,7 +183,7 @@
     "link": "https://angel.co/company/datacompany/jobs/data-engineer",
     "source": "AngelList",
     "location": "Hyderabad",
-    "deadline": "2026-01-09",
+    "deadline": "2026-01-17",
     "skill_ids": [
       1,
       8,
@@ -197,7 +197,7 @@
     "link": "https://angel.co/company/webstartup/jobs/full-stack-engineer",
     "source": "AngelList",
     "location": "Bangalore",
-    "deadline": "2025-12-28",
+    "deadline": "2026-01-05",
     "skill_ids": [
       1,
       6,
@@ -211,7 +211,7 @@
     "link": "https://linkedin.com/jobs/software-developer-new-grad",
     "source": "LinkedIn",
     "location": "Pune",
-    "deadline": "2025-12-18",
+    "deadline": "2025-12-26",
     "skill_ids": [
       2,
       11,
@@ -225,7 +225,7 @@
     "link": "https://linkedin.com/jobs/data-scientist-entry-level",
     "source": "LinkedIn",
     "location": "Bangalore",
-    "deadline": "2025-12-22",
+    "deadline": "2025-12-30",
     "skill_ids": [
       1,
       4,
@@ -239,7 +239,7 @@
     "link": "https://linkedin.com/jobs/react-developer",
     "source": "LinkedIn",
     "location": "Remote",
-    "deadline": "2025-12-16",
+    "deadline": "2025-12-24",
     "skill_ids": [
       2,
       3,
@@ -254,7 +254,7 @@
     "link": "https://linkedin.com/jobs/cloud-engineer-graduate",
     "source": "LinkedIn",
     "location": "Chennai",
-    "deadline": "2026-01-01",
+    "deadline": "2026-01-09",
     "skill_ids": [
       1,
       2,
@@ -268,7 +268,7 @@
     "link": "https://linkedin.com/jobs/security-analyst",
     "source": "LinkedIn",
     "location": "Delhi",
-    "deadline": "2025-12-14",
+    "deadline": "2025-12-22",
     "skill_ids": [
       1,
       13,

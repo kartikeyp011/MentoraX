@@ -1,117 +1,218 @@
-# MentoraX - AI-Powered Career Guidance Platform
+# **MentoraX - AI-Powered Career Guidance Platform**
 
-An intelligent career guidance platform for college students powered by Gemini AI, FAISS vector search, and AWS S3.
 
-## 🚀 Features
+An intelligent career guidance and upskilling platform for college students, powered by AI and machine learning. MentoraX helps students discover career paths, find opportunities, learn new skills, and get personalized mentorship.
 
-- **AI Career Guidance**: Personalized career path recommendations using Gemini API
-- **Smart Skill Matching**: FAISS-powered semantic search for skills and resources
-- **Opportunities Hub**: Real-time internship and job listings from multiple sources
-- **Profile Management**: Resume upload to AWS S3, skill tracking
-- **Learning Resources**: Curated courses and materials with semantic search
+***
 
-## 🛠️ Tech Stack
+## ✨ **Features**
 
-**Backend:**
-- FastAPI (Python)
-- MySQL
-- FAISS (vector search)
-- Gemini API (AI)
-- AWS S3 (file storage)
-- BeautifulSoup (web scraping)
+### **🎯 AI Career Guidance**
+- Personalized career path recommendations using AI
+- Skill gap analysis with actionable insights
+- Context-aware suggestions based on user profile
 
-**Frontend:**
-- Vanilla JavaScript
-- Tailwind CSS
-- Responsive design
+### **💼 Opportunities Hub**
+- Real-time internship and job listings
+- Advanced filtering (location, skills, date)
+- Save/bookmark opportunities
 
-## 📋 Prerequisites
+### **📚 Learning Zone**
+- AI-powered semantic search for courses
+- Free and paid course recommendations
+- Personalized learning paths
 
-- Python 3.11.9+
-- MySQL
-- AWS Account (S3 access)
-- Gemini API key
+### **🤖 Upskill Coach**
+- Interactive AI chatbot for career advice
+- Personalized learning plans
+- Real-time mentorship
 
-## ⚙️ Installation
+### **👤 Profile Management**
+- Skills portfolio with proficiency tracking
+- Resume upload to cloud storage
+- Progress tracking and statistics
 
-1. Clone the repository:
-```
-git clone <your-repo-url>
-cd mentorax
-```
+***
 
-2. Create virtual environment:
-```
+## 🛠️ **Tech Stack**
+
+**Backend:** FastAPI (Python 3.11.9), MySQL 8.0, FAISS (Vector Search)  
+**AI/ML:** Google Gemini API, Sentence Transformers  
+**Frontend:** Vanilla JavaScript, Tailwind CSS  
+**Cloud:** AWS S3  
+**Authentication:** Session-based with SHA256 hashing
+
+***
+
+## 🚀 **Installation**
+
+### **Prerequisites**
+- Python 3.11.9
+- MySQL 8.0+
+- Chrome browser
+- AWS Account
+- Google Gemini API key
+
+### **Quick Start**
+
+```bash
+# Clone repository
+git clone https://github.com/kartikeyp011/MentoraX.git
+cd MentoraX
+
+# Create virtual environment
 python -m venv venv
 venv\Scripts\activate  # Windows
-source venv/bin/activate  # Linux/Mac
-```
+# source venv/bin/activate  # Linux/Mac
 
-3. Install dependencies:
-```
+# Install dependencies
 pip install -r requirements.txt
-```
 
-4. Create `.env` file:
-```
-GEMINI_API_KEY=your_gemini_api_key
-AWS_ACCESS_KEY_ID=your_aws_access_key
-AWS_SECRET_ACCESS_KEY=your_aws_secret_key
-AWS_S3_BUCKET_NAME=your_bucket_name
-MYSQL_HOST=localhost
-MYSQL_USER=root
+# Setup database
+mysql -u root -p < backend/schema.sql
+
+# Configure environment (.env file)
+GEMINI_API=your_key
+AWS_ACCESS_KEY_ID=your_key
+AWS_SECRET_ACCESS_KEY=your_secret
+AWS_S3_BUCKET_NAME=your_bucket
 MYSQL_PASSWORD=your_password
-MYSQL_DATABASE=mentorax_db
-```
 
-5. Set up MySQL database:
-```
-mysql -u root -p < schema.sql
-```
-
-6. Build FAISS indexes:
-```
+# Build indexes
 python backend/faiss_utils.py
+
+# Start server
+python -m backend.main
 ```
 
-7. Run scraper (one-time):
-```
-python backend/scraper.py
-python backend/load_data.py
+Visit: `http://localhost:8000`
+
+***
+
+## 📖 **Usage**
+
+### **For Students**
+
+1. **Sign Up** → Create profile with degree and career goals
+2. **Add Skills** → Build your skills portfolio
+3. **Get Guidance** → AI analyzes and suggests career paths
+4. **Find Opportunities** → Browse and save relevant positions
+5. **Learn** → Discover courses with semantic search
+6. **Chat with AI** → Get personalized advice anytime
+
+### **For Administrators**
+
+```bash
+# Run data collection
+python -m backend.scraper
+
+# Rebuild search indexes
+python -m backend.faiss_utils
+
+# Monitor logs
+SELECT * FROM scraping_logs ORDER BY completed_at DESC LIMIT 10;
 ```
 
-## 🚀 Running the Application
+***
 
-Start the server:
-```
-python backend/main.py
-```
+## 📚 **API Endpoints**
 
-Access the application:
-- Landing: http://localhost:8000/landing
-- API Docs: http://localhost:8000/docs
+**Authentication**
+- `POST /auth/signup` - Register user
+- `POST /auth/login` - Login
+- `POST /auth/logout` - Logout
 
-## 📁 Project Structure
+**Career**
+- `POST /career/path` - Get AI recommendations
+- `POST /career/skills/analyze` - Analyze skills
+
+**Opportunities**
+- `GET /opportunities/all` - List all
+- `POST /opportunities/save/{id}` - Save opportunity
+- `POST /opportunities/filter` - Filter by criteria
+
+**Resources**
+- `POST /resources/search` - Semantic search
+- `GET /resources/all` - List all courses
+
+**Coach**
+- `POST /coach/chat` - Chat with AI
+- `GET /coach/plan` - Get learning plan
+
+**User**
+- `GET /user/profile` - Get profile
+- `POST /user/update` - Update profile
+- `POST /user/upload_resume` - Upload resume
+
+Full docs: `http://localhost:8000/docs`
+
+***
+
+## 📁 **Project Structure**
 
 ```
 mentorax/
-├── backend/          # FastAPI backend
-├── frontend/         # HTML/CSS/JS frontend
-├── data/            # FAISS indexes, scraped data
-├── .env             # Environment variables (not committed)
-└── venv/            # Virtual environment (not committed)
+├── backend/
+│   ├── main.py              # FastAPI entry point
+│   ├── auth.py              # Authentication
+│   ├── career.py            # Career guidance (Gemini)
+│   ├── opportunities.py     # Job/internship endpoints
+│   ├── resources.py         # Learning resources
+│   ├── coach.py             # AI chatbot
+│   ├── profile.py           # User management
+│   ├── database.py          # MySQL connector
+│   ├── faiss_utils.py       # Vector search
+│   ├── scraper_utils.py     # Scraping infrastructure
+│   └── schema.sql           # Database schema
+├── frontend/
+│   ├── *.html               # Pages
+│   └── js/*.js              # Frontend logic
+├── data/
+│   └── faiss_indexes/       # Search indexes
+├── .env                     # Environment config
+└── requirements.txt         # Dependencies
 ```
 
-## 🔒 Security Notes
+***
 
-- Never commit `.env` file
-- Keep AWS credentials secure
-- Use environment variables for all secrets
-- Session tokens expire after 7 days
+## 🔧 **Key Features**
 
-## 📝 License
+### **AI-Powered Recommendations**
+Uses Google Gemini API to generate personalized career paths based on:
+- Current skills and proficiency
+- Academic background
+- Career goals
+- Market trends
 
-MIT License
+### **Semantic Search**
+FAISS-based vector search enables natural language queries:
+- "learn machine learning for beginners"
+- "python courses for data science"
+- Results ranked by relevance score
 
-## 👨‍💻 Author
-[Kartikey Narain Prajapati
+### **Automated Data Collection**
+Intelligent web scrapers with:
+- Duplicate detection (SHA256 fingerprinting)
+- Automatic retry and rate limiting
+- Data validation and cleanup
+- Activity logging
+
+### **Smart Duplicate Prevention**
+Combines URL + title hashing to ensure:
+- No duplicate opportunities
+- Updates to existing entries
+- Cleanup of outdated data (30+ days)
+
+***
+
+## 📄 **License**
+
+MIT License - see LICENSE file
+
+***
+
+## 📧 **Contact**
+
+- **Repository:** [github.com/kartikeyp011/mentorax](https://github.com/kartikeyp011/mentorax)
+
+***
