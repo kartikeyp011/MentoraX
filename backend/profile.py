@@ -219,11 +219,17 @@ async def get_user_stats(authorization: str = Header(None)):
             (user_id,)
         )['count']
 
+        # Count saved opportunities
+        saved_count = fetch_one(
+            "SELECT COUNT(*) as count FROM saved_opportunities WHERE user_id = %s",
+            (user_id,)
+        )['count']
+
         return {
             "success": True,
             "stats": {
                 "skills_count": skill_count,
-                "saved_opportunities": 0,  # Placeholder
+                "saved_opportunities": saved_count,
                 "completed_courses": 0  # Placeholder
             }
         }

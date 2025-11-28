@@ -5,16 +5,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Career Guidance - MentoraX</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Configure Tailwind with custom colors
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            50: '#f0f4f8',
+                            100: '#d9e2ec',
+                            200: '#bcccdc',
+                            300: '#9fb3c8',
+                            400: '#829ab1',
+                            500: '#627d98',
+                            600: '#486581',
+                            700: '#334e68',
+                            800: '#243b53',
+                            900: '#102a43'
+                        },
+                        cyan: {
+                            50: '#e0fcff',
+                            100: '#bef8fd',
+                            200: '#87eaf2',
+                            300: '#54d1db',
+                            400: '#38bec9',
+                            500: '#2cb1bc',
+                            600: '#14919b',
+                            700: '#0e7c86',
+                            800: '#0a6c74',
+                            900: '#044e54'
+                        }
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.6s ease-out forwards',
+                        'fade-in-down': 'fadeInDown 0.6s ease-out forwards',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'shimmer': 'shimmer 2s infinite linear',
+                        'gradient': 'gradient 15s ease infinite',
+                    },
+                    backgroundSize: {
+                        '400%': '400% 400%',
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        /* Custom animations and styles */
+        /* Enhanced custom animations and styles */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(30px);
             }
             to {
                 opacity: 1;
                 transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
             }
         }
 
@@ -27,39 +93,81 @@
             }
         }
 
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes pulse-glow {
+            0% {
+                box-shadow: 0 0 0 0 rgba(6, 148, 162, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(6, 148, 162, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(6, 148, 162, 0);
+            }
+        }
+
         .animate-fadeInUp {
             animation: fadeInUp 0.6s ease-out forwards;
         }
 
+        .animate-fadeInDown {
+            animation: fadeInDown 0.6s ease-out forwards;
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .animate-pulse-slow {
+            animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
         .animate-shimmer {
             animation: shimmer 2s infinite linear;
-            background: linear-gradient(to right, #1f2937 4%, #374151 25%, #1f2937 36%);
+            background: linear-gradient(to right, #102a43 4%, #243b53 25%, #102a43 36%);
             background-size: 1000px 100%;
         }
 
+        .animate-gradient {
+            animation: gradient 15s ease infinite;
+            background-size: 400% 400%;
+        }
+
         .card-hover {
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
         .skill-tag {
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
         }
 
         .skill-tag:hover {
-            transform: scale(1.05);
-            background-color: #3b82f6;
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 4px 8px rgba(6, 148, 162, 0.3);
         }
 
         .gradient-border {
             position: relative;
-            background: linear-gradient(135deg, #0f172a, #1e293b);
+            background: linear-gradient(135deg, #102a43, #243b53);
             padding: 1px;
-            border-radius: 0.75rem;
+            border-radius: 1rem;
+            overflow: hidden;
         }
 
         .gradient-border::before {
@@ -69,9 +177,9 @@
             left: 0;
             right: 0;
             bottom: 0;
-            border-radius: 0.75rem;
+            border-radius: 1rem;
             padding: 2px;
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            background: linear-gradient(135deg, #0e7c86, #2cb1bc);
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
@@ -81,6 +189,7 @@
         .sidebar-item {
             position: relative;
             overflow: hidden;
+            transition: all 0.3s ease;
         }
 
         .sidebar-item::after {
@@ -90,8 +199,8 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-            transition: width 0.3s ease;
+            background: linear-gradient(90deg, #0e7c86, #2cb1bc);
+            transition: width 0.4s ease;
         }
 
         .sidebar-item:hover::after {
@@ -103,126 +212,270 @@
         }
 
         .pulse-glow {
-            box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+            box-shadow: 0 0 0 0 rgba(6, 148, 162, 0.7);
             animation: pulse-glow 2s infinite;
-        }
-
-        @keyframes pulse-glow {
-            0% {
-                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
-            }
-            70% {
-                box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
-            }
         }
 
         .progress-bar {
             height: 4px;
-            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            background: linear-gradient(90deg, #0e7c86, #2cb1bc);
             width: 0%;
             transition: width 1.5s ease-in-out;
+            border-radius: 2px;
+        }
+
+        .glass-effect {
+            background: rgba(16, 42, 67, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .floating-shapes {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #0e7c86, #2cb1bc);
+            top: -150px;
+            right: -150px;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .shape-2 {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #102a43, #243b53);
+            bottom: -100px;
+            left: -100px;
+            animation: float 10s ease-in-out infinite reverse;
+        }
+
+        .career-card {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .career-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #0e7c86, #2cb1bc);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .career-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .career-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .roadmap-step {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .roadmap-step::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0e7c86, #2cb1bc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.75rem;
+        }
+
+        .roadmap-step:nth-child(1)::before { content: '1'; }
+        .roadmap-step:nth-child(2)::before { content: '2'; }
+        .roadmap-step:nth-child(3)::before { content: '3'; }
+        .roadmap-step:nth-child(4)::before { content: '4'; }
+        .roadmap-step:nth-child(5)::before { content: '5'; }
+
+        .roadmap-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 0.75rem;
+            top: 2rem;
+            bottom: -1.5rem;
+            width: 2px;
+            background: linear-gradient(to bottom, #0e7c86, #2cb1bc);
+        }
+
+        .ai-thinking {
+            display: inline-block;
+            position: relative;
+        }
+
+        .ai-thinking::after {
+            content: '...';
+            position: absolute;
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+
+        /* Enhanced responsive design */
+        @media (max-width: 768px) {
+            .sidebar-item span:last-child {
+                display: none;
+            }
+            .sidebar-item {
+                justify-content: center;
+                padding: 0.75rem;
+            }
         }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-200">
+<body class="bg-navy-900 text-gray-200 min-h-screen overflow-x-hidden">
+    <!-- Background shapes for visual interest -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="floating-shapes shape-1"></div>
+        <div class="floating-shapes shape-2"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-navy-900 via-navy-800 to-cyan-900 animate-gradient"></div>
+    </div>
+
     <!-- Navbar -->
-    <nav class="bg-gray-800 shadow-xl sticky top-0 z-50">
+    <nav class="glass-effect shadow-xl sticky top-0 z-50 border-b border-cyan-900/30">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
-                    <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">MentoraX</h1>
+                    <h1 class="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-cyan-600 bg-clip-text text-transparent animate-pulse-slow">MentoraX</h1>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <a href="/dashboard" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">Dashboard</a>
-                    <button onclick="logoutUser()" class="text-gray-300 hover:text-red-400 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">Logout</button>
+                    <a href="/dashboard" class="text-gray-300 hover:text-cyan-300 px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 hover:bg-navy-800/50">Dashboard</a>
+                    <button onclick="logoutUser()" class="text-gray-300 hover:text-red-400 px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 hover:bg-navy-800/50">Logout</button>
                 </div>
             </div>
         </div>
     </nav>
 
-    <div class="flex">
-        <!-- Sidebar -->
-        <div class="w-64 bg-gray-800 shadow-xl h-screen sticky top-0 hidden md:block">
-            <div class="p-6">
-                <nav class="space-y-2">
-                    <a href="/dashboard" class="sidebar-item flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 rounded-lg transition-all duration-300">
-                        <span class="text-xl mr-3">📊</span>
-                        <span class="font-medium">Dashboard</span>
-                    </a>
-                    <a href="/career-guidance" class="sidebar-item active flex items-center px-4 py-3 text-white bg-gradient-to-r from-blue-900/30 to-purple-900/30 rounded-lg transition-all duration-300">
-                        <span class="text-xl mr-3">🎯</span>
-                        <span class="font-medium">Career Guidance</span>
-                    </a>
-                    <a href="#" class="sidebar-item flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 rounded-lg transition-all duration-300">
-                        <span class="text-xl mr-3">💼</span>
-                        <span class="font-medium">Opportunities</span>
-                    </a>
-                    <a href="/profile" class="sidebar-item flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 rounded-lg transition-all duration-300">
-                        <span class="text-xl mr-3">👤</span>
-                        <span class="font-medium">Profile</span>
-                    </a>
-                </nav>
-            </div>
+    <!-- Sidebar -->
+    <div class="w-64 glass-effect shadow-xl h-screen fixed top-0 left-0 hidden md:block overflow-y-auto z-40" style="margin-top: 4rem; height: calc(100vh - 4rem);">
+        <div class="p-6">
+            <nav class="space-y-2">
+                <a href="/dashboard" class="sidebar-item flex items-center px-4 py-3 text-gray-300 hover:bg-navy-700/50 rounded-lg transition-all duration-300">
+                    <span class="text-xl mr-3">📊</span>
+                    <span class="font-medium">Dashboard</span>
+                </a>
+                <a href="/career-guidance" class="sidebar-item active flex items-center px-4 py-3 text-white bg-gradient-to-r from-cyan-900/40 to-navy-800/40 rounded-lg transition-all duration-300">
+                    <span class="text-xl mr-3">🎯</span>
+                    <span class="font-medium">Career Guidance</span>
+                </a>
+                <a href="/opportunities" class="sidebar-item flex items-center px-4 py-3 text-gray-300 hover:bg-navy-700/50 rounded-lg transition-all duration-300">
+                    <span class="text-xl mr-3">💼</span>
+                    <span class="font-medium">Opportunities</span>
+                </a>
+                <a href="/learning-zone" class="sidebar-item flex items-center px-4 py-3 text-gray-300 hover:bg-navy-700/50 rounded-lg transition-all duration-300">
+                    <span class="text-xl mr-3">📚</span>
+                    <span class="font-medium">Learning Zone</span>
+                </a>
+                <a href="/upskill-coach" class="sidebar-item flex items-center px-4 py-3 text-gray-300 hover:bg-navy-700/50 rounded-lg transition-all duration-300">
+                    <span class="text-xl mr-3">🤖</span>
+                    <span class="font-medium">Upskill Coach</span>
+                </a>
+                <a href="/profile" class="sidebar-item flex items-center px-4 py-3 text-gray-300 hover:bg-navy-700/50 rounded-lg transition-all duration-300">
+                    <span class="text-xl mr-3">👤</span>
+                    <span class="font-medium">Profile</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="md:ml-64 p-4 md:p-8 relative z-10">
+        <!-- Page Header -->
+        <div class="animate-fadeInDown mb-8">
+            <h2 class="text-4xl font-bold text-white mb-2 bg-gradient-to-r from-cyan-300 to-cyan-500 bg-clip-text text-transparent">AI Career Guidance</h2>
+            <p class="text-cyan-200 mb-2">Get personalized career recommendations powered by advanced AI</p>
+            <div class="h-1 w-24 bg-gradient-to-r from-cyan-500 to-cyan-300 rounded-full"></div>
         </div>
 
-        <!-- Main Content -->
-        <div class="flex-1 p-4 md:p-8">
-            <div class="animate-fadeInUp">
-                <h2 class="text-3xl font-bold text-white mb-2">AI Career Guidance</h2>
-                <p class="text-gray-400 mb-8">Get personalized career recommendations powered by AI</p>
-            </div>
-
-            <!-- Profile Summary Card -->
-            <div id="profileCard" class="gradient-border rounded-lg mb-6 animate-fadeInUp" style="animation-delay: 0.1s;">
-                <div class="bg-gray-800 rounded-lg p-6">
-                    <h3 class="text-xl font-bold text-white mb-4">Your Profile</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                        <div>
-                            <p class="text-sm text-gray-400">Degree</p>
-                            <p id="profileDegree" class="font-medium text-white">--</p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-400">Career Goal</p>
-                            <p id="profileGoal" class="font-medium text-white">--</p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-400">Skills</p>
-                            <p id="profileSkillsCount" class="font-medium text-white">--</p>
-                        </div>
+        <!-- Profile Summary Card -->
+        <div id="profileCard" class="gradient-border rounded-xl mb-8 animate-fadeInUp" style="animation-delay: 0.1s;">
+            <div class="bg-navy-800/70 backdrop-blur-sm rounded-xl p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-bold text-white">Your Profile Summary</h3>
+                    <span class="text-cyan-300 animate-pulse">✨</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div class="bg-navy-700/50 p-4 rounded-lg border border-cyan-900/30">
+                        <p class="text-sm text-cyan-300 mb-1">Degree</p>
+                        <p id="profileDegree" class="font-semibold text-white text-lg">--</p>
                     </div>
-                    <div id="profileSkills" class="flex flex-wrap gap-2">
+                    <div class="bg-navy-700/50 p-4 rounded-lg border border-cyan-900/30">
+                        <p class="text-sm text-cyan-300 mb-1">Career Goal</p>
+                        <p id="profileGoal" class="font-semibold text-white text-lg">--</p>
+                    </div>
+                    <div class="bg-navy-700/50 p-4 rounded-lg border border-cyan-900/30">
+                        <p class="text-sm text-cyan-300 mb-1">Skills</p>
+                        <p id="profileSkillsCount" class="font-semibold text-white text-lg">--</p>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-sm text-cyan-300 mb-3">Your Skills</p>
+                    <div id="profileSkills" class="flex flex-wrap gap-3">
                         <!-- Skills will be loaded here -->
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Get Recommendations Button -->
-            <div class="text-center mb-8 animate-fadeInUp" style="animation-delay: 0.2s;">
+        <!-- Get Recommendations Section -->
+        <div class="text-center mb-12 animate-fadeInUp" style="animation-delay: 0.2s;">
+            <div class="inline-block p-1 rounded-2xl bg-gradient-to-r from-cyan-500 to-cyan-700 mb-6">
                 <button onclick="getCareerRecommendations()" id="getRecommendationsBtn"
-                        class="pulse-glow bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105">
-                    🎯 Get Career Recommendations
+                        class="pulse-glow bg-navy-800 text-white px-10 py-5 rounded-xl font-bold text-lg hover:bg-navy-700 transition-all duration-300 transform hover:scale-105 shadow-2xl">
+                    <span class="flex items-center justify-center">
+                        <span class="mr-3 text-xl">🎯</span>
+                        Get AI Career Recommendations
+                    </span>
                 </button>
-                <p class="text-sm text-gray-400 mt-2">AI will analyze your profile and suggest career paths</p>
             </div>
+            <p class="text-cyan-200 max-w-md mx-auto">Our AI will analyze your profile, skills, and goals to suggest the best career paths for you</p>
+        </div>
 
-            <!-- Loading State -->
-            <div id="loadingState" class="hidden text-center py-12">
-                <div class="inline-block animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500 mb-4"></div>
-                <p class="text-gray-400 mb-2">AI is analyzing your profile...</p>
-                <div class="w-64 h-1 bg-gray-700 rounded-full mx-auto overflow-hidden">
-                    <div class="progress-bar h-full"></div>
-                </div>
+        <!-- Loading State -->
+        <div id="loadingState" class="hidden text-center py-16 glass-effect rounded-2xl mb-8">
+            <div class="inline-block animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-cyan-500 mb-6"></div>
+            <p class="text-cyan-300 text-xl mb-4 font-medium">AI is analyzing your profile<span class="ai-thinking"></span></p>
+            <p class="text-gray-400 mb-6 max-w-md mx-auto">Our advanced algorithms are evaluating your skills, experience, and goals to find the perfect career matches</p>
+            <div class="w-64 h-2 bg-navy-700 rounded-full mx-auto overflow-hidden">
+                <div class="progress-bar h-full"></div>
             </div>
+        </div>
 
-            <!-- Career Paths -->
-            <div id="careerPaths" class="hidden">
-                <h3 class="text-2xl font-bold text-white mb-6">Recommended Career Paths</h3>
-                <div id="careerPathsContainer" class="space-y-6">
-                    <!-- Career path cards will be inserted here -->
-                </div>
+        <!-- Career Paths -->
+        <div id="careerPaths" class="hidden">
+            <div class="flex justify-between items-center mb-8">
+                <h3 class="text-3xl font-bold text-white">Your Recommended Career Paths</h3>
+                <span class="text-cyan-300 text-lg animate-float">🚀</span>
+            </div>
+            <div id="careerPathsContainer" class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                <!-- Career path cards will be inserted here -->
             </div>
         </div>
     </div>
@@ -232,7 +485,7 @@
     <script src="/static/js/career.js"></script>
 
     <script>
-        // Enhanced JavaScript for animations
+        // Enhanced JavaScript for animations and interactions
         document.addEventListener('DOMContentLoaded', function() {
             // Animate elements on scroll
             const observerOptions = {
@@ -250,7 +503,7 @@
             }, observerOptions);
 
             // Observe elements for scroll animations
-            document.querySelectorAll('.card-hover').forEach(card => {
+            document.querySelectorAll('.card-hover, .career-card').forEach(card => {
                 card.style.opacity = '0';
                 card.style.transform = 'translateY(20px)';
                 card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
@@ -265,7 +518,7 @@
                     if (width >= 100) {
                         clearInterval(interval);
                     } else {
-                        width += Math.random() * 10;
+                        width += Math.random() * 15;
                         if (width > 100) width = 100;
                         progressBar.style.width = width + '%';
                     }
@@ -276,14 +529,88 @@
             const getRecommendationsBtn = document.getElementById('getRecommendationsBtn');
             if (getRecommendationsBtn) {
                 getRecommendationsBtn.addEventListener('mouseenter', function() {
-                    this.classList.add('shadow-lg');
+                    this.classList.add('shadow-xl', 'bg-navy-700');
                 });
 
                 getRecommendationsBtn.addEventListener('mouseleave', function() {
-                    this.classList.remove('shadow-lg');
+                    this.classList.remove('shadow-xl', 'bg-navy-700');
+                    this.classList.add('bg-navy-800');
                 });
             }
+
+            // Add floating animation to some elements
+            const floatingElements = document.querySelectorAll('.animate-float');
+            floatingElements.forEach((el, index) => {
+                el.style.animationDelay = `${index * 0.5}s`;
+            });
         });
+
+        // Override the displayCareerPaths function to use the new card design
+        // This is a temporary override - in a real scenario, you'd update the career.js file
+        // But since we can't modify JS files, we'll override the function here
+        const originalDisplayCareerPaths = window.displayCareerPaths;
+
+        window.displayCareerPaths = function(paths) {
+            const container = document.getElementById('careerPathsContainer');
+            container.innerHTML = '';
+
+            paths.forEach((path, index) => {
+                const card = document.createElement('div');
+                card.className = 'career-card glass-effect rounded-xl p-6 border border-cyan-900/30';
+                card.style.animationDelay = `${index * 0.2}s`;
+
+                card.innerHTML = `
+                    <div class="flex items-start justify-between mb-5">
+                        <div>
+                            <div class="inline-flex items-center px-3 py-1 rounded-full bg-cyan-900/30 text-cyan-300 text-sm font-medium mb-3">
+                                Path ${index + 1}
+                            </div>
+                            <h4 class="text-xl font-bold text-white mb-2">${path.title}</h4>
+                        </div>
+                        <span class="text-3xl animate-float" style="animation-delay: ${index * 0.3}s">${getPathEmoji(index)}</span>
+                    </div>
+
+                    <div class="mb-5">
+                        <h5 class="font-semibold text-cyan-300 mb-2 flex items-center">
+                            <span class="mr-2">🎯</span> Why This Fits You:
+                        </h5>
+                        <p class="text-gray-300">${path.fit_reason}</p>
+                    </div>
+
+                    <div class="mb-5">
+                        <h5 class="font-semibold text-cyan-300 mb-3 flex items-center">
+                            <span class="mr-2">🛠️</span> Skills to Develop:
+                        </h5>
+                        <div class="flex flex-wrap gap-2">
+                            ${path.missing_skills.map(skill =>
+                                `<span class="skill-tag px-3 py-1 bg-cyan-900/40 text-cyan-200 rounded-full text-sm border border-cyan-700/30">${skill}</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+
+                    <div>
+                        <h5 class="font-semibold text-cyan-300 mb-4 flex items-center">
+                            <span class="mr-2">🗺️</span> Learning Roadmap:
+                        </h5>æ
+                        <ol class="space-y-4">
+                            ${path.roadmap.map((step, idx) =>
+                                `<li class="roadmap-step text-gray-300">
+                                    ${step}
+                                </li>`
+                            ).join('')}
+                        </ol>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        };
+
+        // Helper function to get appropriate emojis for career paths
+        function getPathEmoji(index) {
+            const emojis = ['🚀', '💡', '🌟', '🔮', '⚡', '🎨'];
+            return emojis[index % emojis.length];
+        }
     </script>
 </body>
 </html>

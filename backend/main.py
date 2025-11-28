@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 import os
-from . import auth, opportunities, career, profile, resources
+from . import auth, opportunities, career, profile, resources, coach
 
 app = FastAPI(title="MentoraX API")
 
@@ -52,6 +52,18 @@ async def serve_career():
 async def serve_profile():
     return FileResponse("frontend/profile.html")
 
+@app.get("/opportunities")
+async def serve_opportunities():
+    return FileResponse("frontend/opportunities.html")
+
+@app.get("/learning-zone")
+async def serve_learning_zone():
+    return FileResponse("frontend/learning_zone.html")
+
+@app.get("/upskill-coach")
+async def serve_upskill_coach():
+    return FileResponse("frontend/upskill_coach.html")
+
 # Import and include routers (will add these next)
 # from backend import auth, career, opportunities, profile, resources
 app.include_router(auth.router)
@@ -59,3 +71,4 @@ app.include_router(career.router)
 app.include_router(opportunities.router)
 app.include_router(profile.router)
 app.include_router(resources.router)
+app.include_router(coach.router)
