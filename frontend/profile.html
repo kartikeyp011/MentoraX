@@ -5,433 +5,388 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile - MentoraX</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Custom CSS for enhanced animations and styling -->
     <style>
-        /* Enhanced color palette with navy & cyan theme */
         :root {
-            --primary: #2563eb;      /* Navy blue */
-            --primary-dark: #1e40af;
-            --primary-light: #3b82f6;
-            --secondary: #06b6d4;    /* Cyan */
-            --secondary-dark: #0891b2;
-            --dark-bg: #0f172a;
-            --dark-card: #1e293b;
-            --dark-card-hover: #334155;
-            --dark-text: #f8fafc;
-            --dark-text-secondary: #cbd5e1;
-            --accent: #8b5cf6;
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --primary-light: #c7d2fe;
+            --secondary: #7c3aed;
+            --accent: #0ea5e9;
             --success: #10b981;
             --warning: #f59e0b;
             --error: #ef4444;
+            --dark-bg: #111827;
+            --dark-card: #1f2937;
+            --dark-card-hover: #374151;
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --text-muted: #9ca3af;
+            --border-color: #374151;
         }
 
-        /* Enhanced animations */
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { 
+                opacity: 0; 
+                transform: translateY(20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
         }
 
-        @keyframes fadeInLeft {
-            from { opacity: 0; transform: translateX(-20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        @keyframes fadeInRight {
-            from { opacity: 0; transform: translateX(20px); }
-            to { opacity: 1; transform: translateX(0); }
+        @keyframes slideInLeft {
+            from { 
+                transform: translateX(-20px); 
+                opacity: 0; 
+            }
+            to { 
+                transform: translateX(0); 
+                opacity: 1; 
+            }
         }
 
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+            0%, 100% { 
+                transform: scale(1); 
+            }
+            50% { 
+                transform: scale(1.05); 
+            }
         }
 
-        @keyframes shimmer {
-            0% { background-position: -1000px 0; }
-            100% { background-position: 1000px 0; }
+        @keyframes glow {
+            0%, 100% { 
+                box-shadow: 0 0 5px rgba(79, 70, 229, 0.4); 
+            }
+            50% { 
+                box-shadow: 0 0 20px rgba(79, 70, 229, 0.7); 
+            }
         }
 
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
+        .animate-fadeInUp {
+            animation: fadeInUp 0.6s ease-out forwards;
         }
 
-        /* Animation utility classes */
-        .animate-fade-in-up {
-            animation: fadeInUp 0.6s ease-out;
+        .animate-slideInLeft {
+            animation: slideInLeft 0.5s ease-out forwards;
         }
 
-        .animate-fade-in-left {
-            animation: fadeInLeft 0.5s ease-out;
+        .animate-pulse-slow {
+            animation: pulse 3s infinite ease-in-out;
         }
 
-        .animate-fade-in-right {
-            animation: fadeInRight 0.5s ease-out;
+        .animate-glow {
+            animation: glow 2s infinite ease-in-out;
         }
 
-        .animate-pulse-hover:hover {
-            animation: pulse 0.5s ease-in-out;
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--border-color);
         }
 
-        .animate-float {
-            animation: float 6s ease-in-out infinite;
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary);
         }
 
-        /* Enhanced glass morphism effect */
-        .glass {
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+        .sidebar-item {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        /* Gradient backgrounds */
-        .gradient-bg {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        .sidebar-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: var(--primary);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
         }
 
-        .gradient-bg-reverse {
-            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+        .sidebar-item:hover::before,
+        .sidebar-item.active::before {
+            transform: scaleY(1);
         }
 
-        /* Enhanced gradient text */
+        .sidebar-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            border-left: 4px solid var(--primary);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
         .gradient-text {
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        /* Card hover effects */
-        .card-hover {
-            transition: all 0.3s ease;
+        .heading-1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            line-height: 1.2;
         }
 
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+        .heading-2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            line-height: 1.3;
         }
 
-        /* Enhanced button styles */
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            transition: all 0.3s ease;
+        .heading-3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            line-height: 1.4;
         }
 
-        .btn-primary:hover {
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+        .navbar {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
         }
 
-        .btn-secondary {
-            background: linear-gradient(135deg, var(--secondary) 0%, #22d3ee 100%);
-            transition: all 0.3s ease;
-        }
-
-        .btn-secondary:hover {
-            background: linear-gradient(135deg, var(--secondary-dark) 0%, var(--secondary) 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(6, 182, 212, 0.3);
-        }
-
-        /* Loading shimmer effect */
-        .shimmer {
-            background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
-            background-size: 1000px 100%;
-            animation: shimmer 2s infinite linear;
-        }
-
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--dark-bg);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--dark-card);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary);
-        }
-
-        /* Background pattern */
-        .bg-pattern {
-            background-image:
-                radial-gradient(circle at 25% 25%, rgba(37, 99, 235, 0.1) 0%, transparent 55%),
-                radial-gradient(circle at 75% 75%, rgba(6, 182, 212, 0.1) 0%, transparent 55%);
-        }
-
-        /* Enhanced form inputs */
-        .form-input {
-            transition: all 0.3s ease;
-        }
-
-        .form-input:focus {
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
-        }
-
-        /* Skill badges with gradient */
-        .skill-badge {
-            background: linear-gradient(135deg, var(--dark-card) 0%, #2d3748 100%);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s ease;
-        }
-
-        .skill-badge:hover {
-            background: linear-gradient(135deg, #2d3748 0%, #374151 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.3);
+        @media (max-width: 768px) {
+            .heading-1 {
+                font-size: 1.875rem;
+            }
+            .heading-2 {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
-<body class="bg-slate-900 text-slate-100 bg-pattern">
-    <!-- Enhanced Navbar with improved glass effect -->
-    <nav class="glass sticky top-0 z-50 shadow-xl border-b border-slate-700/50">
+<body class="bg-gray-900 text-gray-100">
+    <nav class="navbar bg-gray-800/90 sticky top-0 z-50 border-b border-gray-700">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <h1 class="text-2xl font-bold gradient-text flex items-center">
-                        <span class="mr-2 animate-float">🚀</span> MentoraX
-                    </h1>
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center space-x-2">
+                    <div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg p-2">
+                        <span class="text-white text-xl">🚀</span>
+                    </div>
+                    <h1 class="text-2xl font-bold gradient-text">MentoraX</h1>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <a href="/dashboard" class="text-slate-300 hover:text-white px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-slate-800/50 flex items-center">
-                        <span class="mr-2">📊</span> Dashboard
-                    </a>
-                    <button onclick="logoutUser()" class="text-slate-300 hover:text-red-400 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-slate-800/50 flex items-center">
-                        <span class="mr-2">🚪</span> Logout
+                    <span id="userName" class="text-gray-300 font-medium"></span>
+                    <button onclick="logoutUser()" class="btn-primary px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 flex items-center">
+                        <span class="mr-2">🚪</span>
+                        Logout
                     </button>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Enhanced Sidebar with improved styling -->
-    <div class="w-64 glass shadow-xl h-screen fixed top-0 left-0 overflow-y-auto z-40" style="margin-top: 4rem; height: calc(100vh - 4rem);">
-        <div class="p-6">
-            <div class="mb-8 animate-fade-in-left">
-                <div class="flex items-center mb-4">
-                    <div class="w-12 h-12 rounded-full gradient-bg flex items-center justify-center text-white font-bold text-lg mr-3">
-                        <span id="userInitials" class="text-white">U</span>
-                    </div>
-                    <div>
-                        <p class="font-medium text-white" id="sidebarUserName">User Name</p>
-                        <p class="text-xs text-slate-400">Premium Member</p>
-                    </div>
-                </div>
-            </div>
-
-            <nav class="space-y-1">
-                <a href="/dashboard" class="flex items-center px-4 py-3 text-slate-300 hover:bg-slate-700/50 rounded-xl transition-all duration-300 hover:translate-x-2 group">
-                    <span class="text-xl mr-3 group-hover:scale-110 transition-transform duration-300">📊</span>
-                    <span class="font-medium">Dashboard</span>
-                </a>
-                <a href="/career-guidance" class="flex items-center px-4 py-3 text-slate-300 hover:bg-slate-700/50 rounded-xl transition-all duration-300 hover:translate-x-2 group">
-                    <span class="text-xl mr-3 group-hover:scale-110 transition-transform duration-300">🎯</span>
-                    <span class="font-medium">Career Guidance</span>
-                </a>
-                <a href="/opportunities" class="flex items-center px-4 py-3 text-slate-300 hover:bg-slate-700/50 rounded-xl transition-all duration-300 hover:translate-x-2 group">
-                    <span class="text-xl mr-3 group-hover:scale-110 transition-transform duration-300">💼</span>
-                    <span class="font-medium">Opportunities</span>
-                </a>
-                <a href="/learning-zone" class="flex items-center px-4 py-3 text-slate-300 hover:bg-slate-700/50 rounded-xl transition-all duration-300 hover:translate-x-2 group">
-                    <span class="text-xl mr-3">📚</span>
-                    <span class="font-medium">Learning Zone</span>
-                </a>
-                <a href="/upskill-coach" class="flex items-center px-4 py-3 text-slate-300 hover:bg-slate-700/50 rounded-xl transition-all duration-300 hover:translate-x-2 group">
-                    <span class="text-xl mr-3">🤖</span>
-                    <span class="font-medium">Upskill Coach</span>
-                </a>
-                <a href="/profile" class="flex items-center px-4 py-3 bg-gradient-to-r from-slate-700/70 to-slate-800/70 text-white rounded-xl border-l-4 border-secondary transition-all duration-300 group">
-                    <span class="text-xl mr-3 group-hover:scale-110 transition-transform duration-300">👤</span>
-                    <span class="font-medium">Profile</span>
-                </a>
-            </nav>
-        </div>
-    </div>
-
-    <!-- Enhanced Main Content Area -->
-    <div class="md:ml-64 p-6 md:p-8 animate-fade-in-up">
-        <!-- Page Header with improved styling -->
-        <div class="mb-8">
-            <h2 class="text-3xl font-bold text-white mb-2 flex items-center">
-                <span class="mr-3">👤</span> My Profile
-            </h2>
-            <p class="text-slate-400">Manage your profile, skills, and resume</p>
-            <div class="h-1 w-20 gradient-bg rounded-full mt-2"></div>
-        </div>
-
-        <!-- Enhanced Alert System -->
-        <div id="alertMessage" class="hidden rounded-xl p-4 mb-6 border-l-4 bg-slate-800/80 shadow-lg backdrop-blur-sm">
-            <div class="flex items-center">
-                <span id="alertIcon" class="text-xl mr-3">ℹ️</span>
-                <p id="alertText" class="text-sm flex-1"></p>
-                <button onclick="document.getElementById('alertMessage').classList.add('hidden')" class="text-slate-400 hover:text-white ml-2">
-                    &times;
-                </button>
+    <div class="flex">
+        <div class="w-64 sidebar-container bg-gray-800/80 shadow-xl border-r border-gray-700 fixed top-16 h-[calc(100vh-4rem)] overflow-y-auto">
+            <div class="p-6">
+                <nav class="space-y-2">
+                    <a href="/dashboard" class="flex items-center px-4 py-3 text-gray-300 hover:text-white rounded-lg sidebar-item">
+                        <span class="text-xl mr-3">📊</span>
+                        <span class="font-medium">Dashboard</span>
+                    </a>
+                    <a href="/career-guidance" class="flex items-center px-4 py-3 text-gray-300 hover:text-white rounded-lg sidebar-item">
+                        <span class="text-xl mr-3">🎯</span>
+                        <span class="font-medium">Career Guidance</span>
+                    </a>
+                    <a href="/opportunities" class="flex items-center px-4 py-3 text-gray-300 hover:text-white rounded-lg sidebar-item">
+                        <span class="text-xl mr-3">💼</span>
+                        <span class="font-medium">Opportunities</span>
+                    </a>
+                    <a href="/learning-zone" class="flex items-center px-4 py-3 text-gray-300 hover:text-white rounded-lg sidebar-item">
+                        <span class="text-xl mr-3">📚</span>
+                        <span class="font-medium">Learning Zone</span>
+                    </a>
+                    <a href="/upskill-coach" class="flex items-center px-4 py-3 text-gray-300 hover:text-white rounded-lg sidebar-item">
+                        <span class="text-xl mr-3">🤖</span>
+                        <span class="font-medium">Upskill Coach</span>
+                    </a>
+                    <a href="/profile" class="flex items-center px-4 py-3 text-blue-400 rounded-lg sidebar-item active">
+                        <span class="text-xl mr-3">👤</span>
+                        <span class="font-medium">Profile</span>
+                    </a>
+                </nav>
             </div>
         </div>
 
-        <!-- Profile Cards Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-            <!-- Basic Info Card with enhanced design -->
-            <div class="bg-slate-800/70 rounded-2xl shadow-xl p-6 card-hover border border-slate-700/50 backdrop-blur-sm">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-xl font-bold text-white flex items-center">
-                        <span class="mr-2">📝</span> Basic Information
-                    </h3>
-                    <button onclick="openEditModal()" class="btn-primary text-white text-sm font-medium flex items-center gap-2 px-4 py-2 rounded-xl animate-pulse-hover">
-                        <span>✏️</span> Edit
+        <div class="flex-1 p-6 md:p-8 ml-64">
+            <div class="mb-8 animate-fadeInUp">
+                <h2 class="heading-1 text-white mb-2">My Profile <span class="gradient-text">👤</span></h2>
+                <p class="text-gray-400 text-lg">Manage your profile, skills, and resume</p>
+            </div>
+
+            <div id="alertMessage" class="hidden rounded-xl p-4 mb-6 border-l-4 bg-gray-800/80 shadow-lg">
+                <div class="flex items-center">
+                    <span id="alertIcon" class="text-xl mr-3">ℹ️</span>
+                    <p id="alertText" class="text-sm flex-1"></p>
+                    <button onclick="document.getElementById('alertMessage').classList.add('hidden')" class="text-gray-400 hover:text-white ml-2">
+                        &times;
                     </button>
                 </div>
-
-                <div class="grid grid-cols-1 gap-5">
-                    <div class="animate-fade-in-left" style="animation-delay: 0.1s">
-                        <p class="text-sm text-slate-400 flex items-center">
-                            <span class="mr-2">👤</span> Name
-                        </p>
-                        <p id="profileName" class="font-medium text-white mt-1 text-lg bg-slate-700/50 p-3 rounded-lg">--</p>
-                    </div>
-                    <div class="animate-fade-in-left" style="animation-delay: 0.2s">
-                        <p class="text-sm text-slate-400 flex items-center">
-                            <span class="mr-2">📧</span> Email
-                        </p>
-                        <p id="profileEmail" class="font-medium text-white mt-1 text-lg bg-slate-700/50 p-3 rounded-lg">--</p>
-                    </div>
-                    <div class="animate-fade-in-left" style="animation-delay: 0.3s">
-                        <p class="text-sm text-slate-400 flex items-center">
-                            <span class="mr-2">🎓</span> Degree/Major
-                        </p>
-                        <p id="profileDegree" class="font-medium text-white mt-1 text-lg bg-slate-700/50 p-3 rounded-lg">--</p>
-                    </div>
-                    <div class="animate-fade-in-left" style="animation-delay: 0.4s">
-                        <p class="text-sm text-slate-400 flex items-center">
-                            <span class="mr-2">🎯</span> Career Goal
-                        </p>
-                        <p id="profileGoal" class="font-medium text-white mt-1 text-lg bg-slate-700/50 p-3 rounded-lg">--</p>
-                    </div>
-                </div>
             </div>
 
-            <!-- Skills Card with enhanced design -->
-            <div class="bg-slate-800/70 rounded-2xl shadow-xl p-6 card-hover border border-slate-700/50 backdrop-blur-sm">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-xl font-bold text-white flex items-center">
-                        <span class="mr-2">🛠️</span> My Skills
-                    </h3>
-                    <button onclick="openSkillsModal()" class="btn-secondary text-white px-4 py-2 rounded-xl text-sm transition-all duration-300 animate-pulse-hover">
-                        + Add Skills
-                    </button>
-                </div>
-
-                <div id="skillsList" class="flex flex-wrap gap-3 mt-4">
-                    <div class="w-full text-center py-8">
-                        <span class="text-5xl mb-4 block">🔍</span>
-                        <p class="text-slate-400">No skills added yet</p>
-                        <p class="text-slate-500 text-sm mt-2">Add your first skill to get personalized recommendations</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Resume Card with enhanced design -->
-        <div class="bg-slate-800/70 rounded-2xl shadow-xl p-6 card-hover border border-slate-700/50 backdrop-blur-sm">
-            <h3 class="text-xl font-bold text-white mb-6 flex items-center">
-                <span class="mr-2">📄</span> Resume
-            </h3>
-
-            <div id="resumeSection">
-                <div class="border-2 border-dashed border-slate-600 rounded-2xl p-8 text-center transition-all duration-300 hover:border-secondary group cursor-pointer" onclick="document.getElementById('resumeFile').click()">
-                    <div class="max-w-md mx-auto">
-                        <div class="text-6xl mb-4 group-hover:scale-110 transition-transform duration-300">📤</div>
-                        <p class="text-slate-300 mb-2 text-lg">Upload your resume</p>
-                        <p class="text-slate-500 text-sm">PDF format, maximum 5MB</p>
-                        <button class="btn-primary text-white px-6 py-3 rounded-xl mt-4 inline-flex items-center">
-                            <span class="mr-2">📎</span> Choose File
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                <div class="bg-gray-800 rounded-xl shadow-lg p-6 card-hover animate-fadeInUp" style="animation-delay: 0.1s">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="heading-3 text-white flex items-center">
+                            <span class="mr-2">📝</span> Basic Information
+                        </h3>
+                        <button onclick="openEditModal()" class="btn-primary text-white text-sm font-medium flex items-center gap-2 px-4 py-2 rounded-lg">
+                            <span>✏️</span> Edit
                         </button>
                     </div>
-                    <input type="file" id="resumeFile" accept=".pdf" class="hidden" onchange="handleResumeUpload()">
+
+                    <div class="grid grid-cols-1 gap-5">
+                        <div>
+                            <p class="text-sm text-gray-400 flex items-center">
+                                <span class="mr-2">👤</span> Name
+                            </p>
+                            <p id="profileName" class="font-medium text-white mt-1 text-lg bg-gray-700/50 p-3 rounded-lg">--</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-400 flex items-center">
+                                <span class="mr-2">📧</span> Email
+                            </p>
+                            <p id="profileEmail" class="font-medium text-white mt-1 text-lg bg-gray-700/50 p-3 rounded-lg">--</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-400 flex items-center">
+                                <span class="mr-2">🎓</span> Degree/Major
+                            </p>
+                            <p id="profileDegree" class="font-medium text-white mt-1 text-lg bg-gray-700/50 p-3 rounded-lg">--</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-400 flex items-center">
+                                <span class="mr-2">🎯</span> Career Goal
+                            </p>
+                            <p id="profileGoal" class="font-medium text-white mt-1 text-lg bg-gray-700/50 p-3 rounded-lg">--</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 rounded-xl shadow-lg p-6 card-hover animate-fadeInUp" style="animation-delay: 0.2s">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="heading-3 text-white flex items-center">
+                            <span class="mr-2">🛠️</span> My Skills
+                        </h3>
+                        <button onclick="openSkillsModal()" class="btn-primary text-white px-4 py-2 rounded-lg text-sm">
+                            + Add Skills
+                        </button>
+                    </div>
+
+                    <div id="skillsList" class="flex flex-wrap gap-3 mt-4">
+                        <div class="w-full text-center py-8">
+                            <span class="text-5xl mb-4 block">🔍</span>
+                            <p class="text-gray-400">No skills added yet</p>
+                            <p class="text-gray-500 text-sm mt-2">Add your first skill to get personalized recommendations</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div id="resumeUploaded" class="hidden mt-6">
-                <div class="flex items-center justify-between p-5 bg-gradient-to-r from-slate-700/70 to-slate-800/70 rounded-xl border-l-4 border-success">
-                    <div class="flex items-center">
-                        <span class="text-3xl mr-4">✅</span>
-                        <div>
-                            <p class="font-medium text-white">Resume successfully uploaded</p>
-                            <a id="resumeLink" href="#" target="_blank" class="text-sm text-secondary hover:text-secondary-dark transition-colors duration-300 flex items-center mt-1">
-                                View Resume <span class="ml-1">→</span>
-                            </a>
+            <div class="bg-gray-800 rounded-xl shadow-lg p-6 card-hover animate-fadeInUp" style="animation-delay: 0.3s">
+                <h3 class="heading-3 text-white mb-6 flex items-center">
+                    <span class="mr-2">📄</span> Resume
+                </h3>
+
+                <div id="resumeSection">
+                    <div class="border-2 border-dashed border-gray-600 rounded-xl p-8 text-center transition-all duration-300 hover:border-blue-500 group cursor-pointer" onclick="document.getElementById('resumeFile').click()">
+                        <div class="max-w-md mx-auto">
+                            <div class="text-6xl mb-4">📤</div>
+                            <p class="text-gray-300 mb-2 text-lg">Upload your resume</p>
+                            <p class="text-gray-500 text-sm">PDF format, maximum 5MB</p>
+                            <button class="btn-primary text-white px-6 py-3 rounded-lg mt-4 inline-flex items-center">
+                                <span class="mr-2">📎</span> Choose File
+                            </button>
                         </div>
+                        <input type="file" id="resumeFile" accept=".pdf" class="hidden" onchange="handleResumeUpload()">
                     </div>
-                    <button onclick="document.getElementById('resumeFile').click()"
-                            class="text-secondary hover:text-secondary-dark text-sm font-medium transition-colors duration-300 flex items-center">
-                        <span class="mr-1">🔄</span> Replace
-                    </button>
+                </div>
+
+                <div id="resumeUploaded" class="hidden mt-6">
+                    <div class="flex items-center justify-between p-5 bg-gradient-to-r from-gray-700/70 to-gray-800/70 rounded-xl border-l-4 border-green-500">
+                        <div class="flex items-center">
+                            <span class="text-3xl mr-4">✅</span>
+                            <div>
+                                <p class="font-medium text-white">Resume successfully uploaded</p>
+                                <a id="resumeLink" href="#" target="_blank" class="text-sm text-blue-400 hover:text-blue-300 transition-colors duration-300 flex items-center mt-1">
+                                    View Resume <span class="ml-1">→</span>
+                                </a>
+                            </div>
+                        </div>
+                        <button onclick="document.getElementById('resumeFile').click()"
+                                class="text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors duration-300 flex items-center">
+                            <span class="mr-1">🔄</span> Replace
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Enhanced Edit Profile Modal -->
-    <div id="editModal" class="hidden fixed inset-0 bg-black/70 overflow-y-auto h-full w-full z-50 flex items-center justify-center p-4 backdrop-blur-sm">
-        <div class="relative bg-slate-800 rounded-2xl shadow-2xl p-6 w-full max-w-md border border-slate-700 transform transition-all duration-300 scale-95">
+    <div id="editModal" class="hidden fixed inset-0 bg-black/70 overflow-y-auto h-full w-full z-50 flex items-center justify-center p-4">
+        <div class="relative bg-gray-800 rounded-xl shadow-2xl p-6 w-full max-w-md border border-gray-700">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-xl font-bold text-white flex items-center">
                     <span class="mr-2">✏️</span> Edit Profile
                 </h3>
-                <button onclick="closeEditModal()" class="text-slate-400 hover:text-white text-2xl transition-colors duration-300 p-1 rounded-full hover:bg-slate-700/50">&times;</button>
+                <button onclick="closeEditModal()" class="text-gray-400 hover:text-white text-2xl transition-colors duration-300 p-1 rounded-full hover:bg-gray-700/50">&times;</button>
             </div>
 
             <form id="editProfileForm" class="space-y-5">
                 <div>
-                    <label class="block text-sm font-medium text-slate-300 mb-2 flex items-center">
+                    <label class="block text-sm font-medium text-gray-300 mb-2 flex items-center">
                         <span class="mr-2">🎓</span> Degree/Major
                     </label>
-                    <input type="text" id="editDegree" class="form-input w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-primary">
+                    <input type="text" id="editDegree" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-slate-300 mb-2 flex items-center">
+                    <label class="block text-sm font-medium text-gray-300 mb-2 flex items-center">
                         <span class="mr-2">🎯</span> Career Goal
                     </label>
-                    <input type="text" id="editGoal" class="form-input w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-primary">
+                    <input type="text" id="editGoal" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
 
-                <button type="submit" class="btn-primary w-full text-white py-3 rounded-xl transition-all duration-300 animate-pulse-hover font-medium">
+                <button type="submit" class="btn-primary w-full text-white py-3 rounded-lg transition-all duration-300 font-medium">
                     Save Changes
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- Enhanced Skills Modal -->
-    <div id="skillsModal" class="hidden fixed inset-0 bg-black/70 overflow-y-auto h-full w-full z-50 flex items-center justify-center p-4 backdrop-blur-sm">
-        <div class="relative bg-slate-800 rounded-2xl shadow-2xl p-6 w-full max-w-md border border-slate-700 max-h-96 overflow-y-auto transform transition-all duration-300 scale-95">
+    <div id="skillsModal" class="hidden fixed inset-0 bg-black/70 overflow-y-auto h-full w-full z-50 flex items-center justify-center p-4">
+        <div class="relative bg-gray-800 rounded-xl shadow-2xl p-6 w-full max-w-md border border-gray-700 max-h-96 overflow-y-auto">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-xl font-bold text-white flex items-center">
                     <span class="mr-2">🛠️</span> Add Skills
                 </h3>
-                <button onclick="closeSkillsModal()" class="text-slate-400 hover:text-white text-2xl transition-colors duration-300 p-1 rounded-full hover:bg-slate-700/50">&times;</button>
+                <button onclick="closeSkillsModal()" class="text-gray-400 hover:text-white text-2xl transition-colors duration-300 p-1 rounded-full hover:bg-gray-700/50">&times;</button>
             </div>
 
             <div id="availableSkills" class="space-y-3">
-                <!-- Skills checkboxes will be loaded here -->
                 <div class="text-center py-8">
                     <span class="text-4xl mb-3 block">⏳</span>
-                    <p class="text-slate-400">Loading available skills...</p>
+                    <p class="text-gray-400">Loading available skills...</p>
                 </div>
             </div>
 
-            <button onclick="saveSkills()" class="btn-secondary w-full mt-6 text-white py-3 rounded-xl transition-all duration-300 animate-pulse-hover font-medium">
+            <button onclick="saveSkills()" class="btn-primary w-full mt-6 text-white py-3 rounded-lg transition-all duration-300 font-medium">
                 Save Skills
             </button>
         </div>
@@ -441,46 +396,23 @@
     <script src="/static/js/auth.js"></script>
     <script src="/static/js/profile.js"></script>
 
-    <!-- Enhanced JavaScript for improved interactions -->
     <script>
-        // Enhanced modal animations
         function openEditModal() {
-            const modal = document.getElementById('editModal');
-            modal.classList.remove('hidden');
-            setTimeout(() => {
-                modal.querySelector('div').classList.remove('scale-95');
-                modal.querySelector('div').classList.add('scale-100');
-            }, 10);
+            document.getElementById('editModal').classList.remove('hidden');
         }
 
         function closeEditModal() {
-            const modal = document.getElementById('editModal');
-            modal.querySelector('div').classList.remove('scale-100');
-            modal.querySelector('div').classList.add('scale-95');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-            }, 300);
+            document.getElementById('editModal').classList.add('hidden');
         }
 
         function openSkillsModal() {
-            const modal = document.getElementById('skillsModal');
-            modal.classList.remove('hidden');
-            setTimeout(() => {
-                modal.querySelector('div').classList.remove('scale-95');
-                modal.querySelector('div').classList.add('scale-100');
-            }, 10);
+            document.getElementById('skillsModal').classList.remove('hidden');
         }
 
         function closeSkillsModal() {
-            const modal = document.getElementById('skillsModal');
-            modal.querySelector('div').classList.remove('scale-100');
-            modal.querySelector('div').classList.add('scale-95');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-            }, 300);
+            document.getElementById('skillsModal').classList.add('hidden');
         }
 
-        // Enhanced alert system
         function showAlert(message, type = 'info') {
             const alert = document.getElementById('alertMessage');
             const alertText = document.getElementById('alertText');
@@ -488,10 +420,8 @@
 
             alertText.textContent = message;
 
-            // Remove existing color classes
-            alert.classList.remove('border-blue-500', 'border-green-500', 'border-red-500', 'border-yellow-500', 'border-secondary');
+            alert.classList.remove('border-blue-500', 'border-green-500', 'border-red-500', 'border-yellow-500');
 
-            // Set appropriate icon and color based on type
             switch(type) {
                 case 'success':
                     alert.classList.add('border-green-500');
@@ -506,31 +436,27 @@
                     alertIcon.textContent = '⚠️';
                     break;
                 default:
-                    alert.classList.add('border-secondary');
+                    alert.classList.add('border-blue-500');
                     alertIcon.textContent = 'ℹ️';
             }
 
             alert.classList.remove('hidden');
-            alert.classList.add('animate-fade-in-up');
 
-            // Auto-hide after 5 seconds
             setTimeout(() => {
                 alert.classList.add('hidden');
             }, 5000);
         }
 
-        // Enhanced skill tag creation with animation
         function createSkillTag(skillName, proficiency = 3) {
             const tag = document.createElement('div');
-            tag.className = 'skill-badge text-white px-4 py-3 rounded-xl flex items-center justify-between gap-2 animate-fade-in-up';
+            tag.className = 'bg-gray-700 text-white px-4 py-3 rounded-lg flex items-center justify-between gap-2';
 
-            // Create stars for proficiency
             let stars = '';
             for (let i = 1; i <= 5; i++) {
                 if (i <= proficiency) {
                     stars += '<span class="text-yellow-400">★</span>';
                 } else {
-                    stars += '<span class="text-slate-500">★</span>';
+                    stars += '<span class="text-gray-500">★</span>';
                 }
             }
 
@@ -539,45 +465,34 @@
                     <span class="font-medium">${skillName}</span>
                     <div class="text-sm">${stars}</div>
                 </div>
-                <button onclick="removeSkill(this)" class="text-slate-400 hover:text-red-400 transition-colors duration-300 text-lg font-bold">
+                <button onclick="removeSkill(this)" class="text-gray-400 hover:text-red-400 transition-colors duration-300 text-lg font-bold">
                     &times;
                 </button>
             `;
             return tag;
         }
 
-        // Enhanced remove skill with animation
         function removeSkill(button) {
             const tag = button.parentElement;
-            tag.style.transform = 'scale(0.8)';
-            tag.style.opacity = '0';
-            setTimeout(() => {
-                tag.remove();
+            tag.remove();
 
-                // Show placeholder if no skills left
-                const skillsList = document.getElementById('skillsList');
-                if (skillsList.children.length === 0) {
-                    skillsList.innerHTML = `
-                        <div class="w-full text-center py-8">
-                            <span class="text-5xl mb-4 block">🔍</span>
-                            <p class="text-slate-400">No skills added yet</p>
-                            <p class="text-slate-500 text-sm mt-2">Add your first skill to get personalized recommendations</p>
-                        </div>
-                    `;
-                }
-            }, 300);
+            const skillsList = document.getElementById('skillsList');
+            if (skillsList.children.length === 0) {
+                skillsList.innerHTML = `
+                    <div class="w-full text-center py-8">
+                        <span class="text-5xl mb-4 block">🔍</span>
+                        <p class="text-gray-400">No skills added yet</p>
+                        <p class="text-gray-500 text-sm mt-2">Add your first skill to get personalized recommendations</p>
+                    </div>
+                `;
+            }
         }
 
-        // Initialize user data in sidebar
         document.addEventListener('DOMContentLoaded', function() {
-            // This would typically be populated from your auth.js
-            const userName = "John Doe"; // Example - replace with actual user data
-            const userEmail = "john.doe@example.com"; // Example - replace with actual user data
+            const userName = document.getElementById('userName').textContent = userName;;
+            const userEmail = document.getElementById('profileName').textContent = userName;;
 
-            document.getElementById('sidebarUserName').textContent = userName;
-            document.getElementById('userInitials').textContent = userName.split(' ').map(n => n[0]).join('');
-
-            // Populate profile data (this would typically come from your profile.js)
+            document.getElementById('userName').textContent = userName;
             document.getElementById('profileName').textContent = userName;
             document.getElementById('profileEmail').textContent = userEmail;
             document.getElementById('profileDegree').textContent = "Computer Science";

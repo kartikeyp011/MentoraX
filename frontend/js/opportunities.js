@@ -93,15 +93,16 @@ function displayOpportunities(opportunities) {
 
     grid.innerHTML = '';
 
-    opportunities.forEach(opp => {
-        const card = createOpportunityCard(opp);
+    opportunities.forEach((opp, index) => {
+        const card = createOpportunityCard(opp, index);
         grid.appendChild(card);
     });
 }
 
-function createOpportunityCard(opp) {
+function createOpportunityCard(opp, index) {
     const card = document.createElement('div');
-    card.className = 'bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition';
+    card.className = `opportunity-item card-hover animate-fadeInUp`;
+    card.style.animationDelay = `${index * 0.1}s`;
 
     const deadline = new Date(opp.deadline).toLocaleDateString('en-US', {
         month: 'short',
@@ -112,48 +113,50 @@ function createOpportunityCard(opp) {
     const isSaved = savedOpportunityIds.has(opp.opportunity_id);
 
     card.innerHTML = `
-        <div class="flex justify-between items-start mb-3">
+        <div class="opportunity-header">
             <div class="flex-1">
-                <h3 class="text-xl font-bold text-gray-900 mb-2">${opp.title}</h3>
-                <div class="flex items-center space-x-4 text-sm text-gray-600 mb-3">
-                    <span class="flex items-center">
-                        <span class="mr-1">🏢</span> ${opp.source}
-                    </span>
-                    <span class="flex items-center">
-                        <span class="mr-1">📍</span> ${opp.location}
-                    </span>
-                    <span class="flex items-center">
-                        <span class="mr-1">📅</span> ${deadline}
-                    </span>
+                <h3 class="opportunity-title">${opp.title}</h3>
+                <div class="opportunity-company">${opp.source}</div>
+                <div class="opportunity-location">
+                    <span>📍</span> ${opp.location}
                 </div>
             </div>
             <button onclick="toggleSave(${opp.opportunity_id})" 
                     id="saveBtn_${opp.opportunity_id}"
-                    class="ml-4 text-2xl hover:scale-110 transition">
+                    class="text-2xl hover:scale-110 transition-transform duration-200">
                 ${isSaved ? '❤️' : '🤍'}
             </button>
         </div>
         
-        <p class="text-gray-700 mb-4 line-clamp-3">${opp.description}</p>
+        <div class="opportunity-description">
+            <span class="opportunity-description-label">Description</span>
+            <div class="opportunity-description-content line-clamp-3">${opp.description}</div>
+        </div>
         
         ${opp.required_skills && opp.required_skills.length > 0 ? `
             <div class="mb-4">
-                <p class="text-sm font-medium text-gray-700 mb-2">Required Skills:</p>
-                <div class="flex flex-wrap gap-2">
+                <p class="text-sm font-medium text-gray-400 mb-2">Required Skills:</p>
+                <div class="opportunity-skills">
                     ${opp.required_skills.slice(0, 5).map(skill => 
-                        `<span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">${skill}</span>`
+                        `<span class="skill-tag">${skill}</span>`
                     ).join('')}
                     ${opp.required_skills.length > 5 ? 
-                        `<span class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">+${opp.required_skills.length - 5} more</span>` 
+                        `<span class="skill-tag">+${opp.required_skills.length - 5} more</span>` 
                         : ''}
                 </div>
             </div>
         ` : ''}
         
-        <div class="flex space-x-3">
+        <div class="opportunity-footer">
+            <div class="opportunity-deadline">
+                <span>📅</span>
+                Deadline: 
+                <span class="opportunity-deadline-date">${deadline}</span>
+            </div>
             <a href="${opp.link}" target="_blank" 
-               class="flex-1 bg-blue-600 text-white text-center px-4 py-2 rounded-lg hover:bg-blue-700 transition">
-                View Details →
+               class="opportunity-action">
+                View Details
+                <span>→</span>
             </a>
         </div>
     `;
@@ -214,12 +217,12 @@ async function changeTab(tab) {
 
     // Update tab styling
     document.getElementById('tabAll').className = tab === 'all'
-        ? 'px-4 py-2 font-medium text-blue-600 border-b-2 border-blue-600'
-        : 'px-4 py-2 font-medium text-gray-600 hover:text-blue-600';
+        ? 'px-4 py-2 font-medium text-blue-400 border-b-2 border-blue-400'
+        : 'px-4 py-2 font-medium text-gray-400 hover:text-blue-400';
 
     document.getElementById('tabSaved').className = tab === 'saved'
-        ? 'px-4 py-2 font-medium text-blue-600 border-b-2 border-blue-600'
-        : 'px-4 py-2 font-medium text-gray-600 hover:text-blue-600';
+        ? 'px-4 py-2 font-medium text-blue-400 border-b-2 border-blue-400'
+        : 'px-4 py-2 font-medium text-gray-400 hover:text-blue-400';
 
     // Hide/show filters
     document.getElementById('filtersSection').style.display = tab === 'all' ? 'block' : 'none';

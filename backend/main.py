@@ -32,6 +32,11 @@ async def health_check():
 async def serve_landing():
     return FileResponse("frontend/landing.html")
 
+@app.get("/")
+@app.get("/landing")
+async def serve_landing():
+    return FileResponse("frontend/landing.html")
+
 @app.get("/login")
 async def serve_login():
     return FileResponse("frontend/login.html")
