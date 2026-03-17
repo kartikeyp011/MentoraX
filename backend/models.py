@@ -9,7 +9,7 @@ class UserSignup(BaseModel):
     degree: Optional[str] = None
     career_goal: Optional[str] = None
 
-class UserLogin(BaseModel)
+class UserLogin(BaseModel):
     email: EmailStr
     password: str
 

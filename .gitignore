@@ -22,6 +22,9 @@ wheels/
 MANIFEST
 
 # Virtual Environment
+venv/
+venv2/
+venv3/
 venv311/
 env/
 ENV/
@@ -124,3 +127,9 @@ coverage/
 # Documentation Build
 docs/_build/
 site/
+
+# Test / Debug Files
+backend/test_coursera.py
+backend/test_scraper_utils.py
+backend/working_test_scraper.py
+backend/debug_internshala.py\
