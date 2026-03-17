@@ -33,6 +33,30 @@ An intelligent career guidance and upskilling platform for college students, pow
 
 ---
 
+## 📸 **Platform Preview**
+
+*Add your project screenshots here:*
+
+### **Dashboard Page**
+> ![alt text](mentorax1.png)
+
+### **Career Guidance Page**
+> ![alt text](mentorax2.png)
+
+### **Opportunities Hub**
+> ![alt text](mentorax3.png)
+
+### **Learning Zone**
+> ![alt text](mentorax4.png)
+
+### **AI Upskill Coach**
+> ![alt text](mentorax5.png)
+
+### **Profile Page**
+> ![alt text](mentorax6.png)
+
+---
+
 ## 🛠️ **Tech Stack**
 
 - **Backend:** Python 3.11+, FastAPI, Uvicorn
