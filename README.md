@@ -38,22 +38,22 @@ An intelligent career guidance and upskilling platform for college students, pow
 *Add your project screenshots here:*
 
 ### **Dashboard Page**
-> ![alt text](mentorax1.png)
+> !preview/mentorax1.png
 
 ### **Career Guidance Page**
-> ![alt text](mentorax2.png)
+> !(preview/mentorax2.png)
 
 ### **Opportunities Hub**
-> ![alt text](mentorax3.png)
+> !(preview/mentorax3.png)
 
 ### **Learning Zone**
-> ![alt text](mentorax4.png)
+> !(preview/mentorax4.png)
 
 ### **AI Upskill Coach**
-> ![alt text](mentorax5.png)
+> !(preview/mentorax5.png)
 
 ### **Profile Page**
-> ![alt text](mentorax6.png)
+> !(preview/mentorax6.png)
 
 ---
 
